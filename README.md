@@ -19,8 +19,9 @@
 1. [Application Status](https://github.com/kappnav/design/blob/master/status-determination.md)
 1. [Annotations](https://github.com/kappnav/design/blob/master/annotations.md)
 1. [Actions](https://github.com/kappnav/design/blob/master/actions-config-maps.md)
-1. [UI](https://github.com/kappnav/design/blob/master/UI-layout.md)
-   1. [Command Action UI](https://github.com/kappnav/design/blob/master/command-action-ui.md)
+1. Web UI
+   1. [Application/Component View](https://github.com/kappnav/design/blob/master/UI-layout.md)
+   1. [Command Action View](https://github.com/kappnav/design/blob/master/command-action-ui.md)
 1. [Security](https://github.com/kappnav/design/blob/master/security.md)
 1. [Internationalization](https://github.com/kappnav/design/blob/master/NLS.md)
 1. [Auto-App Support](https://github.com/kappnav/design/blob/master/auto-app-lifecycle.md)
