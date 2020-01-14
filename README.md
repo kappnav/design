@@ -30,11 +30,11 @@ The [big picture.](https://github.com/kappnav/design/blob/master/a.overview.md)
 1. [Detail Sections](https://github.com/kappnav/design/blob/master/ui-detail-sections.md)
 1. [Support for Appsody](https://github.com/kappnav/design/blob/master/appsody.md)
 
-## Design {k}AppNav 0.5.0
+## {k}AppNav 0.5.0 Design
 
 1. [Group-Version-Resource (GVR)](https://github.com/kappnav/design/blob/master/groups-and-versions.md)
 
-## Design {k}AppNav 0.6.0 
+## {k}AppNav 0.6.0 Design
 
 1. [KindActionMapping Custom Resource Definition](https://github.com/kappnav/design/blob/master/kind-action-mapping.md)
 1. [Logging](https://github.com/kappnav/design/blob/master/logging.md)
