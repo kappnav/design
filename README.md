@@ -3,7 +3,7 @@
 ## Concepts 
 
 
-1. The [big picture](https://github.com/kappnav/design/blob/master/a.overview.md)
+1. [Big picture](https://github.com/kappnav/design/blob/master/a.overview.md)
 1. [Use Cases](https://github.com/kappnav/design/blob/master/use-cases.md)
 1. [Defining Applications](https://github.com/kappnav/design/blob/master/defining-apps.md)
 1. [Architecture](https://github.com/kappnav/design/blob/master/architecture.md)
