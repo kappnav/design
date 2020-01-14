@@ -1,1 +1,42 @@
-# How to access API server's openapi UI ## OpenShift You can access the API server's openapi UI on OpenShift platforms using this procedure: 1. create service (if it does not already exist) in same namespace as kAppNav ``` apiVersion: v1 kind: Service metadata: name: kappnav-api-service spec: type: NodePort ports: - port: 9080 targetPort: 9080 protocol: TCP name: http selector: app.kubernetes.io/component: kappnav-ui ``` 1. create route (specify option --validate=false on create) in same namespace as kAppNav ``` apiVersion: route.openshift.io/v1 kind: Route metadata: name: openapi spec: port: targetPort: http to: kind: Service name: kappnav-api-service ``` 1. access route and edit address Find route in console, click it, you will see OpenLiberty home page; in browser, add '/openapi/ui' to end of url to open to openapi/ui page for the kAppNav API.
+# How to access API server's openapi UI
+
+## OpenShift
+
+You can access the API server's openapi UI on OpenShift platforms using this procedure:
+
+1. create service (if it does not already exist) in same namespace as kAppNav
+
+   ```
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: kappnav-api-service
+   spec:
+     type: NodePort
+     ports:
+     - port: 9080
+       targetPort: 9080
+       protocol: TCP
+       name: http
+     selector:
+       app.kubernetes.io/component: kappnav-ui
+   ```
+
+1. create route (specify option --validate=false on create) in same namespace as kAppNav
+
+   ```
+   apiVersion: route.openshift.io/v1
+   kind: Route
+   metadata:
+     name: openapi
+   spec:
+     port:
+       targetPort: http
+     to:
+       kind: Service
+       name: kappnav-api-service
+   ```
+
+1. access route and edit address 
+
+   Find route in console, click it, you will see OpenLiberty home page; in browser, add '/openapi/ui' to end of url to open to openapi/ui page for the kAppNav API.

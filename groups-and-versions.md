@@ -1,1 +1,60 @@
-The [Kubernetes Applications SIG](https://github.com/kubernetes-sigs/application) defines the Application CRD for defining Kubernetes applications consisting of multiple resources, known as components. The specification defines a spec field `componentKinds` which is an array of the components of an application. ```yaml spec: componentKinds: - group: core kind: Service - group: apps kind: Deployment ``` Only `group` and `kind` are currently defined for an application component. <br/><br/> **Invalid group names and backward compatibility** Initial implementations of Application Navigator allowed invalid values to be specified for group which could cause errors when multiple CRDs have the same kind but different groups. APIs.md NLS.md README.md UI-layout.md a.overview.md action-enablement.md actions-config-maps.md annotations.md api-server-openapi-ui.md appsody-integration.md appsody.md architecture.md auto-app-lifecycle.md command-action-ui.md completedJob.md coo-scans.md create-application.json custom-resources.md default-application.md defining-apps.md dependencies.md dev-process.md event-driven-services.md feature-overview.md fixup.sh gitflow.md global-search-apis.md groups-and-versions.md helm-operator.md icp310.md images install.md javalogging.md kind-action-mapping.md kubeEnv-Env-var.md liberty-collective-ui.md logging.md loglevel.md namespaces.md okd-console-integration.md release-procedures.md releases.md security.md shared-services.md status-determination.md ui-detail-sections.md use-cases.md was-cell-ui.md was-nd-cells.md ***Backward Compatible Kinds*** When an invalid group is specified for any of the following kinds the group and version in the table will be used: | Kind | Group | Version | | --- | --- | --- | | Application | app.k8s.io | v1beta1 | | ClusterRole | rbac.authorization.k8s.io | v1 | | ClusterRoleBinding | rbac.authorization.k8s.io | v1 | | ConfigMap | | v1 | | CustomResourceDefinition | apiextensions.k8s.io | v1beta1 | | Deployment | apps | v1 | | Endpoint | | v1 | | Ingress | extensions | v1beta1 | | Job | batch | v1 | | Node | | v1 | | PersistentVolumeClaim | | v1 | | Role | rbac.authorization.k8s.io | v1 | | RoleBinding | rbac.authorization.k8s.io | v1 | | Route | route.openshift.io | v1 | | Secret | | v1 | | Service | | v1 | | ServiceAccount | | v1 | | StatefulSet | apps | v1 | | StorageClass | storage.k8s.io | v1 | | Volume | | v1 | <br/> **Special group name "core"** The `group:` value `core` is used to specify kinds that are built in to Kubernetes. These core builtin kinds have a blank/empty group internally. ```yaml - group: core kind: Service ``` <br/> **Versions** The version for each group/kind will be the preferred version for the group, as determined by Kubernetes discovery, since the spec does not provide a way to specify version.
+The [Kubernetes Applications SIG](https://github.com/kubernetes-sigs/application) defines the Application CRD for defining Kubernetes applications consisting of multiple resources, known as components.
+
+The specification defines a spec field `componentKinds` which is an array of the components of an application.
+
+```yaml
+spec:
+  componentKinds:
+    - group: core
+      kind: Service
+    - group: apps
+      kind: Deployment
+```
+
+Only `group` and `kind` are currently defined for an application component. 
+<br/><br/>
+
+**Invalid group names and backward compatibility**
+
+Initial implementations of Application Navigator allowed invalid values to be specified for group which could cause errors when multiple CRDs have the same kind but different groups.
+
+* ***Backward Compatible Kinds***
+
+    When an invalid group is specified for any of the following kinds the group and version in the table will be used:
+    
+    | Kind | Group | Version |
+    | --- | --- | --- |
+    | Application | app.k8s.io | v1beta1 |
+    | ClusterRole | rbac.authorization.k8s.io | v1 |
+    | ClusterRoleBinding  | rbac.authorization.k8s.io | v1 |
+    | ConfigMap |   | v1 |
+    | CustomResourceDefinition | apiextensions.k8s.io | v1beta1 |
+    | Deployment | apps | v1 |
+    | Endpoint |   | v1 |
+    | Ingress | extensions | v1beta1 |
+    | Job | batch | v1 |
+    | Node |   | v1 |
+    | PersistentVolumeClaim |  | v1 |
+    | Role | rbac.authorization.k8s.io | v1 |
+    | RoleBinding | rbac.authorization.k8s.io | v1 |
+    | Route | route.openshift.io | v1 |
+    | Secret |   | v1 |
+    | Service |  | v1 |
+    | ServiceAccount |   | v1 |
+    | StatefulSet | apps | v1 |
+    | StorageClass | storage.k8s.io | v1 |
+    | Volume |   | v1 |
+<br/>
+
+**Special group name "core"**
+
+The `group:` value `core` is used to specify kinds that are built in to Kubernetes. These core builtin kinds have a blank/empty group  internally. 
+```yaml
+    - group: core
+      kind: Service
+```
+<br/>
+
+**Versions**
+
+The version for each group/kind will be the preferred version for the group, as determined by Kubernetes discovery, since the spec does not provide a way to specify version.  

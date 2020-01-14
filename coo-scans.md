@@ -1,1 +1,45 @@
-# Certificate of Originality Source Code Scans For commercial release, IBM requires products to have a certificate of originality, identifying and attributing source code authorship. For IBM Application Navigator, we do scans to collect the input to this process for the following: 1. source code 1. linux packages # Procedure ## Source Code Scans We use the wicked-cli: The wicked-cli scans source code. To use this tool: 1. install tool. Instructions: [https://github.ibm.com/wicked/cli](https://github.ibm.com/wicked/cli) 1. download source code from github 1. install source code dependencies (i.e. all source code must be present for scan to work) e.g. run npm install for node.js projects, maven install for java, etc. See Dockerfile build stage when in doubt. 1. run wicked-cli and zip up output files to share with project manager. Example [zip file](https://github.ibm.com/WASCloudPrivate/roadmap-convergence/files/365290/wicked-scans.zip). ## Linux Package Scans We are using [this script](https://github.ibm.com/WASCloudPrivate/roadmap-convergence/issues/703#issuecomment-11667772) for our UBI package scans. To run this script: 1. Use link above to get source for script 1. Create file 'scan.sh' using that content 1. start foreground container from image you intend to scan commonly, this command does the trick: docker run -it --name &lt;container name&gt; &lt;image name&gt; bash 1. in a separate shell window, copy scan.sh into the container e.g. docker cp scan.sh &lt;container name&gt;:/tmp/scan.sh 1. run scan.sh from bash command line inside container 1. copy out scan output files, zip up and share with project manager. Example [zip file](https://github.ibm.com/WASCloudPrivate/roadmap-convergence/files/363736/linux.scans.zip). e.g. docker cp &lt;container name&gt;:/tmp/rpms_shortname.csv rpms_shortname.csv
+# Certificate of Originality Source Code Scans
+
+For commercial release,  IBM requires products to have a certificate of originality,  identifying and attributing source code authorship.
+
+For IBM Application Navigator, we do scans to collect the input to this process for the following: 
+
+1. source code 
+1. linux packages
+
+# Procedure 
+
+## Source Code Scans 
+
+We use the wicked-cli:   
+
+The wicked-cli scans source code.  To use this tool: 
+
+1. install tool.  Instructions:  [https://github.ibm.com/wicked/cli](https://github.ibm.com/wicked/cli)
+1. download source code from github
+1. install source code dependencies (i.e. all source code must be present for scan to work)
+
+   e.g. run npm install for node.js projects,  maven install for java,  etc.  See Dockerfile build stage when in doubt.  
+
+1. run wicked-cli and zip up output files to share with project manager.  Example [zip file](https://github.ibm.com/WASCloudPrivate/roadmap-convergence/files/365290/wicked-scans.zip).
+
+## Linux Package Scans 
+
+We are using [this script](https://github.ibm.com/WASCloudPrivate/roadmap-convergence/issues/703#issuecomment-11667772) for our UBI package scans.
+
+To run this script: 
+
+1. Use link above to get source for script
+1. Create file 'scan.sh' using that content
+1. start foreground container from image you intend to scan 
+
+   commonly, this command does the trick:   docker run -it --name &lt;container name&gt; &lt;image name&gt; bash 
+
+1. in a separate shell window, copy scan.sh into the container
+
+   e.g. docker cp scan.sh &lt;container name&gt;:/tmp/scan.sh
+
+1. run scan.sh from bash command line inside container 
+1. copy out scan output files, zip up and share with project manager.  Example [zip file](https://github.ibm.com/WASCloudPrivate/roadmap-convergence/files/363736/linux.scans.zip).
+
+   e.g. docker cp &lt;container name&gt;:/tmp/rpms_shortname.csv rpms_shortname.csv

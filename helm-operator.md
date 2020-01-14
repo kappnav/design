@@ -1,1 +1,48 @@
-# Design Notes for Helm Chart Operator Phase 1 - establish operator component 1. Create operator directory structure 1. Remember to update Dockerfile to copy from helm-chart-prism: We use the result of the command of operator-sdk new helm-operator --kind=AppNavigator --type=helm --helm-chart=./helm-chart-prism/stable/ibm-app-navigator as a file layout to build up the helm-operator subproject. The command uses <HOME>/go/src/WASCloudPrivate/prism/hel-chart-prism as an exist chart and copies it in the operator directory. But this is a copy of the REAL helm chart, which we do not want to use. We want to use the REAL helm chart from https://github.ibm.com/WASCloudPrivate/helm-chart-prism so we throw away the copied one, but clone the real one. The copy one and the clone one has a different file structure. Therefore, we need to update the Docker file to reflect this. 2. Create README - has 2 parts: 1. How to build the operator 2. How to install the operator 2. Create build.sh for operator directory 1. Test if helm-chart-prism exists, if not git clone it 2. Do docker build 3. Update prism/build.sh to build also the helm operator directory 4. Update publish.sh to use this helm chart -> helm-operator/helm-chart-prism/stable/ibm-app-navigator 1. Also update publish.sh to issue warning if ./helm-chart-prism directory exists - it is deprecated 5. Add to .gitignore : helm-operator/helm-chart-prism Phase 2 - use operator in publish.sh 1. Add appNavigator-openShift-CR.yaml, o project (remember registry value is REGISTRY keyword) 2. Update publish.sh 1. Do this for minishift install target only! 2. Build prism-helm-operator image if it does not exist (test for image)  docker images prism-helm-operator | grep prism-helm-operator if [ $? -eq 0 ]; then echo found; else echo not found; fi 3. Use kubectl commands to install using operator 1. cat operator.yaml to operator-internal.yaml with the updated namespace 2. cat appNavigator-openShift-CR.yaml to appNavigator-openShift-internal-CR.temp.yaml with the updated REGISTRY 3. kubectl apply -f appNavigator-CRD.yaml 4. kubectl apply -f service account/role/role_binding.yaml 5. kubectl apply -f operator-internal.yaml 6. kubectl apply -f appNavigator-openShift-internal-CR.yaml 7. Delete appNavigator-openShift-CR.temp.yaml 3. Add to .gitignore: opertor-internal.yaml and appNavigator-openShift-internal-CR.yaml Phase 3 - Single command install with helm operator for OKD customers: 1. To install: 1. kubectl create namespace kappnav (or whatever) 2. kubectl create -f kappnav-create.yaml 2. To uninstall: 1. kubectl delete -f deploy/crds/appNavigator-openShift-CR.yaml --now 2. kubectl delete -f kappnav-delete.yaml Notes: Create a single command install for operator, but for uninstall, we will need two kubectl delete, one for *cr.yaml and one for the rest. This is due to the fact that the resources for helm-operator could start to uninstall before uninstall the prism resources are done as delete cr.yaml (uninstall prism resources) takes time to complete. If the helm operator (controller) is uninstalled before the prism resources uninstall, a hang happens. With two kubectl delete commands, the helm-operator will always be uninstalled after the prism resources uninstall is done.
+# Design Notes for Helm Chart Operator 
+
+Phase 1 - establish operator component 
+
+1. Create operator directory structure 
+    1. Remember to update Dockerfile to copy from helm-chart-prism:
+    
+    We use the result of the command of operator-sdk new helm-operator --kind=AppNavigator --type=helm --helm-chart=./helm-chart-prism/stable/ibm-app-navigator as a file layout to build up the helm-operator subproject.  The command uses <HOME>/go/src/WASCloudPrivate/prism/hel-chart-prism as an exist chart and copies it in the operator directory.  But this is a copy of the REAL helm chart, which we do not want to use.  We want to use the REAL helm chart from https://github.ibm.com/WASCloudPrivate/helm-chart-prism so we throw away the copied one, but clone the real one.  The copy one and the clone one has a different file structure. Therefore, we need to update the Docker file to reflect this.
+    
+    2. Create README - has 2 parts:
+        1. How to build the operator
+        2. How to install the operator 
+2. Create build.sh for operator directory
+    1. Test if helm-chart-prism exists,  if not git clone it 
+    2. Do docker build 
+3. Update prism/build.sh to build also the helm operator directory 
+4. Update publish.sh to use this helm chart -> helm-operator/helm-chart-prism/stable/ibm-app-navigator 
+    1. Also update publish.sh to issue warning if ./helm-chart-prism directory exists - it is deprecated 
+5. Add to .gitignore : helm-operator/helm-chart-prism
+
+Phase 2  - use operator in publish.sh 
+
+1. Add appNavigator-openShift-CR.yaml, o project (remember registry value is REGISTRY keyword) 
+2. Update publish.sh 
+    1. Do this for minishift install target only! 
+    2. Build prism-helm-operator image if it does not exist (test for image)  docker images prism-helm-operator | grep prism-helm-operator if [ $? -eq 0 ]; then echo found; else echo not found; fi 
+    3. Use kubectl commands to install using operator 
+        1. cat operator.yaml to operator-internal.yaml with the updated namespace
+        2. cat appNavigator-openShift-CR.yaml to appNavigator-openShift-internal-CR.temp.yaml with the updated REGISTRY
+        3. kubectl apply -f appNavigator-CRD.yaml          
+        4. kubectl apply -f service account/role/role_binding.yaml
+        5. kubectl apply -f operator-internal.yaml
+        6. kubectl apply -f appNavigator-openShift-internal-CR.yaml
+        
+        7. Delete appNavigator-openShift-CR.temp.yaml 
+3. Add to .gitignore: opertor-internal.yaml and appNavigator-openShift-internal-CR.yaml
+
+Phase 3 - Single command install with helm operator for OKD customers:
+1. To install:
+    1. kubectl create namespace kappnav (or whatever)
+    2. kubectl create -f kappnav-create.yaml
+2. To uninstall:
+    1. kubectl delete -f deploy/crds/appNavigator-openShift-CR.yaml --now
+    2. kubectl delete -f kappnav-delete.yaml
+    
+Notes: 
+Create a single command install for operator, but for uninstall, we will need two kubectl delete, one for *cr.yaml and one for the rest. This is due to the fact that the resources for helm-operator could start to uninstall before uninstall the prism resources are done as delete cr.yaml (uninstall prism resources) takes time to complete. If the helm operator (controller) is uninstalled before the prism resources uninstall, a hang happens. With two kubectl delete commands, the helm-operator will always be uninstalled after the prism resources uninstall is done.
+    

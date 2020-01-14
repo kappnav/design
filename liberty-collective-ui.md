@@ -1,1 +1,136 @@
-# Liberty Collective View The Liberty Collective View displays information about Liberty Collectives that have been defined to Prism for navigational access. The Liberty Collective View is launched from the [Prism Global Menu](https://github.com/kappnav/design/blob/master/UI-layout.md#prism-global-menu). ## Common View Controls The Liberty Collective view will have controls consistent with other list view pages in the ICP console, for example, as does the Deployment view: ![common-page-top](https://github.com/kappnav/design/blob/master/images/common-screen-top.png) ## Collective Table The principle purpose of the Liberty Collective view is to show a list [Liberty Collective resources](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-collective). Like other resource views in the ICP console, Liberty Collectives will be displayed using a tabular presentation: ![cell-table-view](https://github.com/kappnav/design/blob/master/images/collective-view.png) Where: - Status indicates current [status of Liberty Collective](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-collective). - Name is the collective name. Clicking it takes the user to the [ Detail View](#collective-app-view). - Console is the URL to access the Liberty Admin Center for the collective. It is a clickable field. Clicking it takes you to the Admin Center. You will be prompted to login if not already logged in. - Action is a clickable field that opens a menu of selectable actions. See [Standard Action Menu Items](#standard-action-menu-items) and [Configurable Action Menu Items](#configurable-action-menu-items) for explanation of the action items available on this menu. ### Sortable Column Values Columns heads are clickable to toggle the sort between ascending and descending. An up/down arrow (triangle, really), as is done in the rest of the ICP console, will be used to designate whether sort order is ascending (up arrow) or descending (down arrow). e.g. ![](https://github.com/kappnav/design/blob/master/images/clickable-column-head.png) The sort rule for each column is: - Status column is sortable following the rules for a standard alphanumeric sort. The default sort is ascending alphanumeric. - Name column is sortable following the rules for a standard alphanumeric sort. The default sort is ascending alphanumeric. - Console is sortable following the rules for a standard alphanumeric sort. The default sort is ascending alphanumeric. - Action column is not sortable. ### Standard Action Menu Items Like all other ICP views that display Kubernetes resources, the Liberty Collective view page will include the following pre-defined action menu items: 1. Edit The edit menu item, will launch a modal dialog to edit the Liberty Collective's configuration, as is done elsewhere in the ICP console, as shown here with Deployment, as an example: ![](https://github.com/kappnav/design/blob/master/images/resource-edit-modal.png) 2. Remove - removes the associated Kubernetes resource. This is effectively the same as kubectl delete. ### Configurable Action Menu Items Additional menu items can be added to the Collective Table View using action config maps. Config maps are a built-in Kubernetes resource type, used to store arbitrary configuration data in the Kubernetes config service. Prism uses config maps to hold the configuration for configurable action menu items. See [action config maps](https://github.com/kappnav/design/blob/master/actions-config-maps.md) for a full definition of action config maps. ### Create Liberty Collective Button The standard header includes a Create button. This button will open a dialog that enables the user to create a new Liberty Collective instance. This is not an actual Liberty Collective, complete with actual Liberty servers, but rather a Kubernetes custom resource representing a Liberty Collective. The following screen shots show the layout of this dialog for field-driven input. JSON mode is shown further down. **Enter General Values** ![](https://github.com/kappnav/design/blob/master/images/create-collective-1.png) **Enter Labels** ![](https://github.com/kappnav/design/blob/master/images/create-collective-2.png) **Enter Network Info** ![](https://github.com/kappnav/design/blob/master/images/create-collective-3.png) **JSON Mode** ![](https://github.com/kappnav/design/blob/master/images/create-collective-json.png) ## Liberty Collective Detail View The Liberty Collective detail view shows the [Liberty Apps](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-app) deployed to that Liberty Collective. ### Common View Controls The Liberty Collective detail level view will have controls consistent with other list view pages in the ICP console, for example, as does the Deployment view: ![common-page-top](https://github.com/kappnav/design/blob/master/images/common-screen-top.png) ### Details and Liberty Apps Table View The Liberty Collective view will include a details section and, like other resource views in the ICP console that include collections, WAS Traditional Apps components will be displayed using a tabular presentation: ![component-table-view](https://github.com/kappnav/design/blob/master/images/collective-app-view.png) In the Liberty Apps Table, the following columns are displayed: - Status indicates current [status of the Liberty App](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-app-status-values). - Name is the Liberty App name. It is a clickable link and takes takes the user to the [Liberty App detail view](https://github.com/kappnav/design/blob/master/liberty-collective-ui.md#liberty-app-detail-view). - Labels shows the labels values assigned to a Liberty App resource. - Action is a clickable field that opens a menu of selectable actions. See [Configurable Action Menu Items for Components](#configurable-action-menu-items-for-components) for explanation of the action items available on this menu. ### Sortable Column Values Columns heads are clickable to toggle the sort between ascending and descending. An up/down arrow (triangle, really), as is done in the rest of the ICP console, will be used to designate whether sort order is ascending (up arrow) or descending (down arrow). e.g. ![](https://github.com/kappnav/design/blob/master/images/clickable-column-head.png) The sort rule for each column is: - Status is sortable following the rules for a standard alphanumeric sort. The default sort is ascending alphanumeric. - Name column is sortable following the rules for a standard alphanumeric sort. The default sort is ascending alphanumeric. - Labels is sortable following the rules for a standard alphanumeric sort. The default sort is ascending alphanumeric. - Action column is not sortable. ### Configurable Action Menu Items for Liberty Applications Additional menu items can be added to the Liberty Applications Table View using action config maps. Config maps are a built-in Kubernetes resource type, used to store arbitrary configuration data in the Kubernetes config service. Prism uses config maps to hold the configuration for configurable action menu items. See [action config maps](https://github.com/kappnav/design/blob/master/actions-config-maps.md) for a full definition of action config maps. ### Liberty-App Detail View The following information is displayed for a Liberty-App instance: ![twas](https://github.com/kappnav/design/blob/master/images/liberty-app-detail-view.png) Where: - name, namespace, labels, and targets are values that come directly from the resource instance. - collective is a hyperlink to the [Liberty-Collective detail view](https://github.com/kappnav/design/blob/master/liberty-collective-ui.md#liberty-collective-detail-view) that contains this Liberty-App instance.
+# Liberty Collective View 
+
+The Liberty Collective View displays information about Liberty Collectives that have been defined to Prism for navigational access. The Liberty Collective View is launched from the [Prism Global Menu](https://github.com/kappnav/design/blob/master/UI-layout.md#prism-global-menu).
+
+## Common View Controls 
+
+The Liberty Collective view will have controls consistent with other list view pages in the ICP console, for example, as does the Deployment view: 
+
+![common-page-top](https://github.com/kappnav/design/blob/master/images/common-screen-top.png)
+
+## Collective Table
+
+The principle purpose of the Liberty Collective view is to show a list [Liberty Collective resources](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-collective). Like other resource views in the ICP console, Liberty Collectives will be displayed using a tabular presentation: 
+
+![cell-table-view](https://github.com/kappnav/design/blob/master/images/collective-view.png)
+
+Where:
+
+- Status indicates current [status of Liberty Collective](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-collective).
+- Name is the collective name. Clicking it takes the user to the [ Detail View](#collective-app-view).
+- Console is the URL to access the Liberty Admin Center for the collective. It is a clickable field.  Clicking it takes you to the Admin Center.  You will be prompted to login if not already logged in. 
+- Action is a clickable field that opens a menu of selectable actions. See [Standard Action Menu Items](#standard-action-menu-items) and [Configurable Action Menu Items](#configurable-action-menu-items) for explanation of the action items available on this menu.
+
+### Sortable Column Values 
+
+Columns heads are clickable to toggle the sort between ascending and descending.  An up/down arrow (triangle, really), as is done in the rest of the ICP console, will be used to designate whether sort order is ascending (up arrow) or descending (down arrow).  e.g. 
+
+![](https://github.com/kappnav/design/blob/master/images/clickable-column-head.png)
+
+The sort rule for each column is: 
+
+- Status column is sortable following the rules for a standard alphanumeric sort. 
+  The default sort is ascending alphanumeric. 
+- Name column is sortable following the rules for a standard alphanumeric sort. 
+  The default sort is ascending alphanumeric. 
+- Console is sortable following the rules for a standard alphanumeric sort. 
+  The default sort is ascending alphanumeric.
+- Action column is not sortable. 
+
+### Standard Action Menu Items
+
+Like all other ICP views that display Kubernetes resources, the Liberty Collective view page will include the following pre-defined action menu items: 
+
+1. Edit 
+
+The edit menu item, will launch a modal dialog to edit the Liberty Collective's configuration, as is done elsewhere in the ICP console, as shown here with Deployment, as an example: 
+
+![](https://github.com/kappnav/design/blob/master/images/resource-edit-modal.png)
+
+2. Remove - removes the associated Kubernetes resource. This is effectively the same as kubectl delete. 
+
+### Configurable Action Menu Items
+
+Additional menu items can be added to the Collective Table View using action config maps.  Config maps are a built-in Kubernetes resource type, used to store arbitrary configuration data in the Kubernetes config service.  Prism uses config maps to hold the configuration for configurable action menu items.  
+See [action config maps](https://github.com/kappnav/design/blob/master/actions-config-maps.md) for a full definition of action config maps. 
+
+
+### Create Liberty Collective Button 
+
+The standard header includes a Create button.  This button will open a dialog that enables the user to create a new Liberty Collective instance. This is not an actual Liberty Collective, complete with actual Liberty servers, but rather a Kubernetes custom resource representing a Liberty Collective. 
+
+The following screen shots show the layout of this dialog for field-driven input.  JSON mode is shown further down. 
+
+**Enter General Values**
+
+![](https://github.com/kappnav/design/blob/master/images/create-collective-1.png)
+
+**Enter Labels**
+
+![](https://github.com/kappnav/design/blob/master/images/create-collective-2.png)
+
+**Enter Network Info**
+
+![](https://github.com/kappnav/design/blob/master/images/create-collective-3.png)
+
+
+**JSON Mode**
+
+![](https://github.com/kappnav/design/blob/master/images/create-collective-json.png)
+
+## Liberty Collective Detail View
+
+The Liberty Collective detail view shows the [Liberty Apps](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-app) deployed to that Liberty Collective. 
+
+### Common View Controls
+
+The Liberty Collective detail level view will have controls consistent with other list view pages in the ICP console, for example, as does the Deployment view: 
+
+![common-page-top](https://github.com/kappnav/design/blob/master/images/common-screen-top.png)
+
+### Details and Liberty Apps Table View 
+
+The Liberty Collective view will include a details section and, like other resource views in the ICP console that include collections, WAS Traditional Apps components will be displayed using a tabular presentation: 
+
+![component-table-view](https://github.com/kappnav/design/blob/master/images/collective-app-view.png)
+
+In the Liberty Apps Table, the following columns are displayed: 
+
+- Status indicates current [status of the Liberty App](https://github.com/kappnav/design/blob/master/custom-resources.md#liberty-app-status-values).
+- Name is the Liberty App name. It is a clickable link and takes takes the user to the [Liberty App detail view](https://github.com/kappnav/design/blob/master/liberty-collective-ui.md#liberty-app-detail-view).
+- Labels shows the labels values assigned to a Liberty App resource. 
+- Action is a clickable field that opens a menu of selectable actions. See [Configurable Action Menu Items for Components](#configurable-action-menu-items-for-components) for explanation of the action items available on this menu.
+
+### Sortable Column Values 
+
+Columns heads are clickable to toggle the sort between ascending and descending.  An up/down arrow (triangle, really), as is done in the rest of the ICP console, will be used to designate whether sort order is ascending (up arrow) or descending (down arrow).  e.g. 
+
+![](https://github.com/kappnav/design/blob/master/images/clickable-column-head.png)
+
+The sort rule for each column is:
+
+- Status is sortable following the rules for a standard alphanumeric sort. 
+  The default sort is ascending alphanumeric. 
+- Name column is sortable following the rules for a standard alphanumeric sort. 
+  The default sort is ascending alphanumeric. 
+- Labels is sortable following the rules for a standard alphanumeric sort. 
+  The default sort is ascending alphanumeric.
+- Action column is not sortable.  
+
+
+### Configurable Action Menu Items for Liberty Applications 
+
+Additional menu items can be added to the Liberty Applications Table View using action config maps.  Config maps are a built-in Kubernetes resource type, used to store arbitrary configuration data in the Kubernetes config service.  Prism uses config maps to hold the configuration for configurable action menu items.  
+See [action config maps](https://github.com/kappnav/design/blob/master/actions-config-maps.md) for a full definition of action config maps. 
+
+### Liberty-App Detail View
+
+The following information is displayed for a Liberty-App instance: 
+
+![twas](https://github.com/kappnav/design/blob/master/images/liberty-app-detail-view.png)
+
+Where: 
+
+- name, namespace, labels, and targets are values that come directly from the resource instance.
+- collective is a hyperlink to the [Liberty-Collective detail view](https://github.com/kappnav/design/blob/master/liberty-collective-ui.md#liberty-collective-detail-view) that contains this Liberty-App instance. 
+
