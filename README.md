@@ -26,7 +26,7 @@
 1. [Internationalization](https://github.com/kappnav/design/blob/master/NLS.md)
 1. [Auto-App Support](https://github.com/kappnav/design/blob/master/auto-app-lifecycle.md)
 1. [Namespace Support](https://github.com/kappnav/design/blob/master/namespaces.md)
-1. [KUBE_ENV Environment Variable](https://github.com/kappnav/design/blob/master/kubeEnv-Env-var.md)\
+1. [KUBE_ENV Environment Variable](https://github.com/kappnav/design/blob/master/kubeEnv-Env-var.md)
 1. [Action Enablement](https://github.com/kappnav/design/blob/master/action-enablement.md)
 1. [Detail Sections](https://github.com/kappnav/design/blob/master/ui-detail-sections.md)
 1. [Support for Appsody](https://github.com/kappnav/design/blob/master/appsody.md)
