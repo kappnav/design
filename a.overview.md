@@ -1,8 +1,8 @@
-# Project Prism - Application Navigator for Cloud
+# Application Navigator for Kubernetes
 
-![prism](https://github.com/kappnav/design/blob/master/images/prism.png)
+![kappnav](https://github.com/kappnav/design/blob/master/images/prism.png)
 
-The Project Prism is a tool that extends the ICP Console to provide display, inspection, understanding, and navigation through the deployed resources that comprise an application.
+{k}AppNav is a tool that extends the Kubernetes Console to provide display, inspection, understanding, and navigation through the deployed resources that comprise an application.
 
 > Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.
 
@@ -22,7 +22,7 @@ The following diagram depicts a big "A" application comprised of two Kubernetes 
 
 ![big picture](https://github.com/kappnav/design/blob/master/images/big-picture.png)
 
-Prism provides visualization of all defined Applications, offering drill down into their respective comprised 'components'.  Each component is a Kubernetes resource.  Each Kubernetes resource has a 'Kind' - e.g. Deployment, Service, WAS-ND-App (a CRD), etc.  Prism offers configurable action menu items by Kind.  These menu items provide URLs that enable the user to navigate to other tools in context - e.g. the log, monitor, trace, configuration page (or tool) for the currently selected component. 
+{k}AppNav provides visualization of all defined Applications, offering drill down into their respective comprised 'components'.  Each component is a Kubernetes resource.  Each Kubernetes resource has a 'Kind' - e.g. Deployment, Service, WAS-ND-App (a CRD), etc.  {k}AppNav offers configurable action menu items by Kind.  These menu items provide URLs that enable the user to navigate to other tools in context - e.g. the log, monitor, trace, configuration page (or tool) for the currently selected component. 
 
 Taken together, all this provides a way to define, visualize, and navigate Cloud Native Applications, yielding a superior user experience for applications, that dramatically surpasses the infrastructure view offered by the ICP console itself. 
 
