@@ -12,7 +12,7 @@
 
 ## Design
 
-### {k} AppNav Design until Release 0.5.0 
+### {k}AppNav Design until Release 0.5.0 
 
 1. [APIs](https://github.com/kappnav/design/blob/master/APIs.md)
 1. [Custom Resources](https://github.com/kappnav/design/blob/master/custom-resources.md)
