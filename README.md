@@ -10,9 +10,9 @@
 1. [Shared Services](https://github.com/kappnav/design/blob/master/shared-services.md)
 1. [Handling Dependencies](https://github.com/kappnav/design/blob/master/dependencies.md)
 
-# Design
+## Design
 
-## {k} AppNav Design until Release 0.5.0 
+### {k} AppNav Design until Release 0.5.0 
 
 1. [APIs](https://github.com/kappnav/design/blob/master/APIs.md)
 1. [Custom Resources](https://github.com/kappnav/design/blob/master/custom-resources.md)
@@ -31,11 +31,11 @@
 1. [Detail Sections](https://github.com/kappnav/design/blob/master/ui-detail-sections.md)
 1. [Support for Appsody](https://github.com/kappnav/design/blob/master/appsody.md)
 
-## {k}AppNav 0.5.0 Design
+### {k}AppNav 0.5.0 Design
 
 1. [Group-Version-Resource (GVR)](https://github.com/kappnav/design/blob/master/groups-and-versions.md)
 
-## {k}AppNav 0.6.0 Design
+### {k}AppNav 0.6.0 Design
 
 1. [KindActionMapping Custom Resource Definition](https://github.com/kappnav/design/blob/master/kind-action-mapping.md)
 1. [Logging](https://github.com/kappnav/design/blob/master/logging.md)
