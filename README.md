@@ -1,4 +1,4 @@
-# {k}AppNav Project Design
+# {k}AppNav Design
 
 ## Concepts 
 
