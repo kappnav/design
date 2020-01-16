@@ -70,6 +70,7 @@ spec:
                      type: string 
                    mapname: 
                      type: string 
+
   version: v1beta1
 ```
 
@@ -77,7 +78,7 @@ Where the spec fields are:
 
 | Field          | Description                      |
 |----------------|----------------------------------|
-| precedence     | Specifies natural number (0-9) precedence value for mappings defined by this KindActionMapping instance.  |
+| precedence     | Specifies natural number (1-9) precedence value for mappings defined by this KindActionMapping instance. A higher number means higher precedence.  The default is 1.  |
 | mappings       | Specifies a set (array) of "kind-to-configmap mappings". | 
 | mappings[].group   | Specifies group value for a kind-to-configmap mapping. Can be either a resource group name or '\*', which means any group name. The group name 'core' is used to designate those Kubernetes kinds that have no group name - e.g. Service |  
 | mappings[].kind    | Specifies kind value for a kind-to-configmap mapping. Can be either a resource kind name or '\*', which means any kind name.|
@@ -92,32 +93,33 @@ Where the spec fields are:
 
 ### Configmap Hierarchy and Procedence 
 
-One or more action configmaps may exist to which the same resource maps.  Up to 4 distinct action configmap types may exist for any resource instance and are processed in this order of priority: 
+One or more action configmaps may exist to which the same resource maps.  Up to 4 distinct action configmap types may exist for any resource instance and are processed in this order of precedence: 
 
 1. kind-subkind.name - instance specific
 1. kind-subkind - specific
 1. kind.name - instance specific
 1. kind - specific
 
-Multiple KindActionMapping resources may specify mappings for the same action configmap types.  When this happens, additional action configmap mappings are inserted into the hierarchy by type, based on the precedence value of the originating KindActionMapping.  
+Multiple KindActionMapping resources may specify mappings for the same resource kind.  When this happens, additional action configmap mappings are inserted into the configmap hierarchy, based on the KindActionMapping instance' precedence.  
 
 e.g. 
 
 Given resource of kind Deployment with name trader and KindActionMappings: 
 
-- KindActionMapping 'default' with precedence 1 
+- KindActionMapping 'default' with precedence 1 (default) 
 - KindActionMapping 'additions' with precedence 2
 
-yielding these configmap mappings, respectively: 
+yielding these configmap names, respectively: 
 
-1. kappnav.actions.deployment1 and kappnav.actions.deployment1.trader 
-1. kappnav.actions.deployment2
+1. kappnav.actions.deployment and kappnav.actions.deployment.trader 
+1. kappnav.actions.deployment2 and kappnav.actions.deployment2.trader 
 
 Then the candidate hierarchy for this resource would be: 
 
-1. kappnav.actions.deployment1.trader 
+1. kappnav.actions.deployment2.trader
+1. kappnav.actions.deployment.trader
 1. kappnav.actions.deployment2
-1. kappnav.actions.deployment1
+1. kappnav.actions.deployment
 
 Observations: 
 
