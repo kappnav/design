@@ -80,7 +80,7 @@ Where the spec fields are:
 |----------------|----------------------------------|
 | precedence     | Specifies natural number (1-9) precedence value for mappings defined by this KindActionMapping instance. A higher number means higher precedence.  The default is 1.  |
 | mappings       | Specifies a set (array) of "kind-to-configmap mappings". | 
-| mappings[].apiVersion   | Specifies apiVersion value for a kind-to-configmap mapping. Specified in the form group\/version. The version portion can be wildcarded with \'*\'.  Byore' is used to designate those Kubernetes kinds that have no group name - e.g. Service |  
+| mappings[].apiVersion   | Specifies apiVersion value for a kind-to-configmap mapping. Specified in the form group\/version. The version portion can be wildcarded with \'* \'.  By convention,  \'core\' is used as the group name for those Kubernetes kinds that have no group name - e.g. Service |  
 | mappings[].kind    | Specifies kind value for a kind-to-configmap mapping. Can be either a resource kind name or '\*', which means any kind name.|
 | mappings[].subkind | Specifies subkind value for a kind-to-configmap mapping. Can be either a resource subkind name or '\*', which means any kind name. Subkind is a {k}AppNav concept that allows any resource kind to be further qualified. It is specified by annotation 'kappnav.subkind'.|
 | mappings[].name    | Specifies name value for a kind-to-configmap mapping. Can be either a resource name or '\*', which means any name.|
@@ -107,46 +107,15 @@ For a resource without subkind qualification:
 - kind - specific
 
 Multiple KindActionMapping resources may specify mappings for the same resource kind.  When this happens, additional action configmap mappings are inserted into the configmap hierarchy, based on the KindActionMapping instance's precedence value.
-
-e.g. 
-
-Given resource of kind Deployment with name trader in stocktrader namespace and these KindActionMappings: 
-
-- A KindActionMapping resource named 'default' in kappnav namespace with precedence 1 (default) 
-- A KindActionMapping resource named 'appsody' in appsody namespace with precedence 2
-
-that when processed for the trader Deployment resource with subkind 'Liberty' yield these configmap names, respectively: 
-
-from KindActionMapping resource 'default': 
-
-- stocktrader.actions.deployment-liberty.trader
-- kappnav.actions.deployment-liberty
-- kappnav.actions.deployment 
-
-from KindActionMapping resource 'appsody': 
-
-- appsody.actions.deployment-liberty
-- appsody.actions.deployment 
-
-Then the candidate hierarchy for this resource would be in order of precedence (highest first) within order of specificity: 
-
-- stocktrader.actions.deployment-liberty.trader (instance specific, precedence 1)
-- appsody.actions.deployment-liberty (subkind specific, precedence 2)
-- kappnav.actions.deployment-liberty (subkind specific, precedence 1)
-- appsody.actions.deployment (kind specific, precedence 2)
-- kappnav.actions.deployment (kind specific, precedence 1)
-
-
-Observations: 
-
-1. kappnav.actions.deployment.trader is first in the hierarchy because it is more specific (instance specific) than all the other action configmaps. 
-1. appsody.actions.deployment-liberty is ahead of kappnav.actions.deployment-liberty in the hierarchy because it came from a KindActionMapping resource ('appsody') with numerically higher precedence than the other KindActionMapping resource ('default') for that same level of specificity (i.e. subkind level).  
+ 
 
 ### Resource to Action Configmap Mapping
 
-To determine the action set for a given resource, the first step is mapping.  The resource's group, kind, subkind (if applicable), and name are used to find matching mappings across all KindActionMapping resources.
+To determine the action set for a given resource, the first step is mapping.  The resource's apiVersion, kind, subkind (if specified), and name are used to find matching mappings across all KindActionMapping resources.
 
-The KindActionMappings are processed in descending precedence order - i.e. numerically highest precendence value to lowest. KindActionMappings resources with the same precedence value are processed together in arbitrary order.  
+The KindActionMappings are processed in descending precedence order with level of specificity - i.e. numerically highest precendence value to lowest within the same level of specificity, meaning instance level first, followed by less specific levels, such as kind. Note subkind is considered more specific than kind alone. 
+
+KindActionMappings resources with the same precedence value are processed together in arbitrary order.  
 
 e.g. consider resource:
 
@@ -171,11 +140,11 @@ metadata:
 spec:
    precedence: 2
    mappings:
-   - group: v1
+   - apiVersion: core/*
      kind: Deployment
      subkind: Liberty
      mapname: appsody.actions.deployment-liberty
-   - group: v1
+   - apiVersion: core/*
      kind: Deployment
      mapname: appsody.actions.deployment
 ```
@@ -200,6 +169,11 @@ The candidate hierarchy of configmap names, in order of precedence is:
 - kappnav.actions.deployment-liberty (subkind specific, precedence 1)
 - appsody.actions.deployment (kind specific, precedence 2)
 - kappnav.actions.deployment (kind specific, precedence 1)
+
+Observations: 
+
+1. kappnav.actions.deployment.trader is first in the hierarchy because it is more specific (instance specific) than all the other action configmaps. 
+1. appsody.actions.deployment-liberty is ahead of kappnav.actions.deployment-liberty in the hierarchy because it came from a KindActionMapping resource ('appsody') with numerically higher precedence than the other KindActionMapping resource ('default') for that same level of specificity (i.e. subkind level). 
 
 ### Action Configmap Lookup 
 
