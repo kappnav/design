@@ -1,9 +1,9 @@
 # Kind-Action Mapping
 
-Since the beginning {k}kAppNav introduced a builtin mapping scheme to map resource kind to action config maps.  This was done by convention, as 
+Since the beginning, {k}kAppNav has had a builtin mapping scheme to map resource kind to action config maps.  This was done by convention, as described 
 in [Action Config Map Naming Convention Design](https://github.com/kappnav/design/blob/master/actions-config-maps.md#action-config-map-naming-convention).
 
-While that was sufficient for core kinds and a small number of custom resource definitions (CRDs), it is not sufficient to
+While that is sufficient for core kinds and a small number of custom resource definitions (CRDs), it is not sufficient to
 support the growing number of resource kinds emerging on the Kubernetes platform.  A trivial example demonstrates this is true:
 
 There now exists these two Service kinds:
@@ -16,18 +16,18 @@ So both Service kinds, above, map to the same action config map, namely:  kappna
 
 As the goal is to have independently deployable - and discrete - actions per distinct kind, this mapping is insufficient. 
 
-To remedy the inadequacy of the mapping convention approach, we will introduce configuration to specify the mappings explicitly. This configuration will be modelled as a custom resource definition in keeping with the "independently deployable" principle.
+To remedy the inadequacy of the existing mapping convention approach, we will introduce configuration to specify the mappings explicitly. This configuration will be modelled as a custom resource definition in keeping with the "independently deployable" principle.
 
 ## KindActionMapping Custom Resource Definition
 
 The KindActionMapping CRD defines which config maps contain the action definitions for which resource kinds.  The mappings are based on the following resource fields: 
 
-- apiVersion is the group/version identifier of the resource.  Note Kubernetes resources with no group value (e.g. Service) specify apiVersion as version only.  E.g. apiVersion: v1.  In that case
+- apiVersion is the group/version identifier of the resource.  Note Kubernetes resources with no group value (e.g. Service) specify apiVersion as version only.  E.g. apiVersion: v1.  For those resource kinds, we use the group name 'core' by a convention.  
 - kind is the resource's kind field
-- subkind is the resource's metadata.annotations.kappnav.subkind annotation. See [annotations](https://github.com/kappnav/design/blob/master/annotations.md) for more details.
+- subkind is the resource's metadata.annotations.kappnav.subkind annotation. See [annotations](https://github.com/kappnav/design/blob/master/annotations.md) for more details.  Note, in practice, we use the subkind annotation only on Deployment and StatefulSet resource kinds. 
 - name is the resource's metadata.name field
 
-KindActionMappings provide mapping rules that map a resource to a set of action config maps.  These action config maps are then combined to form the set of actions applicable to the resource.  See [next section](#action-set-determination) for further details about how these action config maps are combined together. 
+KindActionMappings provide mapping rules that map a resource to a set of action config maps.  These action config maps are then combined to form the set of actions applicable to the resource.  See [action set determination](#action-set-determination) for further details about how these action config maps are combined. 
 
 **KindActionMapping CRD**
 
@@ -62,7 +62,7 @@ spec:
               items: 
                  type: object 
                  properties: 
-                   group:
+                   apiVersion:
                      type: string 
                    kind: 
                      type: string 
@@ -80,11 +80,11 @@ Where the spec fields are:
 |----------------|----------------------------------|
 | precedence     | Specifies natural number (1-9) precedence value for mappings defined by this KindActionMapping instance. A higher number means higher precedence.  The default is 1.  |
 | mappings       | Specifies a set (array) of "kind-to-configmap mappings". | 
-| mappings[].group   | Specifies group value for a kind-to-configmap mapping. Can be either a resource group name or '\*', which means any group name. The group name 'core' is used to designate those Kubernetes kinds that have no group name - e.g. Service |  
+| mappings[].apiVersion   | Specifies apiVersion value for a kind-to-configmap mapping. Specified in the form group\/version. The version portion can be wildcarded with \'*\'.  Byore' is used to designate those Kubernetes kinds that have no group name - e.g. Service |  
 | mappings[].kind    | Specifies kind value for a kind-to-configmap mapping. Can be either a resource kind name or '\*', which means any kind name.|
 | mappings[].subkind | Specifies subkind value for a kind-to-configmap mapping. Can be either a resource subkind name or '\*', which means any kind name. Subkind is a {k}AppNav concept that allows any resource kind to be further qualified. It is specified by annotation 'kappnav.subkind'.|
 | mappings[].name    | Specifies name value for a kind-to-configmap mapping. Can be either a resource name or '\*', which means any name.|
-| mappings[].mapname | Specifies the action configmap name to which the resource is mapped.  The mapname is the resource name of a configmap.  The symbols ${group}, ${kind}, ${subkind}, and ${name} can specified in the mapname value to be substituted at time of use with the matching resource's group, kind, subkind, or name value, respectively. |
+| mappings[].mapname | Specifies the action configmap name to which the resource is mapped.  The mapname is the resource name of a configmap.  The symbols ${group}, ${kind}, ${subkind}, and ${name} can specified in the mapme value to be substituted at time of use with the matching resource's group, kind, subkind, or name value, respectively. |
 
 
 ## Action Set Determination 
