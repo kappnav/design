@@ -91,46 +91,62 @@ Where the spec fields are:
 
 {k}AppNav determines the set of actions for a resource through a process of [mapping](#resource-to-action-configmap-mapping), [lookup](#action-configmap-lookup), and [merge](#action-configmap-merge) to produce the complete set. The mapping conforms to a particular hierarchy, ordered by precedence. 
 
-### Configmap Hierarchy and Procedence 
+### Configmap Hierarchy and Precedence 
 
-One or more action configmaps may exist to which the same resource maps.  Up to 4 distinct action configmap types may exist for any resource instance and are processed in this order of precedence: 
+One or more action configmaps may exist to which the same resource maps.  Multiple distinct action configmaps may exist for any resource instance and are processed in this order, from most specific to least specific:  
 
-1. kind-subkind.name - instance specific
-1. kind-subkind - specific
-1. kind.name - instance specific
-1. kind - specific
+For a resource kind qualified by the subkind annotation: 
 
-Multiple KindActionMapping resources may specify mappings for the same resource kind.  When this happens, additional action configmap mappings are inserted into the configmap hierarchy, based on the KindActionMapping instance' precedence.  
+- kind-subkind.name - instance specific
+- kind-subkind - specific
+- kind - specific
+
+For a resource without subkind qualification: 
+
+- kind.name - instance specific
+- kind - specific
+
+Multiple KindActionMapping resources may specify mappings for the same resource kind.  When this happens, additional action configmap mappings are inserted into the configmap hierarchy, based on the KindActionMapping instance's precedence value.
 
 e.g. 
 
-Given resource of kind Deployment with name trader and KindActionMappings: 
+Given resource of kind Deployment with name trader in stocktrader namespace and these KindActionMappings: 
 
-- KindActionMapping 'default' with precedence 1 (default) 
-- KindActionMapping 'additions' with precedence 2
+- A KindActionMapping resource named 'default' in kappnav namespace with precedence 1 (default) 
+- A KindActionMapping resource named 'appsody' in appsody namespace with precedence 2
 
-yielding these configmap names, respectively: 
+that when processed for the trader Deployment resource with subkind 'Liberty' yield these configmap names, respectively: 
 
-1. kappnav.actions.deployment and kappnav.actions.deployment.trader 
-1. kappnav.actions.deployment2 and kappnav.actions.deployment2.trader 
+from KindActionMapping resource 'default': 
 
-Then the candidate hierarchy for this resource would be: 
+- stocktrader.actions.deployment-liberty.trader
+- kappnav.actions.deployment-liberty
+- kappnav.actions.deployment 
 
-1. kappnav.actions.deployment2.trader
-1. kappnav.actions.deployment.trader
-1. kappnav.actions.deployment2
-1. kappnav.actions.deployment
+from KindActionMapping resource 'appsody': 
+
+- appsody.actions.deployment-liberty
+- appsody.actions.deployment 
+
+Then the candidate hierarchy for this resource would be in order of precedence (highest first) within order of specificity: 
+
+- stocktrader.actions.deployment-liberty.trader (instance specific, precedence 1)
+- appsody.actions.deployment-liberty (subkind specific, precedence 2)
+- kappnav.actions.deployment-liberty (subkind specific, precedence 1)
+- appsody.actions.deployment (kind specific, precedence 2)
+- kappnav.actions.deployment (kind specific, precedence 1)
+
 
 Observations: 
 
-1. kappnav.actions.deployment1.trader is first in the hierarchy because it is more specific (instance specific) than the other two. 
-1. kappnav.actions.deployment2 is ahead of kappnav.actions.deployment1 in the hierarchy because it came from a KindActionMapping resource ('additions') with numerically higher precedence than the other KindActionMapping resource ('default').  
+1. kappnav.actions.deployment.trader is first in the hierarchy because it is more specific (instance specific) than all the other action configmaps. 
+1. appsody.actions.deployment-liberty is ahead of kappnav.actions.deployment-liberty in the hierarchy because it came from a KindActionMapping resource ('appsody') with numerically higher precedence than the other KindActionMapping resource ('default') for that same level of specificity (i.e. subkind level).  
 
 ### Resource to Action Configmap Mapping
 
 To determine the action set for a given resource, the first step is mapping.  The resource's group, kind, subkind (if applicable), and name are used to find matching mappings across all KindActionMapping resources.
 
-The KindActionMappings are processed in descending precedence order. KindActionMappings resources with the same precedence value are processed together in arbitrary order.  
+The KindActionMappings are processed in descending precedence order - i.e. numerically highest precendence value to lowest. KindActionMappings resources with the same precedence value are processed together in arbitrary order.  
 
 e.g. consider resource:
 
@@ -139,6 +155,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata: 
   name: trader 
+  namespace: stocktrader 
   annotations: 
     kappnav.subkind: Liberty 
 ```
@@ -149,35 +166,40 @@ and this KindActionMapping:
 apiVersion: actions.kappnav.io/v1beta1
 kind: KindActionMapping
 metadata:
-  name: "additions"
+  name: appsody
+  namespace: appsody
 spec:
    precedence: 2
    mappings:
-   - group: extensions
+   - group: v1
      kind: Deployment
-     mapname: kappnav.actions.deployment2
+     subkind: Liberty
+     mapname: appsody.actions.deployment-liberty
+   - group: v1
+     kind: Deployment
+     mapname: appsody.actions.deployment
 ```
 
 and the [default KindActionMapping](#pre-defined-kindactionmapping-custom-resource).
 
-After processing the 'additions' KindActionMapping resource, the following configmap name is determined: 
+After processing the 'appsody' KindActionMapping resource, the following configmap names are determined: 
 
-- kappnav.actions.deployment2
+- appsody.actions.deployment-liberty
+- appsody.actions.deployment 
 
 After processing the 'default' KindActionMapping resource, the following configmap names are determined: 
 
-1. kappnav.actions.deployment-liberty.trader 
-1. kappnav.actions.deployment-liberty
-1. kappnav.actions.deployment.trader
-1. kappnav.actions.deployment
+- stocktrader.actions.deployment-liberty.trader
+- kappnav.actions.deployment-liberty
+- kappnav.actions.deployment 
 
 The candidate hierarchy of configmap names, in order of precedence is: 
 
-1. kappnav.actions.deployment-liberty.trader 
-1. kappnav.actions.deployment-liberty
-1. kappnav.actions.deployment.trader
-1. kappnav.actions.deployment2
-1. kappnav.actions.deployment
+- stocktrader.actions.deployment-liberty.trader (instance specific, precedence 1)
+- appsody.actions.deployment-liberty (subkind specific, precedence 2)
+- kappnav.actions.deployment-liberty (subkind specific, precedence 1)
+- appsody.actions.deployment (kind specific, precedence 2)
+- kappnav.actions.deployment (kind specific, precedence 1)
 
 ### Action Configmap Lookup 
 
@@ -191,36 +213,38 @@ E.g.
 
 If the following action configmaps were found, yielding the effective hierarchy: 
 
-1. kappnav.actions.deployment-liberty.trader in stock-trader namespace
-1. kappnav.actions.deployment2 in appsody namespace
-1. kappnav.actions.deployment in kappnav namespace 
+- stocktrader.actions.deployment-liberty.trader in stock-trader namespace
+- appsody.actions.deployment in appsody namespace 
+- kappnav.actions.deployment in kappnav namespace
 
 They would be processed in that order to produce the merged, final action set. 
 
 ### Action Configmap Merge 
 
-The action configmaps found are processed in priority order and merged together.  They are read and processed one by one, according to the effective hierarchy order. Each action configmap specifies either 'merge' or 'override'. If the action configmap specifies 'override', no further action configmaps in the hierarchy are processed.  If the action configmap specifies 'merge', the actions it defines are combined with the actions defined by further action configmaps in the effective hierarchy. If two actions have the same name, the first one found takes precedence, effectively overriding all others of the same name. 
+The action configmaps found are processed in order of precedence and merged together.  They are read and processed one by one, according to the effective hierarchy order. Each action configmap specifies either to 'merge' or 'replace'. If the action configmap specifies 'replace', no further action configmaps in the hierarchy are processed.  If the action configmap specifies 'merge', the actions it defines are combined with the actions defined by further action configmaps from the effective hierarchy. If two actions of the same type (e.g. url-action) have the same name, the first one found takes precedence, effectively overriding all others of the same name. 
 
 e.g. 
 
-If the following action configmaps have the specified override/merge policies and the indicated action definitions: 
+If the following action configmaps have the specified replace/merge policies and the indicated action definitions: 
 
-1. kappnav.actions.deployment-liberty.trader in stock-trader namespace, policy=merge
-   1. action name 'klog'
-1. kappnav.actions.deployment2 in appsody namespace, policy=override
-   1. action name 'klog'
-   1. action name 'appsody-action'
-1. kappnav.actions.deployment in kappnav namespace, policy=merge 
+- stocktrader.actions.deployment-liberty.trader in stock-trader namespace, policy=merge
+   - action name 'klog'
+- appsody.actions.deployment in appsody namespace, policy=replace
+   - action name 'klog'
+   - action name 'appsody-action'
+- kappnav.actions.deployment in kappnav namespace, policy=merge 
 
 Then only these action config maps would contribute actions to the final action set: 
 
-1. kappnav.actions.deployment-liberty.trader in stock-trader namespace, policy=merge
-1. kappnav.actions.deployment2 in appsody namespace, policy=override
+- stocktrader.actions.deployment-liberty.trader in stock-trader namespace, policy=merge
+- appsody.actions.deployment in appsody namespace, policy=replace
+
+Note: kappnav.actions.deployment is ignored because of the policy=replace from appsody.actions.deployment config map.
 
 And the final action set would be: 
 
-1. 'klog' from kappnav.actions.deployment-liberty.trader
-1. 'appsody-action' from kappnav.actions.deployment2
+1. 'klog' from stocktrader.actions.deployment-liberty.trader
+1. 'appsody-action' from appsody.actions.deployment
 
 ## Pre-defined KindActionMapping Custom Resource 
 
@@ -228,24 +252,34 @@ And the final action set would be:
 apiVersion: actions.kappnav.io/v1beta1
 kind: KindActionMapping
 metadata:
-  name: "default"
+  name: default
+  namespace: kappnav
 spec:
    precedence: 1 
    mappings:
    - group: app.k8s.io
      kind: Application
-     mapname: kappnav.actions.application
+     name: * 
+     mapname: application.actions.${name}
    - group: app.k8s.io
      kind: Application
+     mapname: kappnav.actions.application
+   - group: core
+     kind: *
+     subkind: * 
      name: * 
-     mapname: application.${name} 
+     mapname: kappnav.actions.${kind}-${subkind}.${name} 
+   - group: core
+     kind: *
+     subkind: * 
+     mapname: kappnav.actions.${kind}-${subkind} 
+   - group: core
+     kind: *
+     name: * 
+     mapname: kappnav.actions.${kind}.${name}
    - group: core
      kind: *
      mapname: kappnav.actions.${kind}
-   - group: core
-     kind: *
-     name: * 
-     mapname: kappnav.actions.${kind}.${name} 
    - group: extensions 
      kind: *
      mapname: kappnav.actions.${kind}
