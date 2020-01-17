@@ -257,57 +257,60 @@ metadata:
 spec:
    precedence: 1 
    mappings:
-   - group: app.k8s.io
+
+   - apiVersion: app.k8s.io/*
      kind: Application
      name: * 
-     mapname: application.actions.${name}
-   - group: app.k8s.io
+     mapname: kappnav.actions.application.${name}
+     
+   - apiVersion: app.k8s.io/*
      kind: Application
      mapname: kappnav.actions.application
-   - group: core
+     
+   - apiVersion: core/*
      kind: *
      subkind: * 
      name: * 
      mapname: kappnav.actions.${kind}-${subkind}.${name} 
-   - group: core
+     
+   - apiVersion: core/*
      kind: *
      subkind: * 
      mapname: kappnav.actions.${kind}-${subkind} 
-   - group: core
+     
+   - apiVersion: core/*
      kind: *
      name: * 
      mapname: kappnav.actions.${kind}.${name}
-   - group: core
+     
+   - apiVersion: core/*
      kind: *
      mapname: kappnav.actions.${kind}
-   - group: extensions 
-     kind: *
-     mapname: kappnav.actions.${kind}
-   - group: extensions
+     
+   - apiVersion: extensions/*
      kind: *
      name: * 
      mapname: kappnav.actions.${kind}.${name} 
-   - group: extensions 
+     
+   - apiVersion: extensions/* 
      kind: *
-     subkind: * 
-     mapname: kappnav.actions.${kind}-${subkind}
-   - group: extensions
-     kind: *
-     subkind: * 
-     name: * 
-     mapname: kappnav.actions.${kind}-${subkind}.${name}
-   - group: kappnav.io
-     kind: * 
      mapname: kappnav.actions.${kind}
-   - group: kappnav.io
+    
+   - apiVersion: kappnav.io/*
      kind: * 
      name: * 
      mapname: kappnav.actions.${kind}.${name} 
-   - group: route.openshift.io
-     kind: *
+     
+   - apiVersion: kappnav.io/*
+     kind: * 
      mapname: kappnav.actions.${kind}
-   - group: route.openshift.io
+     
+   - apiVersion: route.openshift.io/*
      kind: *
      name: * 
      mapname: kappnav.actions.${kind}.${name} 
+     
+   - apiVersion: route.openshift.io/*
+     kind: *
+     mapname: kappnav.actions.${kind}
 ```
