@@ -22,7 +22,7 @@ To remedy the inadequacy of the mapping convention approach, we will introduce c
 
 The KindActionMapping CRD defines which config maps contain the action definitions for which resource kinds.  The mappings are based on the following resource fields: 
 
-- group is the group portion of the resource's apiVersion field (i.e. group/version) 
+- apiVersion is the group/version identifier of the resource.  Note Kubernetes resources with no group value (e.g. Service) specify apiVersion as version only.  E.g. apiVersion: v1.  In that case
 - kind is the resource's kind field
 - subkind is the resource's metadata.annotations.kappnav.subkind annotation. See [annotations](https://github.com/kappnav/design/blob/master/annotations.md) for more details.
 - name is the resource's metadata.name field
