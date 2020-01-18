@@ -288,3 +288,28 @@ spec:
      kind: *
      mapname: kappnav.actions.${kind}
 ```
+
+### Implementation Details - Example Mapping Logic
+
+Starting with: 
+
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: 
+  name: trader 
+  namespace: stocktrader 
+  annotations: 
+    kappnav.subkind: Liberty 
+```
+
+And the [default KindActionMapping](https://github.com/kappnav/design/blob/master/kind-action-mapping.md#pre-defined-kindactionmapping-custom-resource)
+
+First gather the inputs to the mapping determination from the subject resource: 
+
+1. apiVersion = extensions/v1beta1
+1. name= trader
+1. kind= Deployment
+1. subkind= Liberty 
+
+Next, walk all KindActionMapping CRs looking for a match on any of the preceding criteria.
