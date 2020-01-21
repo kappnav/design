@@ -289,7 +289,9 @@ spec:
      mapname: kappnav.actions.${kind}
 ```
 
-### Implementation Details - Example Mapping Logic
+### Implementation Details - Example Mapping Logic 
+
+NOTE THIS SECTION IS UNDER CONSTRUCTION
 
 Starting with: 
 
@@ -312,4 +314,4 @@ First gather the inputs to the mapping determination from the subject resource:
 1. kind= Deployment
 1. subkind= Liberty 
 
-Next, walk all KindActionMapping CRs looking for a match on any of the preceding criteria.
+Next, walk all KindActionMapping CRs looking for a match on any of the preceding criteria.  
