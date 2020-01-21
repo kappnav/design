@@ -27,12 +27,17 @@
 1. [Auto-App Support](https://github.com/kappnav/design/blob/master/auto-app-lifecycle.md)
 1. [Namespace Support](https://github.com/kappnav/design/blob/master/namespaces.md)
 1. [KUBE_ENV Environment Variable](https://github.com/kappnav/design/blob/master/kubeEnv-Env-var.md)
+
+
+### {k}AppNav 2.1.0 Design
+
 1. [Action Enablement](https://github.com/kappnav/design/blob/master/action-enablement.md)
 1. [Detail Sections](https://github.com/kappnav/design/blob/master/ui-detail-sections.md)
 1. [Support for Appsody](https://github.com/kappnav/design/blob/master/appsody.md)
 
 ### {k}AppNav 0.5.0 Design
 
+1. Note change to versioning scheme. Done to match [Kabanero](https://kabanero.io/)
 1. [Group-Version-Resource (GVR)](https://github.com/kappnav/design/blob/master/groups-and-versions.md)
 
 ### {k}AppNav 0.6.0 Design
