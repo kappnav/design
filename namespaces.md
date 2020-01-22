@@ -1,22 +1,22 @@
 # Namespace Support 
 
-Prism must be installable into an arbitrary namespace of the user's choice.  This affects all elements:  deployments, 
+kappnav must be installable into an arbitrary namespace of the user's choice.  This affects all elements:  deployments, 
 configmaps, ingress, etc..
 
-This means multiple instances of App Navigator may run on the same Kubernetes cluster at the same time.  
+This means multiple instances of kappnav may run on the same Kubernetes cluster at the same time.  
 
 ## Application Namespaces 
 
 By default, the components of an application are in the same namespace as the application.  This means an application's label 
 selector is applied only to the specified component kinds in the same namespace of the application.  
 
-Components from other namespaces can be included in the label selector search by listing them comma-delimited on the prism.component.namespaces
+Components from other namespaces can be included in the label selector search by listing them comma-delimited on the kappnav.component.namespaces
 annotation.  This annotation is supported only in the Application custom resource kind. 
 
 Example: 
 
 ```
-prism.component.namespaces: "namespace1, namespace2" 
+kappnav.component.namespaces: "namespace1, namespace2" 
 ```
 
 Specifies to apply the application's label selector to namespaces 'namespace1' and 'namespace2' in addition to the application's own namespace. 
@@ -29,7 +29,7 @@ The annotation is optional.  If not specified, no additional namespaces are appl
 When multiple App Navigator instances are installed on the same cluster, they can be isolated from one another by constraining 
 the namespaces in which a given instance can search for applications.  This is colloquially called a 'namespace frontier'. 
 
-This setting is specified in the prism.config configmap: 
+This setting is specified in the kappnav.config configmap: 
 
 ```
 app-namespaces= "namespace1, namespace2, ..." 
@@ -68,6 +68,3 @@ also included in the app-namespaces setting (or its default).  An warning messag
 
 Both the controller and the WASController must implement frontiers.  Only the controller must implement the above warning messages, since twas-apps/twas-cells and liberty-apps/liberty-collectives are always in the same namespace as one another. 
 
-## tWAS-Cells and Liberty-Collectives
-
-The WASController also obeys the app-namespaces setting from the prism.config config map.  It searches and monitors only tWAS-Cell and Liberty-Collective instances that are in the namespace list given by the app-namespaces setting.
