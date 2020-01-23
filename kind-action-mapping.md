@@ -235,7 +235,7 @@ spec:
    - apiVersion: app.k8s.io/*
      kind: Application
      name: * 
-     mapname: kappnav.actions.application.${name}
+     mapname: ${namespace}.actions.application.${name}
      
    - apiVersion: app.k8s.io/*
      kind: Application
@@ -245,7 +245,7 @@ spec:
      kind: *
      subkind: * 
      name: * 
-     mapname: kappnav.actions.${kind}-${subkind}.${name} 
+     mapname: ${namespace}.actions.${kind}-${subkind}.${name} 
      
    - apiVersion: core/*
      kind: *
@@ -255,7 +255,7 @@ spec:
    - apiVersion: core/*
      kind: *
      name: * 
-     mapname: kappnav.actions.${kind}.${name}
+     mapname: ${namespace}.actions.${kind}.${name}
      
    - apiVersion: core/*
      kind: *
@@ -284,7 +284,7 @@ spec:
    - apiVersion: kappnav.io/*
      kind: * 
      name: * 
-     mapname: kappnav.actions.${kind}.${name} 
+     mapname: ${namespace}.actions.${kind}.${name} 
      
    - apiVersion: kappnav.io/*
      kind: * 
@@ -293,7 +293,7 @@ spec:
    - apiVersion: route.openshift.io/*
      kind: *
      name: * 
-     mapname: kappnav.actions.${kind}.${name} 
+     mapname: ${namespace}.actions.${kind}.${name} 
      
    - apiVersion: route.openshift.io/*
      kind: *
