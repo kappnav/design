@@ -264,7 +264,18 @@ spec:
    - apiVersion: extensions/*
      kind: *
      name: * 
-     mapname: kappnav.actions.${kind}.${name} 
+     subkind: * 
+     mapname: ${namespace}.actions.${kind}-${subkind}.${name} 
+     
+   - apiVersion: extensions/*
+     kind: *
+     subkind: * 
+     mapname: kappnav.actions.${kind}-${subkind}
+     
+   - apiVersion: extensions/*
+     kind: *
+     name: * 
+     mapname: ${namespace}.actions.${kind}.${name} 
      
    - apiVersion: extensions/* 
      kind: *
