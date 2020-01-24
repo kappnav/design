@@ -16,8 +16,8 @@ The value of level is one of:
 1. error
 1. warning
 1. info
-1. entry
 1. debug
+1. entry
 1. all
 
 The default is info. 
@@ -53,8 +53,8 @@ one or more log types to be written according to the following hierarchy:
 | error                 | error                                    |
 | warning               | error, warning                           |
 | info                  | error, warning, info                     |
-| entry                 | error, warning, info, entry, exit        |
-| debug                 | error, warning, info, entry, exit, debug |
+| debug                 | error, warning, info, debug              |
+| entry                 | error, warning, info, entry, exit, debug |
 | all                   | error, warning, info, entry, exit, debug |
 
 ## NLS Consideration
