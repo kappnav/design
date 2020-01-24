@@ -18,6 +18,7 @@ package com.ibm.kappnav;
 
 # Usage public class Logger { 
 
+```
    private static boolean[] typeEnabled= new boolean[LogType.values().length];
 
    private static void setLogTypes(boolean value) { 
@@ -31,7 +32,7 @@ package com.ibm.kappnav;
    } 
 
    // end user requests log level to select log types captured in log 
-   public enum LogLevel { NONE, WARNING, ERROR, INFO, ENTRY, DEBUG, ALL }; 
+   public enum LogLevel { NONE, WARNING, ERROR, INFO, DEBUG, ENTRY, ALL }; 
    
    // code specifies log type it is writing 
    public enum LogType { ENTRY, EXIT, INFO, WARNING, ERROR, DEBUG }; 
@@ -82,14 +83,14 @@ package com.ibm.kappnav;
             typeEnabled[LogType.WARNING.ordinal()]= true;  
             typeEnabled[LogType.INFO.ordinal()]= true;  
             break;
-         case ENTRY: 
+         case DEBUG: 
             typeEnabled[LogType.ERROR.ordinal()]= true;  
             typeEnabled[LogType.WARNING.ordinal()]= true;  
             typeEnabled[LogType.INFO.ordinal()]= true;  
             typeEnabled[LogType.ENTRY.ordinal()]= true;  
             typeEnabled[LogType.EXIT.ordinal()]= true;  
             break;
-         case DEBUG: 
+         case ENTRY: 
             setLogTypes(true); 
             break;
          case ALL:  
@@ -99,6 +100,7 @@ package com.ibm.kappnav;
    }
    
 }
+```
 
 ```
 public class UseLogger {
