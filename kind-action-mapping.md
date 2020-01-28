@@ -98,13 +98,13 @@ One or more action configmaps may exist to which the same resource maps.  Multip
 For a resource kind qualified by the subkind annotation: 
 
 - kind-subkind.name - instance specific
-- kind-subkind - specific
-- kind - specific
+- kind-subkind - subkind specific
+- kind - kind specific
 
 For a resource without subkind qualification: 
 
 - kind.name - instance specific
-- kind - specific
+- kind - kind specific
 
 Multiple KindActionMapping resources may specify mappings for the same resource kind.  When this happens, additional action configmap mappings are inserted into the configmap hierarchy, based on the KindActionMapping instance's precedence value.
  
@@ -302,8 +302,6 @@ spec:
 
 ### Implementation Details - Example Mapping Logic 
 
-NOTE THIS SECTION IS UNDER CONSTRUCTION
-
 Starting with: 
 
 ```
@@ -316,7 +314,25 @@ metadata:
     kappnav.subkind: Liberty 
 ```
 
-And the [default KindActionMapping](https://github.com/kappnav/design/blob/master/kind-action-mapping.md#pre-defined-kindactionmapping-custom-resource)
+and KindActionMappings [default KindActionMapping](https://github.com/kappnav/design/blob/master/kind-action-mapping.md#pre-defined-kindactionmapping-custom-resource) and 
+
+```
+apiVersion: actions.kappnav.io/v1beta1
+kind: KindActionMapping
+metadata:
+  name: appsody
+  namespace: appsody
+spec:
+   precedence: 2
+   mappings:
+   - apiVersion: extensions/v1beta1
+     kind: Deployment
+     subkind: Liberty
+     mapname: appsody.actions.deployment-liberty
+   - apiVersion: extensions/v1beta1
+     kind: Deployment
+     mapname: appsody.actions.deployment
+```
 
 First gather the inputs to the mapping determination from the subject resource: 
 
@@ -325,4 +341,59 @@ First gather the inputs to the mapping determination from the subject resource:
 1. kind= Deployment
 1. subkind= Liberty 
 
-Next, walk all KindActionMapping CRs looking for a match on any of the preceding criteria.  
+Because the resource has subkind, the target hierarchy structure is: 
+
+- kind-subkind.name - instance specific
+- kind-subkind - subkind specific
+- kind - kind specific
+
+Note if there was no subkind specified, the target hierarchy structure would be: 
+
+- kind-subkind.name - instance specific
+- kind - kind specific 
+
+The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 9, then 8, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.
+
+The mappings section in each KindActionMappings is examined to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
+
+- kind-subkind.name - instance specific
+- kind-subkind - subkind specific
+- kind - kind specific
+
+So the mappings in the appsody KindActionMapping (highest precedence) are examined: 
+
+- 1st for exact match on (name, subkind, kind)
+- 2nd for wildcard match on (name, subkind, kind)
+
+- 3rd for exact match on (subkind, kind)
+- 4th for wildcard match on (subkind, kind)
+
+- 5th for exact match on (kind)
+- 6th for wildcard match on (kind)
+
+Yielding candidate configmap names: 
+
+- appsody.actions.deployment-liberty
+- appsody.actions.deployment 
+
+The default KindActionMapping is examined next (and last, since there are no more KindActionMapping CRs) the same way, yielding: 
+
+- stocktrader.actions.deployment-liberty.trader
+- kappnav.actions.deployment-liberty
+- kappnav.actions.deployment 
+
+Combined by hierarchy level and precedence order, we have final candidate list: 
+
+- stocktrader.actions.deployment-liberty.trader (instance specific, precedence 1)
+- appsody.actions.deployment-liberty (subkind specific, precedence 2)
+- kappnav.actions.deployment-liberty (subkind specific, precedence 1)
+- appsody.actions.deployment (kind specific, precedence 2)
+- kappnav.actions.deployment (kind specific, precedence 1)
+
+Next, these names are used to search for actual configmap resources; those found are combined to yield the effective hierarchy. For this example, let's imagine the existent configmaps found are: 
+
+- stocktrader.actions.deployment-liberty.trader in stock-trader namespace
+- appsody.actions.deployment in appsody namespace 
+- kappnav.actions.deployment in kappnav namespace
+
+Existing API code already exists to merge the effective hiearchy.  
