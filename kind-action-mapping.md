@@ -300,7 +300,7 @@ spec:
      mapname: kappnav.actions.${kind}
 ```
 
-### Implementation Details - Example Mapping Logic 
+### Implementation Details - Mapping High Level Logic and Example 
 
 Starting with: 
 
