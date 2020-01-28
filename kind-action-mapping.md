@@ -140,11 +140,11 @@ metadata:
 spec:
    precedence: 2
    mappings:
-   - apiVersion: core/*
+   - apiVersion: extensions/v1beta1
      kind: Deployment
      subkind: Liberty
      mapname: appsody.actions.deployment-liberty
-   - apiVersion: core/*
+   - apiVersion: extensions/v1beta1
      kind: Deployment
      mapname: appsody.actions.deployment
 ```
