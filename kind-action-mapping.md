@@ -35,13 +35,13 @@ KindActionMappings provide mapping rules that map a resource to a set of action 
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: kindactionsmappings.actions.kappnav.io
+  name: kindactionmappings.actions.kappnav.io
 spec:
   group: actions.kappnav.io
   names:
     kind: KindActionMapping
-    plural: kindactionsmappings
-    singular: kindactionsmapping
+    plural: kindactionmappings
+    singular: kindactionmapping
   scope: Namespaced
   validation:
     openAPIV3Schema:
