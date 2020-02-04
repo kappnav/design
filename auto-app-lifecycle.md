@@ -121,11 +121,11 @@ spec:
      matchExpressions:
         - {key: app, operator: In, values: [trader, portfolio, quote]}
   componentKinds:
-    - group: extensions/v1
+    - group: app
       kind: Deployment
-    - group: core/v1
+    - group: app
       kind: Service
-    - group: networking.k8s.io/v1beta1
+    - group: app
       kind: Ingress
 ```                 	
 
