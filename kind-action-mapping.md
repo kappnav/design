@@ -349,7 +349,7 @@ Because the resource has subkind, the target hierarchy structure is:
 
 Note if there was no subkind specified, the target hierarchy structure would be: 
 
-- kind-subkind.name - instance specific
+- kind.name - instance specific
 - kind - kind specific 
 
 The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 9, then 8, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.
