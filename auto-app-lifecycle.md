@@ -2,30 +2,9 @@
 
 Application Navigator will automatically create and delete applications without the user having to take explicit action.  
 
-## Relevant background:  Auto-labeling 
-
-1. Liberty and tWAS Cloudpaks auto-label their Kube resources as 'app: projectName-HelmChartName'
-1. AppNav auto-labels twas-app and liberty-app resources it creates via it's discovery process as 'app: appName-cellName' and 'app: appName-collectiveName'
-
-Note: there are other auto-labels: 
-
-```
-labels:
-   app: <appname-cellname>
-   app-name: <appname>
-   was-nd-cell: <cellname>
-
-and 
-
-labels:
-   app: <appname-collectivename>
-   app-name: <appname>
-   liberty-collective: <collectivename>
-```
-
 ## Automatic Application Create
 
-AppNav will auto-create/delete an Application resource when a specially labeled/annotated Deployment is created.   A future scenario could be to auto-create/delete an application when a twas-app or liberty-app is created. 
+AppNav will auto-create/delete an Application resource when a specially labeled/annotated Deployment is created.  
 
 The Application controller will be responsible for auto-creating/deleting Application resources.  The Application controller will watch Deployment resource creation/deletion and take the following actions: 
 
@@ -142,14 +121,12 @@ spec:
      matchExpressions:
         - {key: app, operator: In, values: [trader, portfolio, quote]}
   componentKinds:
-    - group: app
+    - group: extensions/v1
       kind: Deployment
-    - group: app
+    - group: core/v1
       kind: Service
-    - group: app
+    - group: networking.k8s.io/v1beta1
       kind: Ingress
-    - group: app      
-      kind: NetworkPolicy 
 ```                 	
 
 
@@ -214,52 +191,4 @@ Auto-created Applications have the following label and annotations to enable thi
   annotations: 
      kappnav.app.auto-created.from.name: <name of Deployment or StatefulSet>
      kappnav.app.auto-created.from.kind: <Deployment | StatefulSet > 
-```
-
-## Required changes: 
-
-1. websphere liberty, open liberty, Traditional WAS cloud paks:
-    1. Add auto-create label and annotations 
-    2. Add helm variables 
-2. Application controller - add support to auto-create/auto-delete 
-
-
-## Cloud Pak Support 
-
-The Websphere Traditional, WebSphere Liberty, and Open Liberty Cloud Paks will be updated to exploit the auto app.  The following sections describe the changes.
-
-### Helm Variables:
-
-The following Helm variables and defaults will be added to enable WebSphere/Liberty Helm chart deployments to exploit the auto app support. 
-
-```
-app:    
-   auto-create: true   
-   version: 1.0.0       
-```      
-
-| Variable | Description | 
-|----------|------|
-| app.auto-create	| true specifies to automatically create an Application resource associated with the Deployment or StatefulSet created by this chart. | 
-| app.version | Specifies the version of the application. |  
-
-### Cloud Pak Helm Chart Internals 
-
-The WebSphere and Liberty charts will be updated to set the auto app label and annotations on the Deployment and StatefulSet kind as follows: 
-
-```
-app:
-   auto-create: true 
-   version: 1.0.0
-
-The chart should set the labels and annotations this way
-
-labels: 
-    kappnav.app.auto-create: {{ .Resource.app.auto-create }}
-
-annotations:
-    kappnav.subkind=Liberty | tWAS
-    kappnav.app.auto-create.kinds: | 
-       comma-delimited list of kinds 
-    kappnav.app.auto-create.version: {{ .Resource.app.version }}
 ```
