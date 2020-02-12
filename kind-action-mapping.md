@@ -256,11 +256,11 @@ The mappings section in each KindActionMappings is examined from first to last s
 
 So the mappings in the appsody KindActionMapping (highest precedence) are examined: 
 
-- 1st for match on {name, subkind, kind} -> no match found
+- 1st for match on {apiVersion, name, subkind, kind} -> no match found
 
-- 2nd for match on {subkind, kind} -> match found (rule 1)
+- 2nd for match on {apiVersion, subkind, kind} -> match found (rule 1)
 
-- 3rd for match on (kind) -> match found (rule 2) 
+- 3rd for match on (apiVersion, kind) -> match found (rule 2) 
 
 Yielding candidate configmap names: 
 
@@ -269,11 +269,11 @@ Yielding candidate configmap names:
 
 The default KindActionMapping is examined next (and last, since there are no more KindActionMapping CRs) the same way: 
 
-- 1st for match on (name, subkind, kind) -> match found (rule 1)
+- 1st for match on (apiVersion, name, subkind, kind) -> match found (rule 1)
 
-- 2nd for match on (subkind, kind) -> match found (rule 2) 
+- 2nd for match on (apiVersion, subkind, kind) -> match found (rule 2) 
 
-- 3rd for match on (kind) -> match found (rule 4)
+- 3rd for match on (apiVersion, kind) -> match found (rule 4)
 
 yielding: 
 
@@ -298,7 +298,8 @@ Next, these names are used to search for actual configmap resources; those found
 Existing API code already exists to merge the effective hiearchy.  
 
 #### v1 Service 
-                                                                                                                               Starting with: 
+                                                                                                                              
+Starting with: 
 
 ```
 apiVersion: v1
@@ -350,9 +351,9 @@ The mappings section in each KindActionMappings is examined from first to last s
 
 So the mappings in the appsody KindActionMapping (highest precedence) are examined: 
 
-- 1st for match on {name, kind} -> no match found
+- 1st for match on {apiVersion, name, kind} -> no match found
 
-- 2nd for match on (kind) -> match found (rule 1) 
+- 2nd for match on (apiVersion, kind) -> match found (rule 1) 
 
 Yielding candidate configmap name: 
 
@@ -360,9 +361,9 @@ Yielding candidate configmap name:
 
 The default KindActionMapping is examined next (and last, since there are no more KindActionMapping CRs) the same way: 
 
-- 1st for match on (name, kind) -> match found (rule 3)
+- 1st for match on (apiVersion, name, kind) -> match found (rule 7)
 
-- 2nd for match on (kind) -> match found (rule 4)
+- 2nd for match on (apiVersion, kind) -> match found (rule 8)
 
 yielding: 
 
