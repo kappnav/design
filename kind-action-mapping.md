@@ -232,70 +232,23 @@ spec:
    precedence: 1 
    mappings:
 
-   - apiVersion: app.k8s.io/*
-     kind: Application
+   - apiVersion: */*
      name: * 
-     mapname: ${namespace}.actions.application.${name}
-     
-   - apiVersion: app.k8s.io/*
-     kind: Application
-     mapname: kappnav.actions.application
-     
-   - apiVersion: core/*
-     kind: *
      subkind: * 
-     name: * 
+     kind: *
      mapname: ${namespace}.actions.${kind}-${subkind}.${name} 
-     
-   - apiVersion: core/*
-     kind: *
+          
+   - apiVersion: */*
      subkind: * 
+     kind: *
      mapname: kappnav.actions.${kind}-${subkind} 
-     
-   - apiVersion: core/*
-     kind: *
+
+   - apiVersion: */*
      name: * 
-     mapname: ${namespace}.actions.${kind}.${name}
-     
-   - apiVersion: core/*
      kind: *
-     mapname: kappnav.actions.${kind}
-     
-   - apiVersion: extensions/*
-     kind: *
-     name: * 
-     subkind: * 
-     mapname: ${namespace}.actions.${kind}-${subkind}.${name} 
-     
-   - apiVersion: extensions/*
-     kind: *
-     subkind: * 
-     mapname: kappnav.actions.${kind}-${subkind}
-     
-   - apiVersion: extensions/*
-     kind: *
-     name: * 
-     mapname: ${namespace}.actions.${kind}.${name} 
-     
-   - apiVersion: extensions/* 
-     kind: *
-     mapname: kappnav.actions.${kind}
-    
-   - apiVersion: kappnav.io/*
-     kind: * 
-     name: * 
-     mapname: ${namespace}.actions.${kind}.${name} 
-     
-   - apiVersion: kappnav.io/*
-     kind: * 
-     mapname: kappnav.actions.${kind}
-     
-   - apiVersion: route.openshift.io/*
-     kind: *
-     name: * 
-     mapname: ${namespace}.actions.${kind}.${name} 
-     
-   - apiVersion: route.openshift.io/*
+     mapname: ${namespace}.actions.${kind}.${name}   
+
+   - apiVersion: */*
      kind: *
      mapname: kappnav.actions.${kind}
 ```
