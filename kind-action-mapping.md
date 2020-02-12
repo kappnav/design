@@ -1,6 +1,6 @@
 # Kind-Action Mapping
 
-Since the beginning, {k}kAppNav has had a builtin mapping scheme to map resource kind to action config maps.  This was done by convention, as described 
+Since the beginning, {k}kAppNav has had a builtin mapping scheme to map resource kind to action config maps.  This was done by naming convention, as described 
 in [Action Config Map Naming Convention Design](https://github.com/kappnav/design/blob/master/actions-config-maps.md#action-config-map-naming-convention).
 
 While that is sufficient for core kinds and a small number of custom resource definitions (CRDs), it is not sufficient to
@@ -11,12 +11,12 @@ There now exists these two Service kinds:
 1. v1/Service (core kind)
 1. knative.k8s.io.Service (knative kind)
 
-The existing mapping convention is based on the unqualified, kind singular name, which in this example is simply "Service".  
+The existing mapping convention is based on the unqualified, singular kind name, which in this example is simply "Service".  
 So both Service kinds, above, map to the same action config map, namely:  kappnav.actions.Service.
 
-As the goal is to have independently deployable - and discrete - actions per distinct kind, this mapping is insufficient. 
+As the goal is to have discrete and independently deployable actions per distinct kind, this mapping is insufficient. 
 
-To remedy the inadequacy of the existing mapping convention approach, we will introduce configuration to specify the mappings explicitly. This configuration will be modelled as a custom resource definition in keeping with the "independently deployable" principle.
+To remedy the limitation of the existing mapping convention approach, we will introduce configuration to specify the mappings explicitly. This configuration will be modelled as a custom resource definition in keeping with the "independently deployable" principle.
 
 ## KindActionMapping Custom Resource Definition
 
@@ -80,7 +80,7 @@ Where the spec fields are:
 |----------------|----------------------------------|
 | precedence     | Specifies natural number (1-9) precedence value for mappings defined by this KindActionMapping instance. A higher number means higher precedence.  The default is 1.  |
 | mappings       | Specifies a set (array) of "kind-to-configmap mappings". | 
-| mappings[].apiVersion   | Specifies apiVersion value for a kind-to-configmap mapping. Specified in the form group\/version. The version portion can be wildcarded with \'* \'.  |  
+| mappings[].apiVersion   | Specifies apiVersion value for a kind-to-configmap mapping. Specified in the form group\/version or version only, for kinds that have no group name. The group and version values can be wildcarded with \'* \'.  |  
 | mappings[].kind    | Specifies kind value for a kind-to-configmap mapping. Can be either a resource kind name or '\*', which means any kind name.|
 | mappings[].subkind | Specifies subkind value for a kind-to-configmap mapping. Can be either a resource subkind name or '\*', which means any kind name. Subkind is a {k}AppNav concept that allows any resource kind to be further qualified. It is specified by annotation 'kappnav.subkind'.|
 | mappings[].name    | Specifies name value for a kind-to-configmap mapping. Can be either a resource name or '\*', which means any name.|
@@ -93,11 +93,11 @@ Where the spec fields are:
 
 ### Configmap Hierarchy and Precedence 
 
-One or more action configmaps may exist to which the same resource maps.  Multiple distinct action configmaps may exist for any resource instance and are processed in this order, from most specific to least specific:  
+One or more action configmaps may exist to which the same resource maps. Multiple mapping rules may exist to which a resource maps; mapping rules are searched for in this order, using the match values from the from resource, searching for a matching rule from the most specific to least specific:  
 
 For a resource kind qualified by the subkind annotation: 
 
-- kind-subkind.name - instance specific
+- kind-subkind.name - instance specific 
 - kind-subkind - subkind specific
 - kind - kind specific
 
@@ -106,121 +106,39 @@ For a resource without subkind qualification:
 - kind.name - instance specific
 - kind - kind specific
 
-Multiple KindActionMapping resources may specify mappings for the same resource kind.  When this happens, additional action configmap mappings are inserted into the configmap hierarchy, based on the KindActionMapping instance's precedence value.
+Multiple KindActionMapping resources may specify mappings rules for the same resource kind.  When this happens, additional action configmap mappings are inserted into the configmap hierarchy, based on the KindActionMapping instance's precedence value.
  
 
 ### Resource to Action Configmap Mapping
 
-To determine the action set for a given resource, the first step is mapping.  The resource's apiVersion, kind, subkind (if specified), and name are used to find matching mappings across all KindActionMapping resources.
+To determine the action set for a given resource, the first step is mapping.  The resource's apiVersion, kind, subkind (if specified), and name are used to find matching mapping rules across all KindActionMapping CRs.
 
-The KindActionMappings are processed in descending precedence order with level of specificity - i.e. numerically highest precendence value to lowest within the same level of specificity, meaning instance level first, followed by less specific levels, such as kind. Note subkind is considered more specific than kind alone. 
+The KindActionMappings are processed in descending precedence order with level of specificity - i.e. numerically highest precendence value to lowest. 
+
+The individual mapping rules within a KindActionMapping instance are processed in order of appearance from first to last, searching for the first matching rule for a given level of specifity. 
 
 KindActionMappings resources with the same precedence value are processed together in arbitrary order.  
 
-e.g. consider resource:
+### apiVersion Matching 
 
-```
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata: 
-  name: trader 
-  namespace: stocktrader 
-  annotations: 
-    kappnav.subkind: Liberty 
-```
+The apiVersion in a mapping can be either group/version or version alone.  A resource's apiVersion is matched against the apiVersion value in a mapping rule according to whether or not it specifies group/version or version alone.  E.g.
 
-and this KindActionMapping: 
+1. If a resource's apiVersion specifies group/version, it can ony match mapping rules that specify an apiVerson in the form 'group/version', including wildcards variants, e.g. 'group/*' 
 
-```
-apiVersion: actions.kappnav.io/v1beta1
-kind: KindActionMapping
-metadata:
-  name: appsody
-  namespace: appsody
-spec:
-   precedence: 2
-   mappings:
-   - apiVersion: extensions/v1beta1
-     kind: Deployment
-     subkind: Liberty
-     mapname: appsody.actions.deployment-liberty
-   - apiVersion: extensions/v1beta1
-     kind: Deployment
-     mapname: appsody.actions.deployment
-```
-
-and the [default KindActionMapping](#pre-defined-kindactionmapping-custom-resource).
-
-After processing the 'appsody' KindActionMapping resource, the following configmap names are determined: 
-
-- appsody.actions.deployment-liberty
-- appsody.actions.deployment 
-
-After processing the 'default' KindActionMapping resource, the following configmap names are determined: 
-
-- stocktrader.actions.deployment-liberty.trader
-- kappnav.actions.deployment-liberty
-- kappnav.actions.deployment 
-
-The candidate hierarchy of configmap names, in order of precedence is: 
-
-- stocktrader.actions.deployment-liberty.trader (instance specific, precedence 1)
-- appsody.actions.deployment-liberty (subkind specific, precedence 2)
-- kappnav.actions.deployment-liberty (subkind specific, precedence 1)
-- appsody.actions.deployment (kind specific, precedence 2)
-- kappnav.actions.deployment (kind specific, precedence 1)
-
-Observations: 
-
-1. kappnav.actions.deployment.trader is first in the hierarchy because it is more specific (instance specific) than all the other action configmaps. 
-1. appsody.actions.deployment-liberty is ahead of kappnav.actions.deployment-liberty in the hierarchy because it came from a KindActionMapping resource ('appsody') with numerically higher precedence than the other KindActionMapping resource ('default') for that same level of specificity (i.e. subkind level). 
+2. If a resource's apiVersion specifies version only, it can ony match mapping rules that specify an apiVerson in the form 'version', including the wildcards variant, '*' 
 
 ### Action Configmap Lookup 
 
-After the set of potential configmap names are determined and placed in hierarchy order by mapping, the actual configmaps are looked up by name to produce the effective hierarchy.  
+After the set of potential configmap names are determined and placed in hierarchy order, the actual configmaps are looked up by name to produce the effective hierarchy.  
 
-**Namespace Rule** 
+### Namespaces 
 
 Instance specific configmaps are searched for in the resource's namespace.  All other configmaps are searched for in the same namespace as the KindActionMapping resource.
 
-E.g. 
-
-If the following action configmaps were found, yielding the effective hierarchy: 
-
-- stocktrader.actions.deployment-liberty.trader in stock-trader namespace
-- appsody.actions.deployment in appsody namespace 
-- kappnav.actions.deployment in kappnav namespace
-
-They would be processed in that order to produce the merged, final action set. 
 
 ### Action Configmap Merge 
 
-The merge behavior is not new.  It was defined in the original [action support](https://github.com/kappnav/design/blob/master/actions-config-maps.md).  It is restated here for clarity and completeness. 
-
-The action configmaps found are processed in order of precedence and merged together.  They are read and processed one by one, according to the effective hierarchy order. Each action configmap specifies either to 'merge' or 'replace'. If the action configmap specifies 'replace', no further action configmaps in the hierarchy are processed.  If the action configmap specifies 'merge', the actions it defines are combined with the actions defined by further action configmaps from the effective hierarchy. If two actions of the same type (e.g. url-action) have the same name, the first one found takes precedence, effectively overriding all others of the same name. 
-
-e.g. 
-
-If the following action configmaps have the specified replace/merge policies and the indicated action definitions: 
-
-- stocktrader.actions.deployment-liberty.trader in stock-trader namespace, policy=merge
-   - action name 'klog'
-- appsody.actions.deployment in appsody namespace, policy=replace
-   - action name 'klog'
-   - action name 'appsody-action'
-- kappnav.actions.deployment in kappnav namespace, policy=merge 
-
-Then only these action config maps would contribute actions to the final action set: 
-
-- stocktrader.actions.deployment-liberty.trader in stock-trader namespace, policy=merge
-- appsody.actions.deployment in appsody namespace, policy=replace
-
-Note: kappnav.actions.deployment is ignored because of the policy=replace from appsody.actions.deployment config map.
-
-And the final action set would be: 
-
-1. 'klog' from stocktrader.actions.deployment-liberty.trader
-1. 'appsody-action' from appsody.actions.deployment
+The merge behavior is not new.  It was defined in the original [action support](https://github.com/kappnav/design/blob/master/actions-config-maps.md). 
 
 ## Pre-defined KindActionMapping Custom Resource 
 
@@ -234,33 +152,51 @@ spec:
    precedence: 1 
    mappings:
 
-   - apiVersion: */*
+1. - apiVersion: */*
+     name: * 
+     subkind: * 
+     kind: *
+     mapname: ${namespace}.actions.${kind}-${subkind}.${name} 
+         
+2. - apiVersion: */*
+     subkind: * 
+     kind: *
+     mapname: kappnav.actions.${kind}-${subkind} 
+
+3. - apiVersion: */*
+     name: * 
+     kind: *
+     mapname: ${namespace}.actions.${kind}.${name}   
+
+4. - apiVersion: */*
+     kind: *
+     mapname: kappnav.actions.${kind}
+     
+5. - apiVersion: *
      name: * 
      subkind: * 
      kind: *
      mapname: ${namespace}.actions.${kind}-${subkind}.${name} 
           
-   - apiVersion: */*
+6. - apiVersion: *
      subkind: * 
      kind: *
      mapname: kappnav.actions.${kind}-${subkind} 
 
-   - apiVersion: */*
+7. - apiVersion: *
      name: * 
      kind: *
      mapname: ${namespace}.actions.${kind}.${name}   
 
-   - apiVersion: */*
+8. - apiVersion: *
      kind: *
      mapname: kappnav.actions.${kind}
 ```
 
-### Implementation Details - Mapping High Level Logic and Examples 
+### Mapping High Level Logic and Examples 
 
 
-#### extensions/v1beta1 Deployment 
-
-                                                                                                                                                                                                                                                         
+#### extensions/v1beta1 Deployment                                                                                                                                                                                                                                                    
 Starting with: 
 
 ```
@@ -284,11 +220,11 @@ metadata:
 spec:
    precedence: 2
    mappings:
-   - apiVersion: extensions/v1beta1 
+1. - apiVersion: extensions/v1beta1 
      kind: Deployment
      subkind: Liberty
      mapname: appsody.actions.deployment-liberty
-   - apiVersion: extensions/v1beta1
+2. - apiVersion: extensions/v1beta1
      kind: Deployment
      mapname: appsody.actions.deployment
 ```
@@ -311,9 +247,8 @@ Note if there was no subkind specified, the target hierarchy structure would be:
 - kind.name - instance specific
 - kind - kind specific 
 
-The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 9, then 8, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.                                                                                                                                      
-
-The mappings section in each KindActionMappings is examined from top to bottom to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
+The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 2, then 1, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.                                                                                                                                      
+The mappings section in each KindActionMappings is examined from first to last searching for matching rules in order to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
 
 - kind-subkind.name - instance specific
 - kind-subkind - subkind specific
@@ -321,14 +256,11 @@ The mappings section in each KindActionMappings is examined from top to bottom t
 
 So the mappings in the appsody KindActionMapping (highest precedence) are examined: 
 
-- 1st for exact match on (name, subkind, kind) -> no match found
-- 2nd for wildcard match on (name, subkind, kind) -> no match found 
+- 1st for match on {name, subkind, kind} -> no match found
 
-- 3rd for exact match on (subkind, kind) -> match found
-- 4th for wildcard match on (subkind, kind) -> no match found
+- 2nd for match on {subkind, kind} -> match found (rule 1)
 
-- 5th for exact match on (kind) -> match found
-- 6th for wildcard match on (kind) -> no match found 
+- 3rd for match on (kind) -> match found (rule 2) 
 
 Yielding candidate configmap names: 
 
@@ -337,14 +269,11 @@ Yielding candidate configmap names:
 
 The default KindActionMapping is examined next (and last, since there are no more KindActionMapping CRs) the same way: 
 
-- 1st for exact match on (name, subkind, kind) -> no match found
-- 2nd for wildcard match on (name, subkind, kind) -> match found 
+- 1st for match on (name, subkind, kind) -> match found (rule 1)
 
-- 3rd for exact match on (subkind, kind) -> no match found
-- 4th for wildcard match on (subkind, kind) -> match found
+- 2nd for match on (subkind, kind) -> match found (rule 2) 
 
-- 5th for exact match on (kind) -> no match found
-- 6th for wildcard match on (kind) -> match found 
+- 3rd for match on (kind) -> match found (rule 4)
 
 yielding: 
 
@@ -369,8 +298,7 @@ Next, these names are used to search for actual configmap resources; those found
 Existing API code already exists to merge the effective hiearchy.  
 
 #### v1 Service 
-                                                                                                                                                                                                                                                 
-Starting with: 
+                                                                                                                               Starting with: 
 
 ```
 apiVersion: v1
@@ -378,6 +306,7 @@ kind: Service
 metadata: 
   name: trader 
   namespace: stocktrader 
+
 ```
 
 and KindActionMappings [default KindActionMapping](https://github.com/kappnav/design/blob/master/kind-action-mapping.md#pre-defined-kindactionmapping-custom-resource) and 
@@ -391,82 +320,65 @@ metadata:
 spec:
    precedence: 2
    mappings:
-   - apiVersion: v1 
+1. - apiVersion: v1
      kind: Service
      mapname: appsody.actions.service
 ```
 
 First gather the inputs to the mapping determination from the subject resource: 
 
-1. apiVersion = extensions/v1beta1
+1. apiVersion = v1
 1. name= trader
-1. kind= Deployment
-1. subkind= Liberty 
+1. kind= Service
 
-Because the resource has subkind, the target hierarchy structure is: 
+Because the resource does not have subkind, the target hierarchy structure is: 
 
 - kind-subkind.name - instance specific
-- kind-subkind - subkind specific
 - kind - kind specific
 
-Note if there was no subkind specified, the target hierarchy structure would be: 
+Note if subkind was specified, the target hierarchy structure would be: 
 
 - kind.name - instance specific
+- kind-subkind - subkind specific
 - kind - kind specific 
 
-The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 9, then 8, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.
-
-The mappings section in each KindActionMappings is examined from top to bottom to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
+The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 2, then 1, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.                                                                                                                                      
+The mappings section in each KindActionMappings is examined from first to last searching for matching rules in order to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
 
 - kind-subkind.name - instance specific
-- kind-subkind - subkind specific
 - kind - kind specific
 
 So the mappings in the appsody KindActionMapping (highest precedence) are examined: 
 
-- 1st for exact match on (name, subkind, kind) -> no match found
-- 2nd for wildcard match on (name, subkind, kind) -> no match found 
+- 1st for match on {name, kind} -> no match found
 
-- 3rd for exact match on (subkind, kind) -> match found
-- 4th for wildcard match on (subkind, kind) -> no match found
+- 2nd for match on (kind) -> match found (rule 1) 
 
-- 5th for exact match on (kind) -> match found
-- 6th for wildcard match on (kind) -> no match found 
+Yielding candidate configmap name: 
 
-Yielding candidate configmap names: 
-
-- appsody.actions.deployment-liberty
-- appsody.actions.deployment 
+- appsody.actions.service
 
 The default KindActionMapping is examined next (and last, since there are no more KindActionMapping CRs) the same way: 
 
-- 1st for exact match on (name, subkind, kind) -> no match found
-- 2nd for wildcard match on (name, subkind, kind) -> match found 
+- 1st for match on (name, kind) -> match found (rule 3)
 
-- 3rd for exact match on (subkind, kind) -> no match found
-- 4th for wildcard match on (subkind, kind) -> match found
-
-- 5th for exact match on (kind) -> no match found
-- 6th for wildcard match on (kind) -> match found 
+- 2nd for match on (kind) -> match found (rule 4)
 
 yielding: 
 
-- stocktrader.actions.deployment-liberty.trader
-- kappnav.actions.deployment-liberty
-- kappnav.actions.deployment 
+- stocktrader.actions.service.trader
+- kappnav.actions.service
 
 Combined by hierarchy level and precedence order, we have final candidate list: 
 
-- stocktrader.actions.deployment-liberty.trader (instance specific, precedence 1)
-- appsody.actions.deployment-liberty (subkind specific, precedence 2)
-- kappnav.actions.deployment-liberty (subkind specific, precedence 1)
-- appsody.actions.deployment (kind specific, precedence 2)
-- kappnav.actions.deployment (kind specific, precedence 1)
+- stocktrader.actions.service.trader (instance specific, precedence 1)
+- appsody.actions.service (kind specific, precedence 2)
+- kappnav.actions.service (kind specific, precedence 1)
 
 Next, these names are used to search for actual configmap resources; those found are combined to yield the effective hierarchy. For this example, let's imagine the existent configmaps found are: 
 
-- stocktrader.actions.deployment-liberty.trader in stock-trader namespace
-- appsody.actions.deployment in appsody namespace 
-- kappnav.actions.deployment in kappnav namespace
+- stocktrader.actions.service.trader in stock-trader namespace
+- appsody.actions.service in appsody namespace 
+- kappnav.actions.service in kappnav namespace
 
-Existing API code already exists to merge the effective hiearchy.  
+Existing API code already exists to merge the effective hiearchy.                                                                                                          
