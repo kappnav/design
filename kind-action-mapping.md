@@ -115,9 +115,12 @@ To determine the action set for a given resource, the first step is mapping.  Th
 
 The KindActionMappings are processed in descending precedence order with level of specificity - i.e. numerically highest precendence value to lowest. 
 
-The individual mapping rules within a KindActionMapping instance are processed in order from first to last, searching for the first matching rule for a given level of specifity (i.e. instance specific, subkind specific, etc). 
+The individual mapping rules within a KindActionMapping instance are processed in order from first to last, searching for the first matching rule for a given level of specifity (i.e. instance specific, subkind specific, etc). Only mappings that specify the same set of fields based on the current level of specificity being searched is eligible for match consideration. I.e.
 
-Only mappings that specify the same set of fields based on the current level of specificity being searched is eligible for match consideration. E.g. when searching for kind specific, only mappings that specify  {apiVersion, kind} would be considered; mappings that specified { apiVersion, name, kind}, for example, would not be considered. 
+- When searching for instance specific (with subkind), only mappings containing {apiVersion, name, subkind, kind} are considered. 
+- When searching for instance specific (without subkind), only mappings containing {apiVersion, name, kind} are considered.
+- When searching for subkind specific, only mappings containing {apiVersion, subkind, kind} are considered. 
+- When searching for kind specific, only mappings that specify {apiVersion, kind} are considered.
 
 KindActionMappings resources with the same precedence value are processed together in arbitrary order.  
 
