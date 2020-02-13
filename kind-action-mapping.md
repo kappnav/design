@@ -115,7 +115,9 @@ To determine the action set for a given resource, the first step is mapping.  Th
 
 The KindActionMappings are processed in descending precedence order with level of specificity - i.e. numerically highest precendence value to lowest. 
 
-The individual mapping rules within a KindActionMapping instance are processed in order of appearance from first to last, searching for the first matching rule for a given level of specifity. 
+The individual mapping rules within a KindActionMapping instance are processed in order from first to last, searching for the first matching rule for a given level of specifity (i.e. instance specific, subkind specific, etc). 
+
+Only mappings that specify the same set of fields based on the current level of specificity being searched is eligible for match consideration. E.g. when searching for kind specific, only mappings that specify  {apiVersion, kind} would be considered; mappings that specified { apiVersion, name, kind}, for example, would not be considered. 
 
 KindActionMappings resources with the same precedence value are processed together in arbitrary order.  
 
@@ -247,14 +249,15 @@ Note if there was no subkind specified, the target hierarchy structure would be:
 - kind.name - instance specific
 - kind - kind specific 
 
-The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 2, then 1, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.                                                                                                                                      
-The mappings section in each KindActionMappings is examined from first to last searching for matching rules in order to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
+The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 2, then 1, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.           
+
+The mappings section in each KindActionMappings is examined in order from first to last searching for matching rules in order to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
 
 - kind-subkind.name - instance specific
 - kind-subkind - subkind specific
 - kind - kind specific
 
-So the mappings in the appsody KindActionMapping (highest precedence) are examined: 
+So the mappings in the appsody KindActionMapping (highest precedence) are examined for match, according to candidate hierarchy list:
 
 - 1st for match on {apiVersion, name, subkind, kind} -> no match found
 
@@ -343,7 +346,8 @@ Note if subkind was specified, the target hierarchy structure would be:
 - kind-subkind - subkind specific
 - kind - kind specific 
 
-The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 2, then 1, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.                                                                                                                                      
+The KindActionMappings CRs are examined in order of precedence, in descending order - e.g. 2, then 1, etc, based on whatever the highest precedence number is among the existent KindActionMappings CRs.     
+
 The mappings section in each KindActionMappings is examined from first to last searching for matching rules in order to build the candidate hierarchy list by matching against the individual mappings in each KindActionMapping, searching for matches from most specific to least specific, according to the applicable target hierarcy.  For this example, that is: 
 
 - kind-subkind.name - instance specific
