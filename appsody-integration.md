@@ -64,7 +64,7 @@ registered annotation values, specified on the component resource.
 
 Example: 
 
-1. Register annotation pattern 'appsody.**' (done via kappnav config.
+1. Register annotation pattern 'appsody.**' (done via kappnav config).
 1. Create deployment resource  (e.g. loyalty-level Deployment) as part of application with various appsody.** annotations specified on it.
 1. kAppNav displays an expandable section, that when expanded, show all annotations that match pattern 'appsody.**'
 
