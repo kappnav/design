@@ -129,7 +129,7 @@ The [KindActionMapping Custom Resource Definition](https://github.com/kappnav/de
 
 **{k}AppNav prior to 0.6.0**
 
-The kind-action config map name mapping was done via convention, based on the simple, singular kind name of the resource.  E.g. 'Service' kind mapped to action config map name 'kappnav.actions.service'.  This mapping is now done via configuration, as described in the preceding paragraph.  All other aspects of action config maps, including role of subkind, hierarchy, overrides, etcs, as desribed in the sections that follow, remain valid. 
+The kind-action config map name mapping was done via convention, based on the simple, singular kind name of the resource.  E.g. 'Service' kind mapped to action config map name 'kappnav.actions.service'.  This mapping is now done via configuration, as described in the preceding paragraph.  All other aspects of action config maps, including role of subkind, hierarchy, overrides, etcs, as described in the sections that follow, remain valid. 
 
 **Common Design Applicable to All Versions**
 
@@ -293,7 +293,7 @@ Details and Rules:
 1. A ${builtin} reference references a builtin value.
 1. A builtin-spec reference references a builtin value.
 1. A ${var.\<variable-name\>} references a named variable. For release 0.1.5 and higher returns either resolved variable value or optional default string constant if value can otherwise not be resolved. 
-1. A ${input.\<field-name\>} references a named field from the input definitiona specified on the required-input specification.
+1. A ${input.\<field-name\>} references a named field from the input definition specified on the required-input specification.
 1. A ${func} reference references a builtin function. 
 1. A ${snippet} reference references a named javascript snippet found in the immediate action config map. 
 
