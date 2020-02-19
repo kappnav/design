@@ -6,7 +6,7 @@ Prism provides REST APIs on the Kubernetes internal network for the following:
 1. action substitutions 
 1. WAS-ND-App status 
 
-Prism also provides a set set of external APIs.  See [Prism API Server](#prism-api-server) for further information. 
+Prism also provides a set of external APIs.  See [Prism API Server](#prism-api-server) for further information. 
 
 ## Applications 
 
@@ -110,7 +110,7 @@ See [action config maps](https://github.com/kappnav/design/blob/master/actions-c
 
 ### Action Substitution Resolver API 
 
-The action substitution resolver API accepts an action config map action pattern string and resolves all subsitutions.  
+The action substitution resolver API accepts an action config map action pattern string and resolves all substitutions.  
 
 https://host:port/prism/resource/{resource-name}/{resource-kind}?action-pattern={action-pattern}[&namespace={specified-namespace}]
 
@@ -166,7 +166,7 @@ The status code is:
 
 ### Command Action Execution API
 
-The command action execution API accepts an action config map cmd-action name, resolves all subsitutions and creates a Kubernetes job from the result. The resolved pattern is expected to be a [Kubernetes pod template](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/#writing-a-job-spec) as a serialized JSON string.
+The command action execution API accepts an action config map cmd-action name, resolves all substitutions and creates a Kubernetes job from the result. The resolved pattern is expected to be a [Kubernetes pod template](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/#writing-a-job-spec) as a serialized JSON string.
 
 There are two forms of this API: 
 
