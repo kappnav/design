@@ -78,7 +78,7 @@ The resources displayed are those that match the label selector in the applicati
 - Name is the component name. If the resource Kind is 'Application', it is a clickable link and takes takes the user to the [Prism Component Level View](#prism-component-level-view) for that application (i.e. nested application); otherwise it is a non-clickable link. 
 - Kind is the resource kind and optional subkind.  See [Kind and Subkind](#kind-and-subkind) for further explanation.
 - Namespace is the Kubernetes namespace in which the application resource exists. 
-- Platform is the platform type and optional platform name on which the resource resides. See Platform Type and Name[Prism annotations](https://github.com/kappnav/design/blob/master/annotations.md) for further explanation.
+- Platform is the platform type and optional platform name on which the resource resides. See Platform Type and Name [Prism annotations](https://github.com/kappnav/design/blob/master/annotations.md) for further explanation.
 - Action is a clickable field that opens a menu of selectable actions. See [Configurable Action Menu Items for Components](#configurable-action-menu-items-for-components) for explanation of the action items available on this menu.
 
 ### Create Application Button 
