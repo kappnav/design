@@ -72,11 +72,11 @@ spec:
     matchLabels:
         app: portfolio
   componentKinds:
-    - group: app
+    - group: apps
       kind: Deployment
-    - group: app
+    - group:
       kind: Service
-    - group: app
+    - group: networking.k8s.io
       kind: Ingress
 ```
 
@@ -121,12 +121,14 @@ spec:
      matchExpressions:
         - {key: app, operator: In, values: [trader, portfolio, quote]}
   componentKinds:
-    - group: app
+    - group: apps
       kind: Deployment
-    - group: app
+    - group:
       kind: Service
-    - group: app
+    - group: networking.k8s.io
       kind: Ingress
+    - group: networking.k8s.io
+      kind: NetworkPolicy
 ```                 	
 
 
