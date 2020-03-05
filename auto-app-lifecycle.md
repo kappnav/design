@@ -6,7 +6,7 @@ Application Navigator will automatically create and delete applications without 
 
 AppNav will auto-create/delete an Application resource when a specially labeled/annotated resource (such as a Deployment) is created.  
 
-The Application controller will be responsible for auto-creating/deleting Application resources. The Application controller will watch **Deployment**, **DeploymentConfig**, **DaemonSet**, **StatefulSet** and **Knative Service** resource creation/deletion and take the following actions:
+The Application controller will be responsible for auto-creating/deleting Application resources. The Application controller will watch **Deployment**, **DeploymentConfig**, **DaemonSet**, **StatefulSet** and **(Knative) Service** resource creation/deletion and take the following actions:
 
 When one of the resources under watch is created that contains either or both of the following labels, the controller will auto-create an Application resource using the specified annotations (defined below) or their default values:
 
@@ -28,7 +28,7 @@ annotations:
 | Annotation |	Description |	Default |
 |------------|--------------|-----------|
 | kappnav.app.auto-create.name |  Specifies name of application resource to be auto-created. | Name defaults to the value of the **app.kubernetes.io/part-of** label, otherwise the name of the associated application resource if the label is not present. | 
-| kappnav.app.auto-create.kinds | Specifies a json array of resource kinds to be included in application component list. | (**Deployment**, **DeploymentConfig**, **DaemonSet**, **StatefulSet**, **Knative Service**, **K8S Core Service**, **Ingress**, **ConfigMap**) if the kappnav.app.auto-create label is present, otherwise (**Deployment**, **DeploymentConfig**, **DaemonSet**, **StatefulSet**, **Knative Service**) | 
+| kappnav.app.auto-create.kinds | Specifies a json array of resource kinds to be included in application component list. | [**Deployment**, **DeploymentConfig**, **DaemonSet**, **StatefulSet**, **(Knative) Service**, **(K8S Core) Service**, **Ingress**, **ConfigMap**] if the kappnav.app.auto-create label is present, otherwise [**Deployment**, **DeploymentConfig**, **DaemonSet**, **StatefulSet**, **(Knative) Service**] | 
 | kappnav.app.auto-create.version	| Specifies version of application resource to be auto-created.	| 1.0.0 | 
 | kappnav.app.auto-create.label |	Specifies label to be specified in application resource label selector. | **app.kubernetes.io/part-of** if this label is present, otherwise **app**. |
 | kappnav.app.auto-create.labels-values |	Specifies a json array of match values for auto-create label. | If one value is specified, the label selector is matchLabels.  If multiple values are specified, the label selector is matchExpression.  |	Name of associated Deployment or Statefulset. Default is same as associated Deployment or Statefulset name. |
