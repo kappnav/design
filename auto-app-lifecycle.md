@@ -4,11 +4,11 @@ Application Navigator will automatically create and delete applications without 
 
 ## Automatic Application Create
 
-AppNav will auto-create/delete an Application resource when a specially labeled/annotated Deployment is created.  
+AppNav will auto-create/delete an Application resource when a specially labeled/annotated resource (such as a Deployment) is created.  
 
-The Application controller will be responsible for auto-creating/deleting Application resources.  The Application controller will watch Deployment resource creation/deletion and take the following actions: 
+The Application controller will be responsible for auto-creating/deleting Application resources. The Application controller will watch Deployment, DeploymentConfig, DaemonSet, StatefulSet and Knative Service resource creation/deletion and take the following actions: 
 
-When a Deployment or Statefulset is created that contains the following label and annotations, the controller will auto-create an Application resource:  
+When one of the resources under watch is created that contains the following label and annotations, the controller will auto-create an Application resource:
 
 ```
 labels: 
