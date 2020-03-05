@@ -6,20 +6,21 @@ Application Navigator will automatically create and delete applications without 
 
 AppNav will auto-create/delete an Application resource when a specially labeled/annotated resource (such as a Deployment) is created.  
 
-The Application controller will be responsible for auto-creating/deleting Application resources. The Application controller will watch Deployment, DeploymentConfig, DaemonSet, StatefulSet and Knative Service resource creation/deletion and take the following actions: 
+The Application controller will be responsible for auto-creating/deleting Application resources. The Application controller will watch **Deployment**, **DeploymentConfig**, **DaemonSet**, **StatefulSet** and **Knative Service** resource creation/deletion and take the following actions:
 
-When one of the resources under watch is created that contains the following label and annotations, the controller will auto-create an Application resource:
+When one of the resources under watch is created that contains either or both of the following labels, the controller will auto-create an Application resource using the specified annotations (defined below) or their default values:
 
 ```
-labels: 
-    kappnav.app.auto-create: true | false 
+labels:
+    app.kubernetes.io/part-of: "<app name>"
+    kappnav.app.auto-create: true | false
 
 annotations:
     kappnav.app.auto-create.name: "<app name>"
     kappnav.app.auto-create.kinds: | 
        kind1, kind2, etc
     kappnav.app.auto-create.version: <version>
-    kappnav.app.auto-create.label: “<label-name>”
+    kappnav.app.auto-create.label: "<label-name>"
     kappnav.app.auto-create.labels-values: | 
        value1, value2, etc 
 ```
