@@ -9,84 +9,88 @@ A new function package will be created to manage logging in App Navigator Golang
 
 ```
 type LogLevel int
-
-/* values of LogLevel 
-
+/* LogLevel values of LogLevel 
    LogLevel is what user requests 
 */
 const ( 
-    LOG_LEVEL_NONE LogLevel = 0
-    LOG_LEVEL_WARNING LogLevel = 1 
-    LOG_LEVEL_ERROR LogLevel = 2
-    LOG_LEVEL_INFO LogLevel = 3
-    LOG_LEVEL_DEBUG LogLevel = 4
-    LOG_LEVEL_ENTRY LogLevel = 5
-    LOG_LEVEL_ALL LogLevel = 6
+        LogLevelNone  LogLevel = 0  
+        LogLevelWarning LogLevel = 1
+        LogLevelError LogLevel = 2
+        LogLevelInfo LogLevel = 3
+        LogLevelDebug LogLevel = 4
+        LogLevelEntry LogLevel = 5
+	     LogLevelAll LogLevel = 6
 )
 
 type LogType int 
-
-/* values of LogType 
-
+/* LogType values of LogType 
    LogType is how code categorizes log message
-
 */
-
 const (
-    LOG_TYPE_ENTRY LogType = 0
-    LOG_TYPE_EXIT LogType = 1
-    LOG_TYPE_INFO LogType = 2
-    LOG_TYPE_WARNING LogType = 3
-    LOG_TYPE_ERROR LogType = 4
-    LOG_TYPE_DEBUG LogType = 5
+        LogTypeEntry LogType = 0  
+        LogTypeExit LogType = 1
+        LogTypeInfo LogType = 2
+        LogTypeWarning LogType = 3
+        LogTypeError LogType = 4   
+        LogTypeDebug LogType = 5
 )
 
-/* global variable holds current log level */
-var g_logLevel LogLevel = INFO; /* default */
+/*Logger interfaces*/
+type Logger interface {
+        SetLogLevel(logLevel LogLevel)       
+        Log(goFileName string, funcName string, logType LogType, logData string, otherLogData string)
+        IsEnabled(logType LogType) bool
+}
 
-/* global variable to hold current log type enablement flags */ 
-var g_logTypeEnabled [6]bool 
+/*NewLogger create new Logger*/ 
+func NewLogger() Logger {}
 
-/* init logging 
-   call setLevel(g_logLevel)to init logging type enablement 
+type loggerImpl struct {
+   /*global variable holds current log level*/
+	LogLevel LogLevel
+   /*global variable to hold current log type enablement flags*/ 
+	LogTypeEnabled [6]bool 
+}
+
+/*Log write log entry to stdout. 
+   Use getLogMessage func to format message 
 */ 
-func initLogging() 
+func (logger *loggerImpl) Log(goFileName string, funcName string, logType LogType, logData string) 
 
-/* set global log level to specified value 
+/*isEnabled guard function to test if desired logType is enabled */
+func (logger *loggerImpl) IsEnabled(logType LogType) bool 
 
-   set g_logTypeEnabled based on specified LogLevel as follows: 
+/*getLogMessage return log message as string in format: 
+    [LogType] logData
+*/ 
+func (logger *loggerImpl) getLogMessage(logType LogType, logData string) string 
+
+/*setLogTypes set log types */
+func (logger *loggerImpl) setLogTypes(value bool) {}
+
+
+/*SetLogLevel set global log level to specified value 
+   set IsEnabled based on specified LogLevel as follows: 
    
-   Log Level	| Enabled Log Types
+   Log Level	   | Enabled Log Types
    -------------+----------------------------------------
-   none	        |  set all to false 
-   error	    |  error
-   warning	    |  error, warning
-   info	        |  error, warning, info
-   debug	    |  error, warning, info, debug
-   entry	    |  error, warning, info, entry, exit, debug
-   all	        |  error, warning, info, entry, exit, debug
-
+   none	         |  set all to false 
+   error	         |  error
+   warning	      |  error, warning
+   info	         |  error, warning, info
+   debug	         |  error, warning, info, debug
+   entry	         |  error, warning, info, entry, exit, debug
+   all	         |  error, warning, info, entry, exit, debug
 */
-func setLevel(logLevel LogLevel)
-
-/* return log message as string in format: 
-    [LogType] logData;
-*/ 
-func getLogMessage(logType LogType, logData string) string 
-
-/* write log entry to stdout. 
-   Use getLogMessage func to format message
-*/ 
-func log(logType LogType, logData string)
-
-/* guard function to test if desired logType is enabled */
-func isEnabled(logType LogType) bool 
+func (logger *loggerImpl) SetLogLevel(logLevel LogLevel) 
+     
 
 Example;
 
-if isEnabled(LOG_TYPE_DEBUG) { 
-    log(LOG_TYPE_DEBUG,"this is a debug message")
-}
+if (logger.IsEnabled(LogTypeDebug)) {
+   logger.Log(FileName(), FuncName(), LogTypeDebug, "this is a debug message")
+}  
+   
 
 ``` 
 
