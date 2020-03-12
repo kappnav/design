@@ -1,6 +1,6 @@
 # Application and Component Status
 
-Prism shows application and component status as labeled and colored indicators to indicate whether an application or component is operating as Normal (Green), operating with Warning (Yellow), or having a Problem (Red). A further status value of Unknown (Grey) covers [special cases](https://github.com/kappnav/design/blob/master/status-determination.md#special-cases). Components map their actual status to a particular Prism status value;  applications map their Prism status value as a highest severity summary of component Prism status as follows: 
+kAppNav shows application and component status as labeled and colored indicators to indicate whether an application or component is operating as Normal (Green), operating with Warning (Yellow), or having a Problem (Red). A further status value of Unknown (Grey) covers [special cases](https://github.com/kappnav/design/blob/master/status-determination.md#special-cases). Components map their actual status to a particular kAppNav status value;  applications map their kAppNav status value as a highest severity summary of component kAppNav status as follows: 
 
 | application status | component status | 
 |:-------------------|:-----------------|
@@ -23,24 +23,24 @@ The rationale for using labeled colors instead of resource status text (e.g. { D
 
 Kubernetes resources have a status sub-resource (object).  This will be referred to as 'resource status'.  Resource status is defined by each Kubernetes resource kind.   
 
-Prism assigns an operational status to resources that are components of applications and to applications themselves.  This will be referred to as 'Prism status'.   Prism status is comprised of the following elements: 
+kAppNav assigns an operational status to resources that are components of applications and to applications themselves.  This will be referred to as 'kAppNav status'.   kAppNav status is comprised of the following elements: 
 
 1. value: \<status value\> 
 1. flyover: \<text\> 
 
-Prism status values map to colors as defined in the [prism-config map](https://github.com/kappnav/design/blob/master/status-determination.md#status-value-and-color-configuration).
+kAppNav status values map to colors as defined in the [kappnav-config map](https://github.com/kappnav/design/blob/master/status-determination.md#status-value-and-color-configuration).
 
-## Prism Status Representation and Storage 
+## kAppNav Status Representation and Storage 
 
-Prism Status will be calculated by a controller and stored as annotations in this form: 
+kAppNav Status will be calculated by a controller and stored as annotations in this form: 
 
 ```
 annotations: 
-   prism.status.value: <status value>
-   prism.status.flyover: <text>
+   kappnav.status.value: <status value>
+   kappnav.status.flyover: <text>
 ```
 
-## Prism Status value and color configuration
+## kAppNav Status value and color configuration
 
 The value to color mapping will be configurable, so the color scheme can be externally adjusted to satisfy a user's taste.  In the first implementation, this will be a system wide mapping only.  A future per-user mapping is possible. 
 
@@ -48,14 +48,14 @@ While color mapping is the principle objective, the design will satisfy these re
 
 1. the user external is a color name rather than a machine number 
 2. the UI does not require a priori knowledge of the color name -> machine number mapping 
-3. the user can extend the model with user defined Prism status values and colors
+3. the user can extend the model with user defined kAppNav status values and colors
 
 
 Therefore,
 
-- \<Prism status value\>: \<color_name\> # satisfies requirement #1 
+- \<kAppNav status value\>: \<color_name\> # satisfies requirement #1 
 - \<color_name\>: \<color_value\> # satisfies requirement #2 
-- \<Prism status value\> and \<color_name\> together satisfy requirement #3 
+- \<kAppNav status value\> and \<color_name\> together satisfy requirement #3 
 
 e.g. 
 
@@ -70,14 +70,14 @@ Unknown: GREY
 GREY: #5ba203
 ```
 
-The value/color configuration will be stored in config map `prism-config` in the prism namespace.  It will have this structure and default value: 
+The value/color configuration will be stored in config map `kappnav-config` in the kappnav namespace.  It will have this structure and default value: 
 
 ```
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: prism-config
-  namespace: prism
+  name: kappnav-config
+  namespace: kappnav
 data:
     status-color-mapping: |  
             { "values": { "Normal": "GREEN",   "Warning": "YELLOW",  "Problem": "RED",  "Unknown": "GREY"}, 
@@ -88,27 +88,27 @@ data:
     status-unknown: "Unknown" 
 ``` 
 
-## Prism Status Value Determination Algorithm for Application Resource 
+## kAppNav Status Value Determination Algorithm for Application Resource 
 
-The app-status-precedence value from the prism-config config map specifies the precedence order for summarizing component status to establish application status. The algorithm evaluates the status values left to right in the order given; if any component is found with the current status value, that value is assigned to the prism.status.value annotation for that resource. 
+The app-status-precedence value from the kappnav-config config map specifies the precedence order for summarizing component status to establish application status. The algorithm evaluates the status values left to right in the order given; if any component is found with the current status value, that value is assigned to the kappnav.status.value annotation for that resource. 
 
 ## Special Cases 
 
-There are edge cases where prism status is unknown:
+There are edge cases where kappnav status is unknown:
 
-1. resource created, but controller has not yet assigned prism status
+1. resource created, but controller has not yet assigned kappnav status
 1. status API encounters an error while applying status config map rule
 1. application has no components 
 
-In all these cases, the "unknown status" is used.  The "unknown status" is defined by the "status-unknown" key in the prism-config ConfigMap (see above).  This key specifies a key for the status-color-mappings.values[\<key\>] map.  
+In all these cases, the "unknown status" is used.  The "unknown status" is defined by the "status-unknown" key in the kappnav-config ConfigMap (see above).  This key specifies a key for the status-color-mappings.values[\<key\>] map.  
 
 The unknown status is used: 
 
 1. By the status API To establish the return value if it cannot determine the status of a resource. 
-1. By the UI for any resource that does not have a prism.status annotation. 
+1. By the UI for any resource that does not have a kappnav.status annotation. 
 
 
-## Prism Status Value Determination Algorithm for all Other Resources 
+## kAppNav Status Value Determination Algorithm for all Other Resources 
 
 Each Kubernetes resource declares it's own resource status values.  Some are simple and can be matched using a json path expression against a set of values, like Pod status.phase=Running.  Others are complex, like Deployment as an example: 
 
@@ -142,14 +142,14 @@ Red:
 
 ```
 
-Because each resource kind defines its own meaning for its resource status, there is no single mapping of resource status to prism status. Therefore, prism status is determined on a per resource kind basis, using a kind resource status mapping.  A resource kind status mapping may be registered for any kind, including custom resource definitions.
+Because each resource kind defines its own meaning for its resource status, there is no single mapping of resource status to kappnav status. Therefore, kappnav status is determined on a per resource kind basis, using a kind resource status mapping.  A resource kind status mapping may be registered for any kind, including custom resource definitions.
 
 ### Provided Resource Kind Status Mappings
 
-Prism installs kind resource status mappings for resources commonly composed into applications.  The following table shows the resource kinds with pre-defined mappings and their mapping rules:  
+kAppNav installs kind resource status mappings for resources commonly composed into applications.  The following table shows the resource kinds with pre-defined mappings and their mapping rules:  
 
 
-| Kind   | Prism Status Value | Conditions                  | Comment                    |
+| Kind   | kAppNav Status Value | Conditions                  | Comment                    |
 |:-------|:-------------|:----------------------------|:---------------------------| 
 | Deployment | Problem | available=0 and replicas > 0 |  
 | Deployment | Warning | replicas > available | 
@@ -180,7 +180,7 @@ See [Status Mapping Definition](#kind-status-mapping-definition) for information
 
 This is the default kind status mapping for unregistered kinds: 
 
-| Kind   | Prism Status Color | Conditions                  | Comment                    |
+| Kind   | kAppNav Status Color | Conditions                  | Comment                    |
 |:-------|:-------------|:----------------------------|:---------------------------| 
 | Unregistered Kind | Problem | N/A | Unregistered kinds never have Problem status. |  
 | Unregistered Kind | Warning | N/A | Unregistered never have Warning status.  |  
@@ -188,7 +188,7 @@ This is the default kind status mapping for unregistered kinds:
 
 ### Kind Status Mapping Definition 
 
-A kind status mapping can be defined for a kind and registered to replace Prism defaults or registered for a previously unregistered kind.  A kind status mapping is a Kubernetes config map in the prism name space.  You register a kind status mapping simply by creating the configmap instance. 
+A kind status mapping can be defined for a kind and registered to replace kAppNav defaults or registered for a previously unregistered kind.  A kind status mapping is a Kubernetes config map in the kappnav name space.  You register a kind status mapping simply by creating the configmap instance. 
 
 Kind Status Mapping Schema: 
 
@@ -196,7 +196,7 @@ Kind Status Mapping Schema:
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: prism.status-mapping.{kind}
+  name: kappnav.status-mapping.{kind}
 data:
     "exists": | 
     { 
@@ -241,18 +241,18 @@ Where:
 1. 'jsonpath' is mutually exclusive with 'exists' and 'algorithm'. If 'jsonpath' is specified, it must provide a status mapping for as many text status values returnable from the jsonpath expression that you want to explicitly map to a status value. Else is used for all others. If Else is omitted and the jsonpath expression returns a value that does not match any of the specified match values, then the 'unknown' status value is assigned. 
 1. 'algorithm' is mutally exclusive with 'exists' and 'jsonpath'.  If 'algorithm' is specified, it specifies a javascript snippet that accepts the resource's JSON status value as an input parameter and is responsible to return the correct component status object, containing status value and flyover text. 
 
-1. prism.status-mapping-unregistered
+1. kappnav.status-mapping-unregistered
 
-   This is a special status config map with a reserved name.  It provides the resource status mapping for any kind that does not have an explicit resource status mapping.  It is a reserved config map name in the prism namespace. 
+   This is a special status config map with a reserved name.  It provides the resource status mapping for any kind that does not have an explicit resource status mapping.  It is a reserved config map name in the kappnav namespace. 
 
-### Prism-installed mappings:
+### kAppNav-installed mappings:
 
 ```
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: prism.status-mapping.service
-  namespace: prism 
+  name: kappnav.status-mapping.service
+  namespace: kappnav 
 data:
   exists: |
   {  
@@ -263,8 +263,8 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prism.status-mapping.pod
-  namespace: prism 
+  name: kappnav.status-mapping.pod
+  namespace: kappnav 
 data: 
    "jsonpath": |
    { 
@@ -284,8 +284,8 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: prism.status-mapping.was-traditional-app
-  namespace: prism 
+  name: kappnav.status-mapping.was-traditional-app
+  namespace: kappnav 
 data:
   jsonpath: | 
 
@@ -293,8 +293,8 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: prism.status-mapping.was-liberty-app
-  namespace: prism 
+  name: kappnav.status-mapping.was-liberty-app
+  namespace: kappnav 
 data:
   jsonpath: | 
     { 
@@ -309,8 +309,8 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prism.status-mapping.deployment
-  namespace: prism 
+  name: kappnav.status-mapping.deployment
+  namespace: kappnav 
 data:
   algorithm: | 
     function getStatus(status) {
@@ -339,8 +339,8 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: prism.status-mapping-unregistered
-  namespace: prism 
+  name: kappnav.status-mapping-unregistered
+  namespace: kappnav 
 data:
   exists: |
   {  
