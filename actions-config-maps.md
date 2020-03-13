@@ -1,10 +1,10 @@
 # Actions Config Maps 
 
-"Actions" are day 2 operations.  Action config maps hold the definition of actions that can be applied to Kubernetes resources.  The principle use of action config maps is to populate the ACTION menus of the Prism Application and Component views.
+"Actions" are day 2 operations.  Action config maps hold the definition of actions that can be applied to Kubernetes resources.  The principle use of action config maps is to populate the ACTION menus of the kAppNav Application and Component views.
 
 Each application and application component may have one or more corresponding action config maps.  When there are multiple action config maps for a given Kubernetes resource, they are combined together to form the complete set of actions available for that resource.  
 
-Config maps are returned by the Prism application and component APIs.  [See APIs for more information.](https://github.com/kappnav/design/blob/master/APIs.md)
+Config maps are returned by the kAppNav application and component APIs.  [See APIs for more information.](https://github.com/kappnav/design/blob/master/APIs.md)
 
 ## Action Config Map Schema
 
@@ -12,9 +12,9 @@ Config maps are returned by the Prism application and component APIs.  [See APIs
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: prism.actions.{kind}[-subkind][.name]
+  name: kappnav.actions.{kind}[-subkind][.name]
   annotations: 
-     prism.actions.on.conflict: "merge" | "replace" 
+     kappnav.actions.on.conflict: "merge" | "replace" 
 data:
   url-actions: | 
       [
@@ -75,19 +75,19 @@ data:
 Notable fields in the ConfigMap: 
 
 - metadata.name - config map name. Required. See [Action Config Map Naming Convention](#action-config-map-naming-convention), below, for a full explanation.
-- metadata.annotations.prism.actions.on.conflict - specifies whether to merge or replace action config maps within the action configmap hierarchy.  Optional. The default is merge.  See [Action Config Map Hierarchy and Overrides ](#action-config-map-hierarchy-and-overrides) for further explanation of how this works.  
+- metadata.annotations.kappnav.actions.on.conflict - specifies whether to merge or replace action config maps within the action configmap hierarchy.  Optional. The default is merge.  See [Action Config Map Hierarchy and Overrides ](#action-config-map-hierarchy-and-overrides) for further explanation of how this works.  
 - data.url-actions
   - name - name of this url-action. Must be unique among all url-actions.  Required. 
-  - text - display text for action menu item in Prism UI. Used when menu-item= true; ignored otherwise. If menu-item= true and text is not defined,  then description is used; if description is not specified, then name is used. 
-  - description - user targetted description for this action.  Optional.  When defined and menu-item= true, the description is displayed as fly over help on the action menu in the Prism UI. 
+  - text - display text for action menu item in kAppNav UI. Used when menu-item= true; ignored otherwise. If menu-item= true and text is not defined,  then description is used; if description is not specified, then name is used. 
+  - description - user targetted description for this action.  Optional.  When defined and menu-item= true, the description is displayed as fly over help on the action menu in the kAppNav UI. 
   - url-pattern - the actual URL used to carry out this action.  See [Config Action Patterns](#config-action-patterns) for a full explanation of how to specify url patterns. 
   - open-window - specifies how to open the URL in a browser:  the value 'current' means in the current window/tab, the value 'tab' means in a new tab, and the value 'new' means in a new window. This value is used only when menu-item= true; otherwise it is ignored.  This value is optional.  The default is 'tab'.  
   - menu-item is a boolean field that indicates whether or not the action is intended for display in the Action menu on UI displays. This field is optional.  The default value is true.  
   - requires-input - specifies the name of an input specification that defines a required input for this action.  This value is optional.  It not specified, there is no required input. 
 - data.cmd-actions
   - name - name of this cmd-action. Must be unique among all cmd-actions.  Required. 
-  - text - display text for action menu item in Prism UI. Used when menu-item= true; ignored otherwise. If menu-item= true and text is not defined,  then description is used; if description is not specified, then name is used. 
-  - description - user targetted description for this action.  Optional.  When defined and menu-item= true, the description is displayed as fly over help on the action menu in the Prism UI. 
+  - text - display text for action menu item in kAppNav UI. Used when menu-item= true; ignored otherwise. If menu-item= true and text is not defined,  then description is used; if description is not specified, then name is used. 
+  - description - user targetted description for this action.  Optional.  When defined and menu-item= true, the description is displayed as fly over help on the action menu in the kAppNav UI. 
   - image - specifies the docker image name and tag of the image that contains the implementation of the command specified by cmd-pattern.  This value is required. 
   - cmd-pattern - the actual command  used to carry out this action.  See [Config Action Patterns](#config-action-patterns) for a full explanation of how to specify cmd patterns.  This is a required value. 
   - menu-item is a boolean field that indicates whether or not the action is intended for display in the Action menu on UI displays. This field is optional.  The default value is true.  
@@ -150,24 +150,24 @@ Example:
 
 | Resource | Valid Action Config Map Names  |
 |:-----------|:--------------------------------|
-| kind: Deployment <br> metadata.name: trader <br> metadata.annotations.prism.subkind: Liberty  | prism.deployment <br> prism.deployment.trader <br> prism.deployment-liberty <br> prism.deployment-liberty.trader  | 
+| kind: Deployment <br> metadata.name: trader <br> metadata.annotations.kappnav.subkind: Liberty  | kappnav.deployment <br> kappnav.deployment.trader <br> kappnav.deployment-liberty <br> kappnav.deployment-liberty.trader  | 
 
 When multiple action config maps exist for a given resource, they are combined according to the rules for 
 [Action Config Map Hierarchy and Overrides](#action-config-map-hierarchy-and-overrides); see below. 
 
 ## Action Config Maps and Name Spaces 
 
-Action config maps can be defined in the same namespace as the resource to which they correspond and additionally in a special namespace named 'prism'. The prism namespace is created as part of Prism's installation and serves as a global namespace for prism action config maps. 
+Action config maps can be defined in the same namespace as the resource to which they correspond and additionally in a special namespace named 'kappnav'. The kappnav namespace is created as part of kAppNav's installation and serves as a global namespace for kappnav action config maps. 
 
-So it is possible for a resource to have corresponding action config maps in both its own namespace as well as in the prism global namespace. 
+So it is possible for a resource to have corresponding action config maps in both its own namespace as well as in the kappnav global namespace. 
 
 Example:
 
 | Resource | Valid Action Config Map Names  |
 |:-----------|:--------------------------------|
-| kind: Deployment <br> metadata.name: trader <br> metadata.namespace: production  | namespace: prism <br> &nbsp;&nbsp;&nbsp;prism.deployment <br> &nbsp;&nbsp;&nbsp;prism.deployment-liberty <br> namespace: production <br> &nbsp;&nbsp;&nbsp;prism.deployment-liberty.trader | 
+| kind: Deployment <br> metadata.name: trader <br> metadata.namespace: production  | namespace: kappnav <br> &nbsp;&nbsp;&nbsp;kappnav.deployment <br> &nbsp;&nbsp;&nbsp;kappnav.deployment-liberty <br> namespace: production <br> &nbsp;&nbsp;&nbsp;kappnav.deployment-liberty.trader | 
 
-Only kind and kind.subkind specific action config maps are supported only in the prism global namespace.  Instance specific action config maps are supported only in the same namespace as the associated resource. 
+Only kind and kind.subkind specific action config maps are supported only in the kappnav global namespace.  Instance specific action config maps are supported only in the same namespace as the associated resource. 
 
 When multiple action config maps exist for a given resource, they are combined according to the rules for 
 [Action Config Map Hierarchy and Overrides](#action-config-map-hierarchy-and-overrides); see below. 
@@ -183,9 +183,9 @@ The set of action config maps that correspond to a given resource form a hierarc
 
 The potential hierarchy for a given resource is calculated by constructing the action config map names (as per the preceding patterns) and querying for them. The ones actually found comprise the effective hierarchy. Once the effective hierarchy is established, overrides are evaluated from top to bottom.
 
-Overrides may be in whole or in part at each level, based on the setting of the action config map's prism.actions.on.conflict annotation.  When the value is 'replace', the current action config map replaces entirely the evaluation up to that point. In other words, 'replace' replaces all actions higher in the hierarchy with the actions in the current action config map. 
+Overrides may be in whole or in part at each level, based on the setting of the action config map's kappnav.actions.on.conflict annotation.  When the value is 'replace', the current action config map replaces entirely the evaluation up to that point. In other words, 'replace' replaces all actions higher in the hierarchy with the actions in the current action config map. 
 
-Alternatively, when when prism.actions.on.conflict is 'merge' the current action config map is merged into the actions evaluated up to that point in the hierarchy.  In other words,'merge' merges actions from the current action config map into the actions of the action config maps higher in the hierarcy. The individual action is merged by replacing a named action from higher in the hierarchy with the same-named action in the current action config map; if no such action exists higher in the hierarchy, the action is net new and simply added to the rest.  
+Alternatively, when when kappnav.actions.on.conflict is 'merge' the current action config map is merged into the actions evaluated up to that point in the hierarchy.  In other words,'merge' merges actions from the current action config map into the actions of the action config maps higher in the hierarcy. The individual action is merged by replacing a named action from higher in the hierarchy with the same-named action in the current action config map; if no such action exists higher in the hierarchy, the action is net new and simply added to the rest.  
 
 Examples: 
 
@@ -195,8 +195,8 @@ Given action config maps:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prism.deployment
-  namespace: prism
+  name: kappnav.actions.deployment
+  namespace: kappnav
 data:
   url-actions: |
     [ 
@@ -207,10 +207,10 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prism.deployment-liberty
-  namespace: prism
+  name: kappnav.actions.deployment-liberty
+  namespace: kappnav
   annotations: 
-    prism.actions.on.conflict: replace  
+    kappnav.actions.on.conflict: replace  
 data:
   url-actions: |
     [ 
@@ -221,10 +221,10 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prism.deployment-liberty.myapp
+  name: kappnav.actions.deployment-liberty.myapp
   namespace: default
   annotations: 
-    prism.actions.on.conflict: merge   
+    kappnav.actions.on.conflict: merge   
 data:
   url-actions: |
     [ 
@@ -238,7 +238,7 @@ kind: Deployment
 metadata:
     name: myapp
     annotations:
-        prism.subkind: Liberty 
+        kappnav.subkind: Liberty 
         
 after action config map evaluation, the effective actions would be: 
 
@@ -271,7 +271,7 @@ The syntax for expressing resolution of each source is:
 | Source | Syntax | Example | 
 |--------|--------|---------|
 | resource field | ${resource.\<json-path\>} | ${resource.$.metadata.name} |
-| resource annotation | ${resource.\<json-path\>} | ${resource.$.metadata.annotations['prism.subkind']} | 
+| resource annotation | ${resource.\<json-path\>} | ${resource.$.metadata.annotations['kappnav.subkind']} | 
 | global configmap field | ${global.\<configmap-name\>#\<configmap-spec\>} | ${global.dmgrs#cell1-ipname} |
 | secret field | ${secret.\<secret-name\>#\<secret-spec\>} | ${secret.dmgr-creds#user} |
 | builtin symbols | ${builtin.\<builtin-spec\>} | ${builtin.icp-console-url} |
@@ -286,10 +286,10 @@ Details and Rules:
 1. A json-path is a json path reference to any of the standard fields of a Kubernetes resource - e.g. metadata.name. You can use reference child elements using ".child" or "['child'] notation.
 1. A configmap-name is the name of a config map. 
 1. A configmap-spec is a reference to a named field within a config map's data section.
-1. A ${global} reference references a configmap within the prism global namespace. 
+1. A ${global} reference references a configmap within the kappnav global namespace. 
 1. A secret-name is the name of a secret. 
 1. A secret-spec is a reference to a named field within a secret's data section.
-1. A ${secret} reference references a secret within the prism global namespace. 
+1. A ${secret} reference references a secret within the kappnav global namespace. 
 1. A ${builtin} reference references a builtin value.
 1. A builtin-spec reference references a builtin value.
 1. A ${var.\<variable-name\>} references a named variable. For release 0.1.5 and higher returns either resolved variable value or optional default string constant if value can otherwise not be resolved. 
@@ -306,13 +306,13 @@ kind: Deployment
 metadata: 
    name: trader 
    annotations: 
-       prism.subkind: Liberty
+       kappnav.subkind: Liberty
       
 configmap: 
    
 metadata:
    name: dmgrs
-   namespace: prism
+   namespace: kappnav
 data:
    cell1-ipname: cell1.dmgr.com    
 
@@ -321,10 +321,10 @@ action config map:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prism.deployment-liberty
-  namespace: prism
+  name: kappnav.actions.deployment-liberty
+  namespace: kappnav
   annotations: 
-    prism.actions.on.conflict: merge   
+    kappnav.actions.on.conflict: merge   
 data:
   url-actions: |
   [ 
@@ -351,18 +351,18 @@ When following expressions are processed against the preceding examples, they yi
 | Expression | Applied Against | Result | 
 |:------------|:--------|:--------------|
 | ${resource.$.metadata.name} | trader deployment in default namespace  | trader | 
-| ${resource.$.metadata.annotations['prism.subkind']} | trader deployment in default namespace | Liberty | 
-| ${global.dmgrs#cell1-ipname} | dmgrs config map in prism-global namespace | cell1.dmgr.com | 
+| ${resource.$.metadata.annotations['kappnav.subkind']} | trader deployment in default namespace | Liberty | 
+| ${global.dmgrs#cell1-ipname} | dmgrs config map in kappnav-global namespace | cell1.dmgr.com | 
 | ${builtin.kibana-url} | current Kubernetes cluster | https://9.42.75.15:8443/kibana |  
 | ${func.podlist(${resource.$.metadata.namespace},${resource.$.metata.name})} | trader deployment in default namespace | { "pods" : "['pod1','pod2']" } | 
 | ${func.replicaset(${resource.$.metadata.namespace},${resource.$.metata.name})} | trader deployment in default namespace | { "replicaset" : "pod1" } | 
-| ${snippet.create-kibana-log-url(${builtin.kibana-url},${func.podlist(${resource.$.metata.namespace},${resource.$.metata.name})})} | prism.deployment-liberty config map and trader deployment in default namespace | https://9.42.75.15:8443/kibana/liberty-dash?pods=pod1,pod2 |
-| ${snippet.create-kibana-log-url(${builtin.kibana-url},${func.replicaset(${resource.$.metata.namespace},${resource.$.metata.name})})} | prism.deployment-liberty config map and trader deployment in default namespace | https://9.42.75.15:8443/kibana/liberty-dash?replicaset=pod1 |
+| ${snippet.create-kibana-log-url(${builtin.kibana-url},${func.podlist(${resource.$.metata.namespace},${resource.$.metata.name})})} | kappnav.deployment-liberty config map and trader deployment in default namespace | https://9.42.75.15:8443/kibana/liberty-dash?pods=pod1,pod2 |
+| ${snippet.create-kibana-log-url(${builtin.kibana-url},${func.replicaset(${resource.$.metata.namespace},${resource.$.metata.name})})} | kappnav.deployment-liberty config map and trader deployment in default namespace | https://9.42.75.15:8443/kibana/liberty-dash?replicaset=pod1 |
 
 
 ### Builtin Substitution Symbols 
 
-These are stored in config map 'builtin' in the 'prism' name space. 
+These are stored in config map 'builtin' in the 'kappnav' name space. 
 
 | Name | Description |
 |:-----|:------------|
