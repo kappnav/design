@@ -272,7 +272,6 @@ The syntax for expressing resolution of each source is:
 |--------|--------|---------|
 | resource field | ${resource.\<json-path\>} | ${resource.$.metadata.name} |
 | resource annotation | ${resource.\<json-path\>} | ${resource.$.metadata.annotations['kappnav.subkind']} | 
-| global configmap field | ${global.\<configmap-name\>#\<configmap-spec\>} | ${global.dmgrs#cell1-ipname} |
 | secret field | ${secret.\<secret-name\>#\<secret-spec\>} | ${secret.dmgr-creds#user} |
 | builtin symbols | ${builtin.\<builtin-spec\>} | ${builtin.icp-console-url} |
 | built-in functions | ${func.\<function-name\>} | ${func.podlist(\<namespace-name\>,\<deployment-name\>)} ${func.apppodlist(\<namespace-name\>,\<application-name\>)}  ${func.replicaset(\<namespace-name\>,\<deployment-name\>)} |
@@ -286,7 +285,6 @@ Details and Rules:
 1. A json-path is a json path reference to any of the standard fields of a Kubernetes resource - e.g. metadata.name. You can use reference child elements using ".child" or "['child'] notation.
 1. A configmap-name is the name of a config map. 
 1. A configmap-spec is a reference to a named field within a config map's data section.
-1. A ${global} reference references a configmap within the kappnav global namespace. 
 1. A secret-name is the name of a secret. 
 1. A secret-spec is a reference to a named field within a secret's data section.
 1. A ${secret} reference references a secret within the kappnav global namespace. 
