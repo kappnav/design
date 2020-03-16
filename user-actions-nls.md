@@ -21,7 +21,7 @@ The following fields in an action configmap control whether and how NLS is suppo
 
 Specifies the lookup key for a text translation in an NLS config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the text field is used for the action text - e.g. as the text for a menu item.  If specified, it is used in combination with the specified locale to lookup the text value from the associated NLS configmap. 
 
-Example: 
+Example specification in an action configmap: 
 
 ```
 data:
@@ -41,7 +41,7 @@ data:
 
 Specifies the lookup key for a description translation in an NLS config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the description field is used for the action description - e.g. as the hover help for a menu item.  If specified, it is used in combination with the specified locale to lookup the description value from the associated NLS configmap. 
 
-Example:
+Example specification in an action configmap: 
  
 ```
   url-actions: | 
@@ -55,42 +55,17 @@ Example:
           ...   
        }
     ]
+    
 ```
 
-### nls-validation 
+### NLS string lookup
 
-Specifies if NLS validation is enabled (default) or disabled.
+When "text.nls" is not specified, the value of the "text" field is returned. When "description.nls" is not specified, the value of the "description" field is returned. 
 
-Example: 
+When text.nls or description.nls is specified, the following lookup occurs for each according to the specified locale: 
 
-```
-data: 
-   nls-validation: disabled 
-   url-actions: [ ... ]
-```
+1. the NLS configmap name 
 
-
-### nls-configmap
-
-Specifies whether or not a configmap of NLS translations is provided. The default is false.
-
-Example: 
-
-```
-data: 
-   nls-configmap: kappnav.actions.nls.
-   url-actions: [ ... ]
-```
-
-```
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kappnav.actions.nls
-data: 
-  view-home-page: ver página de inicio
-  view-home-page-desc: Ver página de inicio para el servicio seleccionado
-```
 
 We can't always get a perfect locale match for a given request, e.g. we may not have a French Canadian translation, but we have a French one. The rules for resolving a locale into a suitable translation are:
 
@@ -99,3 +74,64 @@ e.g. for bundle msgs.properties, locale fr_CA
 Try msgs_fr_CA.properties (perfect match)
 If not found, try msgs_fr.properties (French)
 If not found, try msgs.properties (default, English)
+
+
+
+### nls-validation 
+
+Specifies if NLS validation is enabled (default) or disabled.
+
+Example specification in an action configmap: 
+
+```
+data: 
+   nls-validation: disabled 
+   url-actions: [ ... ]
+```
+
+If NLS validation is enabled, the effective "text" and "description" value for the defined action is surrounded by exclamation points if validation fails, e.g. 
+
+```
+!View home page!
+```
+
+Validation fails for any of the following reasons: 
+
+1. no 
+
+
+### nls-configmap
+
+Specifies the name of a configmap containing the NLS strings for one or more action configmaps. 
+
+Example specification in an action configmap: 
+
+```
+apiVersion
+data: 
+   nls-configmap: kappnav.actions.nls.[locale-value]
+   url-actions: [ ... ]
+```
+
+### NLS ConfigMap Format
+
+The NLS configmap is a regular configmap where the data section contains key/value pairs as follows: 
+
+```
+data: 
+    translation-test-lookup-key: translation-text
+```
+
+Example NLS configmap:
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kappnav.actions.nls.es
+data: 
+  "view-home-page": "ver página de inicio"
+  "view-home-page-desc": "Ver página de inicio para el servicio seleccionado"
+```
+
+Note the NLS configmap resides in the same namespace as the specifying action configmap.  
