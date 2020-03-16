@@ -13,7 +13,7 @@ The following fields in an action configmap control whether and how NLS is suppo
 | text.nls        | action     | nls-key     | Specifies the lookup key for a text translation in an nls config map. |
 | description.nls | action     | nls-key     | Specifies the lookup key for a description translation in an nls config map. |
 | nls-validation  | configmap  | enabled \| disabled | Specifies if nls validation is enabled (default) or disabled. | 
-| nls-configmap   | configmap  | Specifies name of ConfigMap containing language translation  |
+| nls-configmap   | configmap  | configmap name | Specifies name of a ConfigMap resource containing language translation values.  |
 
 ##  NLS Operation
 
