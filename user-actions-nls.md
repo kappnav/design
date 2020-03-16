@@ -10,16 +10,16 @@ The following fields in an action configmap control whether and how NLS is suppo
 
 | Field Name      | Scope      | Field Value | Description | 
 |-----------------|------------|-------------|-------------|
-| text.nls        | action     | nls-key     | Specifies the lookup key for a text translation in an nls config map. |
-| description.nls | action     | nls-key     | Specifies the lookup key for a description translation in an nls config map. |
-| nls-validation  | configmap  | enabled \| disabled | Specifies if nls validation is enabled (default) or disabled. | 
+| text.nls        | action     | nls-key     | Specifies the lookup key for a text translation in an NLS config map. |
+| description.nls | action     | nls-key     | Specifies the lookup key for a description translation in an NLS config map. |
+| nls-validation  | configmap  | enabled \| disabled | Specifies if NLS validation is enabled (default) or disabled. | 
 | nls-configmap   | configmap  | configmap name | Specifies name of a ConfigMap resource containing language translation values.  |
 
 ##  NLS Operation
 
 ### text.nls
 
-Specifies the lookup key for a text translation in an nls config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the text field is used for the action text - e.g. as the text for a menu item.  If specified, it is used in combination with the specified locale to lookup the text value from the specified nls configmap. 
+Specifies the lookup key for a text translation in an NLS config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the text field is used for the action text - e.g. as the text for a menu item.  If specified, it is used in combination with the specified locale to lookup the text value from the associated NLS configmap. 
 
 Example: 
 
@@ -39,7 +39,7 @@ data:
 
 ### description.nls 
 
-Specifies the lookup key for a description translation in an nls config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the description field is used for the action description - e.g. as the hover help for a menu item.  If specified, it is used in combination with the specified locale to lookup the description value from the specified nls configmap. 
+Specifies the lookup key for a description translation in an NLS config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the description field is used for the action description - e.g. as the hover help for a menu item.  If specified, it is used in combination with the specified locale to lookup the description value from the associated NLS configmap. 
 
 Example:
  
@@ -59,7 +59,7 @@ Example:
 
 ### nls-validation 
 
-Specifies if nls validation is enabled (default) or disabled.
+Specifies if NLS validation is enabled (default) or disabled.
 
 Example: 
 
@@ -72,7 +72,7 @@ data:
 
 ### nls-configmap
 
-Specifies whether or not a configmap of nls translations is provided. The default is false.
+Specifies whether or not a configmap of NLS translations is provided. The default is false.
 
 Example: 
 
