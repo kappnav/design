@@ -15,7 +15,7 @@ The following fields in an action configmap control whether and how NLS is suppo
 | nls-validation  | configmap  | enabled \| disabled | Specifies if NLS validation is enabled (default) or disabled. | 
 | nls-configmap   | configmap  | configmap name | Specifies name of a ConfigMap resource containing language translation values.  |
 
-##  NLS Operation
+##  NLS Specification and Operation
 
 ### text.nls
 
@@ -58,48 +58,6 @@ Example specification in an action configmap:
     
 ```
 
-### NLS string lookup
-
-When "text.nls" is not specified, the value of the "text" field is returned. When "description.nls" is not specified, the value of the "description" field is returned. 
-
-When text.nls or description.nls is specified, the following lookup occurs for each according to the specified locale: 
-
-1. the NLS configmap name 
-
-
-We can't always get a perfect locale match for a given request, e.g. we may not have a French Canadian translation, but we have a French one. The rules for resolving a locale into a suitable translation are:
-
-e.g. for bundle msgs.properties, locale fr_CA
-
-Try msgs_fr_CA.properties (perfect match)
-If not found, try msgs_fr.properties (French)
-If not found, try msgs.properties (default, English)
-
-
-
-### nls-validation 
-
-Specifies if NLS validation is enabled (default) or disabled.
-
-Example specification in an action configmap: 
-
-```
-data: 
-   nls-validation: disabled 
-   url-actions: [ ... ]
-```
-
-If NLS validation is enabled, the effective "text" and "description" value for the defined action is surrounded by exclamation points if validation fails, e.g. 
-
-```
-!View home page!
-```
-
-Validation fails for any of the following reasons: 
-
-1. no 
-
-
 ### nls-configmap
 
 Specifies the name of a configmap containing the NLS strings for one or more action configmaps. 
@@ -135,3 +93,45 @@ data:
 ```
 
 Note the NLS configmap resides in the same namespace as the specifying action configmap.  
+
+### NLS string lookup
+
+When "text.nls" is not specified, the value of the "text" field is returned. When "description.nls" is not specified, the value of the "description" field is returned. 
+
+When text.nls or description.nls is specified, the following lookup occurs for each according to the specified locale: 
+
+1. the NLS configmap name 
+
+
+We can't always get a perfect locale match for a given request, e.g. we may not have a French Canadian translation, but we have a French one. The rules for resolving a locale into a suitable translation are:
+
+e.g. for bundle msgs.properties, locale fr_CA
+
+Try msgs_fr_CA.properties (perfect match)
+If not found, try msgs_fr.properties (French)
+If not found, try msgs.properties (default, English)
+
+### nls-validation 
+
+Specifies if NLS validation is enabled (default) or disabled.
+
+Example specification in an action configmap: 
+
+```
+data: 
+   nls-validation: disabled 
+   url-actions: [ ... ]
+```
+
+If NLS validation is enabled, the effective "text" and "description" value for the defined action is surrounded by exclamation points if validation fails, e.g. 
+
+```
+!View home page!
+```
+
+Validation fails for any of the following reasons: 
+
+1. no 
+
+
+
