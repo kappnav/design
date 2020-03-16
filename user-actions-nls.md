@@ -1,6 +1,6 @@
 # NLS Support for User-defined Actions
 
-User defined actions can support or not support language translation (NLS) as they choose. To support NLS, translation text is required for text and description fields for action menu items.  This is supported on all action types - e.g. url-actions, cmd-actions. 
+User defined actions can support or not support language translation (NLS) as they choose. To support NLS, translation text is required for text and description fields for resource action definitions - e.g. for menu items.  This is supported on all action types - e.g. url-actions, cmd-actions. 
 
 The basic concept is that a lookup key is used to index a language-specific map to obtain the correct text for the user's selected language. 
 
