@@ -1,12 +1,12 @@
-# Prism APIs 
-Prism provides REST APIs on the Kubernetes internal network for the following: 
+# {k}AppNav APIs 
+{k}AppNav provides REST APIs on the Kubernetes internal network for the following: 
 
 1. applications
 1. components 
 1. action substitutions 
 1. WAS-ND-App status 
 
-Prism also provides a set of external APIs.  See [Prism API Server](#prism-api-server) for further information. 
+{k}AppNav also provides a set of external APIs.  See [{k}AppNav API Server](#prism-api-server) for further information. 
 
 ## Applications 
 
