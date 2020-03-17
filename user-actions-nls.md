@@ -10,10 +10,10 @@ The following fields in an action configmap control whether and how NLS is suppo
 
 | Field Name      | Scope      | Field Value | Description | 
 |-----------------|------------|-------------|-------------|
-| text.nls        | action     | nls-key     | Specifies the lookup key for a text translation in an NLS config map. |
-| description.nls | action     | nls-key     | Specifies the lookup key for a description translation in an NLS config map. |
-| nls-validation  | configmap  | enabled \| disabled | Specifies if NLS validation is enabled (default) or disabled. | 
-| nls-configmap   | configmap  | configmap name | Specifies name of a ConfigMap resource containing language translation values.  |
+| text.nls        | action     | nls-key     | Optional. Specifies the lookup key for a text translation in an NLS config map. The default is to use the value of the 'text' field. |
+| description.nls | action     | nls-key     | Optional. Specifies the lookup key for a description translation in an NLS config map. The default is to use the value of the 'description' field. |
+| nls-validation  | configmap  | enabled \| disabled | Optional. Specifies if NLS validation is enabled or disabled. The default is enabled. | 
+| nls-configmap   | configmap  | configmap name | Optional. Specifies name of a ConfigMap resource containing language translation values. Default name is 'kappnav.actions.nls.[locale]' |
 
 ##  NLS Specification and Operation
 
@@ -98,22 +98,21 @@ Note the NLS configmap resides in the same namespace as the specifying action co
 
 When "text.nls" is not specified, the value of the "text" field is returned. When "description.nls" is not specified, the value of the "description" field is returned. 
 
-When text.nls or description.nls is specified, the following lookup occurs for each according to the specified locale: 
-
-1. the NLS configmap name 
-
+When text.nls or description.nls is specified, a lookup will occur in the action configmap's nls-configmap, using the specified translation key and locale.  
 
 We can't always get a perfect locale match for a given request, e.g. we may not have a French Canadian translation, but we have a French one. The rules for resolving a locale into a suitable translation are:
 
-e.g. for bundle msgs.properties, locale fr_CA
+e.g. for a given action configmap, locale fr_CA
 
-Try msgs_fr_CA.properties (perfect match)
-If not found, try msgs_fr.properties (French)
-If not found, try msgs.properties (default, English)
+```
+Try the action configmap's nls-configmap - e.g. kappnav.actions.nls.fr_CA (perfect match)
+If not found, try nls-configmap - e.g. kappnav.actions.nls.fr (French)
+If not found, try nls-configmap - e.g. kappnav.actions.nls.en (default, English)
+```
 
 ### nls-validation 
 
-Specifies if NLS validation is enabled (default) or disabled.
+Specifies if NLS validation is enabled or disabled. The default is 'enabled'. The purpose of NLS validation is to give a visual cue of whether or not the translation strings for the specified locale for a given action definition were found. 
 
 Example specification in an action configmap: 
 
@@ -131,7 +130,24 @@ If NLS validation is enabled, the effective "text" and "description" value for t
 
 Validation fails for any of the following reasons: 
 
-1. no 
+1. no text.nls or description.nls values specified
+1. no nls configmap found
+1. no matching key in nls configmap found
 
+### Provided translations 
 
+The kAppNav project provide translations for actions and all user facing strings in the UI for these language_country combinations, given in the default nls configmap name: 
+
+1. kappnav.actions.nls.en - English		
+1. kappnav.actions.nls.ja - Japanese
+1. kappnav.actions.nls.de - German
+1. kappnav.actions.nls.ko - Korean
+1. kappnav.actions.nls.es - Spanish		
+1. kappnav.actions.nls.pt_BR - Portuguese, Brazil
+1. kappnav.actions.nls.fr - French		
+1. kappnav.actions.nls.zh_CN - Chinese, China
+1. kappnav.actions.nls.it	- Italian
+1. kappnav.actions.nls.zh_TW - Chinese, Taiwan 
+
+### API Support 
 
