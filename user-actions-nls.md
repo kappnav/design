@@ -17,7 +17,7 @@ The following fields in an action configmap control whether and how NLS is suppo
 
 ##  NLS Specification and Operation
 
-### text.nls
+### text.nls field
 
 Specifies the lookup key for a text translation in an NLS config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the text field is used for the action text - e.g. as the text for a menu item.  If specified, it is used in combination with the specified locale to lookup the text value from the associated NLS configmap. 
 
@@ -37,7 +37,7 @@ data:
 ```
 
 
-### description.nls 
+### description.nls field 
 
 Specifies the lookup key for a description translation in an NLS config map. This value is specified on individual action definitions in an action configmap. It is an optional value.  If not specified, the description field is used for the action description - e.g. as the hover help for a menu item.  If specified, it is used in combination with the specified locale to lookup the description value from the associated NLS configmap. 
 
@@ -58,7 +58,7 @@ Example specification in an action configmap:
     
 ```
 
-### nls-configmap
+### nls-configmap field 
 
 Specifies the name of a configmap containing the NLS strings for one or more action configmaps. 
 
@@ -110,7 +110,7 @@ If not found, try nls-configmap - e.g. kappnav.actions.nls.fr (French)
 If not found, try nls-configmap - e.g. kappnav.actions.nls.en (default, English)
 ```
 
-### nls-validation 
+### nls-validation field 
 
 Specifies if NLS validation is enabled or disabled. The default is 'enabled'. The purpose of NLS validation is to give a visual cue of whether or not the translation strings for the specified locale for a given action definition were found. 
 
