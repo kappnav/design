@@ -153,3 +153,4 @@ The kAppNav project provide translations for actions and all user facing strings
 
 ### API Support 
 
+The "application", "applications", and "components" APIs will support a 'locale' query parameter to allow the caller to specify the desired locale for translation.  It is an optional query parameter.  The default value is "en_US". 
