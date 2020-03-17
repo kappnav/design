@@ -138,16 +138,18 @@ Validation fails for any of the following reasons:
 
 The kAppNav project provide translations for actions and all user facing strings in the UI for these language_country combinations, given in the default nls configmap name: 
 
-1. kappnav.actions.nls.en - English		
-1. kappnav.actions.nls.ja - Japanese
-1. kappnav.actions.nls.de - German
-1. kappnav.actions.nls.ko - Korean
-1. kappnav.actions.nls.es - Spanish		
-1. kappnav.actions.nls.pt_BR - Portuguese, Brazil
-1. kappnav.actions.nls.fr - French		
-1. kappnav.actions.nls.zh_CN - Chinese, China
-1. kappnav.actions.nls.it	- Italian
-1. kappnav.actions.nls.zh_TW - Chinese, Taiwan 
+| nls configmap name | language, country | 
+|--------------------|-------------------|
+| kappnav.actions.nls.en | English	|	
+| kappnav.actions.nls.ja | Japanese |
+| kappnav.actions.nls.de | German |
+| kappnav.actions.nls.ko | Korean |
+| kappnav.actions.nls.es | Spanish	|	
+| kappnav.actions.nls.pt_BR | Portuguese, Brazil |
+| kappnav.actions.nls.fr | French		|
+| kappnav.actions.nls.zh_CN | Chinese, China |
+| kappnav.actions.nls.it | Italian |
+| kappnav.actions.nls.zh_TW | Chinese, Taiwan |
 
 ### API Support 
 
