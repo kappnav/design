@@ -6,8 +6,6 @@
 1. action substitutions 
 1. WAS-ND-App status 
 
-{k}AppNav also provides a set of external APIs.  See [{k}AppNav API Server](#prism-api-server) for further information. 
-
 ## Applications 
 
 Get applications. 
@@ -348,11 +346,6 @@ The namespace API is a convenience API that simply passes through to the Kuberne
 
 https://host:port/prism/namespaces 
 
-## Prism API Server
-
-The CRUD APIs must be externally accessible through Ingress to support integrations, such as with WebSphere VM Quickstarter.  See [Prism Quickstarter Integration if you want further info on that.](https://ibm.box.com/s/8fjmkrx43c4sliaanurcnnsc842pivm2)
-
-The external APIs are documented in [custom resource design](https://github.com/kappnav/design/blob/master/custom-resources.md#prism-api-server).
 
 # Status Management APIs 
 
