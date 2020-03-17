@@ -40,7 +40,11 @@
 1. Note change to versioning scheme. Done to match [Kabanero](https://kabanero.io/)
 1. [Group-Version-Resource (GVR)](https://github.com/kappnav/design/blob/master/groups-and-versions.md)
 
-### {k}AppNav 0.6.0 Design
+### {k}AppNav 0.7.0 Design
+
+1. [Logging](https://github.com/kappnav/design/blob/master/logging.md)
+
+### {k}AppNav Future Design (not assigned to release yet)
 
 1. [KindActionMapping Custom Resource Definition](https://github.com/kappnav/design/blob/master/kind-action-mapping.md)
-1. [Logging](https://github.com/kappnav/design/blob/master/logging.md)
+1. [NLS Support for Custom Actions]{https://github.com/kappnav/design/blob/master/user-actions-nls.md}
