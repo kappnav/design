@@ -305,11 +305,7 @@ Returns also a job action map:
     { "kind": "Job", ... },
     etc
   ],
-  "action-map": {
-      "url-actions": [ ... ],
-      "cmd-actions": [ ... ], 
-      etc
-  }
+  "action-map": { ... } 
 }
 ```
 
