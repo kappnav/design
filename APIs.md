@@ -15,9 +15,9 @@ https://host:port/prism/applications[?namespace={specified-namespace}][{?|&}loca
 
 - namespace is optional.  If omitted, applications across all namespaces are returned. 
 
-  **New for {k}AppNav x.y.z
+  **New for {k}AppNav x.y.z**
 
-- locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
+- locale specifies the caller's requested lanuage for translation of translatable fields. It is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
 
 **Return Value**
 
@@ -43,17 +43,19 @@ Where:
 
 Get application components.  
 
-https://host:port/prism/components/{application-name}[?namespace={specified-namespace}]
-
-'application-name' specifies the name of the application whose components are requested.  
-
-Parameter namespace specifies the namespace in which the specified application exists. Namespace is optional. If omitted, the application is searched for in the default namespace.  
-
-New for version x.x.x.
-
 https://host:port/prism/components/{application-name}[?namespace={specified-namespace}][{?|&}locale={locale-value}]
 
-Parameter locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
+'application-name' specifies the name of the application whose components are requested.   
+
+**Query Parameters**
+
+- namespace specifies the namespace in which the specified application exists. Namespace is optional. If omitted, the application is searched for in the default namespace. 
+
+**New for version x.x.x**
+
+- locale specifies the caller's requested lanuage for translation of translatable fields. It is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field. 
+
+**Return Value**
 
 Returns JSON structure of all application components and their action maps, according to the application's selection criteria. The selection criteria is part of the application definition, according to the componentKinds and label selector attributes of the application instance. 
 
