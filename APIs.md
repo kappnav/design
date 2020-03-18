@@ -342,7 +342,7 @@ The status value is determined according to the [WAS ND App status table](https:
 
 ## Namespace API 
 
-The namespace API is a convenience API that simply passes through to the Kubernetes api/v1/namespaces API.  This is done to simplify security and configuration for the Prism UI. 
+The namespace API is a convenience API that simply passes through to the Kubernetes api/v1/namespaces API.  This is done to simplify security and configuration for the {k}AppNav UI. 
 
 https://host:port/prism/namespaces 
 
