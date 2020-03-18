@@ -4,7 +4,6 @@
 1. applications
 1. components 
 1. action substitutions 
-1. WAS-ND-App status 
 
 ## Applications 
 
@@ -12,7 +11,13 @@ Get applications.
 
 https://host:port/prism/applications[?namespace={specified-namespace}]
 
-Namespace is optional.  If omitted, applications across all namespaces are returned. 
+Parameter namespace is optional.  If omitted, applications across all namespaces are returned. 
+
+New for version x.x.x.
+
+https://host:port/prism/applications[?namespace={specified-namespace}][{?|&&}locale={locale-value}]
+
+Parameter locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
 
 Returns JSON structure of all application objects and their action maps in this structure: 
 
@@ -40,7 +45,13 @@ https://host:port/prism/components/{application-name}[?namespace={specified-name
 
 'application-name' specifies the name of the application whose components are requested.  
 
-Namespace specifies the namespace in which the specified application exists. Namespace is optional. If omitted, the application is searched for in the default namespace.  
+Parameter namespace specifies the namespace in which the specified application exists. Namespace is optional. If omitted, the application is searched for in the default namespace.  
+
+New for version x.x.x.
+
+https://host:port/prism/components/{application-name}[?namespace={specified-namespace}][{?|&&}locale={locale-value}]
+
+Parameter locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
 
 Returns JSON structure of all application components and their action maps, according to the application's selection criteria. The selection criteria is part of the application definition, according to the componentKinds and label selector attributes of the application instance. 
 
@@ -279,7 +290,8 @@ The status code is:
 
 The command action query API returns command 
 
-https://host:port/prism/resource/command[?user={user-name}][&time={time-later}]
+https://host:port/prism/resource/command[?user={user-name}][{?|&}time={time-later}][{?|&}locale={locale-value}]
+
 
 Return value is json: 
 
@@ -313,28 +325,14 @@ Returns also a job action map:
 
 - user - specifies user name of job owner.  When this optional parameter is specified, only jobs with matching owner are returned. Otherwise all jobs are returned. 
 
-  **New for kappNav 0.1.5:**
+  **New for kAppNav 0.1.5:**
 
 - time - specifies job completion time stamp in  "yyyy-MM-dd'T'HH:mm:sss" format.  When this optional parameter is specified, only jobs with completion time stamp newer than specified time stamp are returned. Otherwise, completion time is not considered.
 
+  **New for kAppNav x.x.x:**
+  
+- locale specifies the caller's requested lanuage for translation of translatable fields. It is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
 
-## WAS-ND-App Status API 
-
-The WAS-ND-App Status API returns the Kubernetes status for the specified WAS ND application.  
-
-https://host:port/prism/was-nd-app/{application-name}[?namespace={specified-namespace}]
-
-- application-name specifies the WAS ND app whose status is to be returned. 
-- namespace specifies the optional namespace in which the specified WAS ND app exists. The default is 'default'.  
-
-
-Return value is json: 
-
-{
-status: Running | Stopped | Unknown 
-}  
-
-The status value is determined according to the [WAS ND App status table](https://github.com/kappnav/design/blob/master/custom-resources.md#was-nd-app-status-values)
 
 ## Namespace API 
 
