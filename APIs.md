@@ -15,7 +15,7 @@ Parameter namespace is optional.  If omitted, applications across all namespaces
 
 New for version x.x.x.
 
-https://host:port/prism/applications[?namespace={specified-namespace}][{?|&&}locale={locale-value}]
+https://host:port/prism/applications[?namespace={specified-namespace}][{?|&}locale={locale-value}]
 
 Parameter locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
 
@@ -49,7 +49,7 @@ Parameter namespace specifies the namespace in which the specified application e
 
 New for version x.x.x.
 
-https://host:port/prism/components/{application-name}[?namespace={specified-namespace}][{?|&&}locale={locale-value}]
+https://host:port/prism/components/{application-name}[?namespace={specified-namespace}][{?|&}locale={locale-value}]
 
 Parameter locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
 
