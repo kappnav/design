@@ -9,15 +9,17 @@
 
 Get applications. 
 
-https://host:port/prism/applications[?namespace={specified-namespace}]
-
-Parameter namespace is optional.  If omitted, applications across all namespaces are returned. 
-
-New for version x.x.x.
-
 https://host:port/prism/applications[?namespace={specified-namespace}][{?|&}locale={locale-value}]
 
-Parameter locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
+**Query Parameters**
+
+- namespace is optional.  If omitted, applications across all namespaces are returned. 
+
+  **New for {k}AppNav x.y.z
+
+- locale is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
+
+**Return Value**
 
 Returns JSON structure of all application objects and their action maps in this structure: 
 
@@ -325,11 +327,11 @@ Returns also a job action map:
 
 - user - specifies user name of job owner.  When this optional parameter is specified, only jobs with matching owner are returned. Otherwise all jobs are returned. 
 
-**New for {k}AppNav 0.1.5:**
+  **New for {k}AppNav 0.1.5:**
 
 - time - specifies job completion time stamp in  "yyyy-MM-dd'T'HH:mm:sss" format.  When this optional parameter is specified, only jobs with completion time stamp newer than specified time stamp are returned. Otherwise, completion time is not considered.
 
-**New for {k}AppNav x.x.x:**
+  **New for {k}AppNav x.x.x:**
   
 - locale specifies the caller's requested lanuage for translation of translatable fields. It is optional.  The value is a locale value in language_country format. Default value is "en_US".  The locale value is used to translate the text and description values of the actions in the return value's action-map: field.  
 
