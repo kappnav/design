@@ -9,6 +9,7 @@ The logging strategy for app navigator is twofold:
 
 1. [Java](https://github.com/kappnav/design/blob/master/javalogging.md)
 1. [Golang](https://github.com/kappnav/design/blob/master/gologging.md)
+1. Javascript
 
 ## Logging User External 
 
