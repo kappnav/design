@@ -67,7 +67,9 @@ spec:
                    kind: 
                      type: string 
                    subkind: 
-                     type: string 
+                     type: string
+                   name: 
+                     type: string  
                    mapname: 
                      type: string 
 
