@@ -95,7 +95,7 @@ if (logger.IsEnabled(LogTypeDebug)) {
 }  
 
 Stdout in plain text:
-[2020-04-07T17:19:57Z INFO actions_test.go:529 transitionHelper] test TestNoNamespaceResource  populated resources
+[2020-04-07T17:19:53Z INFO controller.go:1221 parseResourceBasic] apiVersion: v1
 
 Stdout in JSON format:
 {"level":"info","ts":1586277250.0874062,"logger":"controller_kappnav","caller":"kappnav_controller.go:128 add","msg":"Watch for changes to primary resource"}
