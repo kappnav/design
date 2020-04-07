@@ -19,7 +19,7 @@ const (
         LogLevelInfo LogLevel = 3
         LogLevelDebug LogLevel = 4
         LogLevelEntry LogLevel = 5
-	     LogLevelAll LogLevel = 6
+	LogLevelAll LogLevel = 6
 )
 
 type LogType int 
@@ -43,25 +43,28 @@ type Logger interface {
 }
 
 /*NewLogger create new Logger*/ 
-func NewLogger() Logger {}
+func NewLogger(enableJSON bool) Logger {}
 
 type loggerImpl struct {
    /*global variable holds current log level*/
 	LogLevel LogLevel
    /*global variable to hold current log type enablement flags*/ 
 	LogTypeEnabled [6]bool 
+   /*flag to enable JSON log
+   	enableJSONLog bool
 }
 
 /*Log write log entry to stdout. 
+   Log entry in JSON format when enableJSON flag is true, otherwise, log entry in plain text
    Use getLogMessage func to format message 
 */ 
 func (logger *loggerImpl) Log(goFileName string, funcName string, logType LogType, logData string) 
 
-/*isEnabled guard function to test if desired logType is enabled */
+/*IsEnabled guard function to test if desired logType is enabled */
 func (logger *loggerImpl) IsEnabled(logType LogType) bool 
 
 /*getLogMessage return log message as string in format: 
-    [LogType] logData
+    [Timestamp + LogType] + callerName + logData
 */ 
 func (logger *loggerImpl) getLogMessage(logType LogType, logData string) string 
 
@@ -75,21 +78,27 @@ func (logger *loggerImpl) setLogTypes(value bool) {}
    Log Level	   | Enabled Log Types
    -------------+----------------------------------------
    none	         |  set all to false 
-   error	         |  error
-   warning	      |  error, warning
+   error	 |  error
+   warning	 |  error, warning
    info	         |  error, warning, info
-   debug	         |  error, warning, info, debug
-   entry	         |  error, warning, info, entry, exit, debug
+   debug	 |  error, warning, info, debug
+   entry	 |  error, warning, info, entry, exit, debug
    all	         |  error, warning, info, entry, exit, debug
 */
 func (logger *loggerImpl) SetLogLevel(logLevel LogLevel) 
      
 
-Example;
+Example: 
 
 if (logger.IsEnabled(LogTypeDebug)) {
-   logger.Log(FileName(), FuncName(), LogTypeDebug, "this is a debug message")
+   logger.Log(CallerName(), LogTypeDebug, "this is a debug message")
 }  
+
+Stdout in plain text:
+[2020-04-07T17:19:57Z INFO actions_test.go:529 transitionHelper] test TestNoNamespaceResource  populated resources
+
+Stdout in JSON format:
+{"level":"info","ts":1586277250.0874062,"logger":"controller_kappnav","caller":"kappnav_controller.go:128 add","msg":"Watch for changes to primary resource"}
    
 
 ``` 
