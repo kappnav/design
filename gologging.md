@@ -19,7 +19,7 @@ const (
         LogLevelInfo LogLevel = 3
         LogLevelDebug LogLevel = 4
         LogLevelEntry LogLevel = 5
-	     LogLevelAll LogLevel = 6
+	LogLevelAll LogLevel = 6
 )
 
 type LogType int 
@@ -38,30 +38,32 @@ const (
 /*Logger interfaces*/
 type Logger interface {
         SetLogLevel(logLevel LogLevel)       
-        Log(goFileName string, funcName string, logType LogType, logData string, otherLogData string)
+        Log(callerName string, logType LogType, logData string)
         IsEnabled(logType LogType) bool
 }
 
 /*NewLogger create new Logger*/ 
-func NewLogger() Logger {}
+func NewLogger(enableJSON bool) Logger {}
 
 type loggerImpl struct {
    /*global variable holds current log level*/
 	LogLevel LogLevel
    /*global variable to hold current log type enablement flags*/ 
 	LogTypeEnabled [6]bool 
+   /*flag to enable JSON log*/
+        enableJSONLog bool
 }
 
-/*Log write log entry to stdout. 
+/*Log write log entry to stdout. Log in JSON format when enableJSONLog is set, otherwise, log in plain text 
    Use getLogMessage func to format message 
 */ 
 func (logger *loggerImpl) Log(goFileName string, funcName string, logType LogType, logData string) 
 
-/*isEnabled guard function to test if desired logType is enabled */
+/*IsEnabled guard function to test if desired logType is enabled */
 func (logger *loggerImpl) IsEnabled(logType LogType) bool 
 
 /*getLogMessage return log message as string in format: 
-    [LogType] logData
+    [timestamp + LogType + callerName ] + logData
 */ 
 func (logger *loggerImpl) getLogMessage(logType LogType, logData string) string 
 
@@ -72,14 +74,14 @@ func (logger *loggerImpl) setLogTypes(value bool) {}
 /*SetLogLevel set global log level to specified value 
    set IsEnabled based on specified LogLevel as follows: 
    
-   Log Level	   | Enabled Log Types
+   Log Level	 | Enabled Log Types
    -------------+----------------------------------------
    none	         |  set all to false 
-   error	         |  error
-   warning	      |  error, warning
+   error	 |  error
+   warning	 |  error, warning
    info	         |  error, warning, info
-   debug	         |  error, warning, info, debug
-   entry	         |  error, warning, info, entry, exit, debug
+   debug	 |  error, warning, info, debug
+   entry	 |  error, warning, info, entry, exit, debug
    all	         |  error, warning, info, entry, exit, debug
 */
 func (logger *loggerImpl) SetLogLevel(logLevel LogLevel) 
@@ -88,9 +90,14 @@ func (logger *loggerImpl) SetLogLevel(logLevel LogLevel)
 Example;
 
 if (logger.IsEnabled(LogTypeDebug)) {
-   logger.Log(FileName(), FuncName(), LogTypeDebug, "this is a debug message")
+   logger.Log(callerName(), LogTypeDebug, "this is a debug message")
 }  
    
+Stdout in plain text:
+[2020-04-07T17:19:53Z INFO controller.go:1221 parseResourceBasic] apiVersion: v1
+
+Stdout in JSON format:
+{"level":"info","ts":1586277250.0874062,"logger":"controller_kappnav","caller":"kappnav_controller.go:128 add","msg":"Watch for changes to primary resource"}
 
 ``` 
 
