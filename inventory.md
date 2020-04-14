@@ -34,5 +34,5 @@ This page will also display a list of kAppNav-wide command actions in a drop dow
 of the page.  The initial implementation will be just a single button to run the inventory command. When more
 actions are defined, this button will be converted into an actual drop down list. 
 
-[!default](https://github.com/kappnav/design/blob/master/images/default-command-actions.png)
+![default](https://github.com/kappnav/design/blob/master/images/default-command-actions.png)
 
