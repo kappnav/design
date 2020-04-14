@@ -53,4 +53,4 @@
 ### {k}AppNav Future Design (not assigned to release yet)
 
 1. [Logging](https://github.com/kappnav/design/blob/master/logging.md) Added support for Node.js components.
-1. [NLS Support for Custom Actions]{https://github.com/kappnav/design/blob/master/user-actions-nls.md}
+1. [NLS Support for Custom Actions](https://github.com/kappnav/design/blob/master/user-actions-nls.md)
