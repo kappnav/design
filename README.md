@@ -42,9 +42,15 @@
 
 ### {k}AppNav 0.7.0 Design
 
-1. [Logging](https://github.com/kappnav/design/blob/master/logging.md)
+1. [Logging](https://github.com/kappnav/design/blob/master/logging.md) Java components only.
+
+### {k}AppNav 0.8.0 Design
+
+1. [KindActionMapping Custom Resource Definition](https://github.com/kappnav/design/blob/master/kind-action-mapping.md)
+1. [Inventory Command Action](https://github.com/kappnav/design/blob/master/inventory.md)
+1. [Logging](https://github.com/kappnav/design/blob/master/logging.md) Added support for Golang components.
 
 ### {k}AppNav Future Design (not assigned to release yet)
 
-1. [KindActionMapping Custom Resource Definition](https://github.com/kappnav/design/blob/master/kind-action-mapping.md)
+1. [Logging](https://github.com/kappnav/design/blob/master/logging.md) Added support for Node.js components.
 1. [NLS Support for Custom Actions]{https://github.com/kappnav/design/blob/master/user-actions-nls.md}
