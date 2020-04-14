@@ -11,3 +11,5 @@ The annotation affects only the Application Navigator application view.  Hidden 
 API and through the kubectl CLI. 
 
 A hidden application can serve as a useful anchor for application-scope command actions. 
+
+Note the applications API filters out and does not return hidden applications. 
