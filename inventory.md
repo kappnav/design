@@ -21,7 +21,7 @@ The inventory also contains a copy of the kAppNav API server.
 
 The command action definition is stored in this [action config map](https://github.com/kappnav/operator/blob/master/deploy/maps/action/configmap.action.application.kappnav.yaml)
 This command is defined as an "application" level action.  A new "kappnav" application is now created by the kAppNav operator. 
-The kappnav application is marked as [hidden application]() to serve as an anchor for kAppNav-wide command actions, without 
+The kappnav application is marked as [hidden application](https://github.com/kappnav/design/blob/master/hidden-applications.md) to serve as an anchor for kAppNav-wide command actions, without 
 appearing in the application list. 
 
 ## UI Support 
