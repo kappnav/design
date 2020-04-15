@@ -392,3 +392,16 @@ Next, these names are used to search for actual configmap resources; those found
 - kappnav.actions.service in kappnav namespace
 
 Existing API code already exists to merge the effective hiearchy.                                                                                                          
+## KindActionMapping Cache in API Server
+
+To improve UI performance,  KindActionMapping (KAM) resources will be cached by the API server.  This is to cut own on network access cost associated with querying these resources. 
+
+Because KAMs can exist in any namespace and be created at anytime, it is impossible for API server to simply do a one time query or query at time of use to find and cache KAMs.  To handle the dynamic lifecycle of KAMs,  the API server must do the following to manage its KAM cache:
+
+1. query and cache all KAMs across all namespaces during API server startup. 
+1. set a watch on KAMs across all namespaces:
+   1. when a KAM is created, cache it
+   1. when a KAM is updated, evict it from the cache
+   1. when a KAM is deleted, evict it from the cache
+   
+Anytime a resource's action list must be calculated, use only the cached KAM - do not query for more, as they should already all be cached. 
