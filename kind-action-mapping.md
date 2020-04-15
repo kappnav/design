@@ -404,4 +404,6 @@ Because KAMs can exist in any namespace and be created at anytime, it is impossi
    1. when a KAM is updated, evict it from the cache
    1. when a KAM is deleted, evict it from the cache
    
-Anytime a resource's action list must be calculated, use only the cached KAM - do not query for more, as they should already all be cached. 
+Anytime a resource's action list must be calculated, use only the cached KAMs - do not query for more, as they should already all be cached. 
+
+Note: good implementation practice is for the code to write clear messages for every cache action - e.g. store & evict.  
