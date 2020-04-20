@@ -151,6 +151,58 @@ The kAppNav project provide translations for actions and all user facing strings
 | kappnav.actions.nls.it | Italian |
 | kappnav.actions.nls.zh_TW | Chinese, Taiwan |
 
+### Action Input
+
+Actions can optionally specify user input. The UI implementation for this creates a pop up dialog for the user to enter the required inputs.  Several input fields specify user-facing text. This user-facing text is currently assumed to be specified in US_en locale.  Users need the ability to specify user-facing text for other locales.  The format for an action input specification is given below in yaml format: 
+
+```
+inputs: 
+  <input-name>: 
+    title: <input-title>
+    fields: 
+      <field-name>:
+        label: <field-label>
+        label.nls: <field-label-translation-key>
+        type: <field-type>
+        size: <field-size>
+        description: <field-description>
+        description.nls: <field-description-translation-key>
+        default: <default-value>
+        default.nls: <default-value-translation-key>
+        optional: "true" | "false" 
+        validator: <snippet-name>
+```
+
+Using facing-fields are label, description, and default;  the following fields support specification of translation keys for each of these fields, respectively: 
+
+1. label.nls
+1. description.nls
+1. default.nls 
+
+#### Validator Error Messages
+
+Validator snippets are defined to return the following JSON structure: 
+
+```
+{ 'valid': true | false, 
+  'message': '<error message>', 
+  'message.nls': '<message-translation-key>' }
+```
+
+Where <message-translation-key> specifies the optional NLS translation lookup key.  
+
+E.g.
+
+```
+{ 'valid': false, 
+  'message': 'Trace string is required!', 
+  'message.nls': 'SNIPPET_TRACE_STRING_MISSING'}
+  ```
+
+#### NLS Config Map Lookup
+
+All NLS translation keys for input fields and input validators are specified and looked up in the NLS Config Map specified in the action config map in which the input and validator is defined. 
+
 ### API Support 
 
 The "application", "applications", and "components" APIs will support a 'locale' query parameter to allow the caller to specify the desired locale for translation.  It is an optional query parameter.  The default value is "en_US". 
