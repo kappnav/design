@@ -22,7 +22,9 @@ To remedy the limitation of the existing mapping convention approach, we will in
 
 The KindActionMapping CRD defines which config maps contain the action definitions for which resource kinds.  The mappings are based on the following resource fields: 
 
-- apiVersion is the group/version identifier of the resource.  Note Kubernetes resources with no group value (e.g. Service) specify apiVersion as version only.  E.g. apiVersion: v1.   
+- apiVersion is the group/version identifier of the resource.  Note Kubernetes resources with no group value (e.g. Service) specify apiVersion as version only.  E.g. apiVersion: v1. 
+- owner is the ownerRef kind of the resource.  
+- ownerUID is the ownerRef UID of the resource.  
 - kind is the resource's kind field
 - subkind is the resource's metadata.annotations.kappnav.subkind annotation. See [annotations](https://github.com/kappnav/design/blob/master/annotations.md) for more details.  Note, in practice, we use the subkind annotation only on Deployment and StatefulSet resource kinds. 
 - name is the resource's metadata.name field
@@ -64,6 +66,10 @@ spec:
                  properties: 
                    apiVersion:
                      type: string 
+                   owner: 
+                     type: string
+                   ownerUID:
+                     type: string 
                    kind: 
                      type: string 
                    subkind: 
@@ -83,6 +89,8 @@ Where the spec fields are:
 | precedence     | Specifies natural number (1-9) precedence value for mappings defined by this KindActionMapping instance. A higher number means higher precedence.  The default is 1.  |
 | mappings       | Specifies a set (array) of "kind-to-configmap mappings". | 
 | mappings[].apiVersion   | Specifies apiVersion value for a kind-to-configmap mapping. Specified in the form group\/version or version only, for kinds that have no group name. The group and version values can be wildcarded with \'* \'.  |  
+| mappings[].owner | Specifies the owner kind value for a kind-to-configmap mapping.  It specifies a resource's ownerRef kind. When specified, the resource must have an ownerRef kind field that matches the owner value specified in the mapping rule. It is an optional field.  If not specified, a resource's ownerRef kind is not criteria for a match. | 
+| mappings[].ownerUID | Specifies the owner UID value for a kind-to-configmap mapping.  It specifies a resource's ownerRef UID. When specified, the resource must have an ownerRef UID field that matches the ownerUID value specified in the mapping rule. It is an optional field. It is used for matching if and only if the mapping also specifies the owner field (above).  If owner is not specified in the mapping rule, ownerUID is silently ignored. If not specified, a resource's ownerRef UID is not criteria for a match. | 
 | mappings[].kind    | Specifies kind value for a kind-to-configmap mapping. Can be either a resource kind name or '\*', which means any kind name.|
 | mappings[].subkind | Specifies subkind value for a kind-to-configmap mapping. Can be either a resource subkind name or '\*', which means any kind name. Subkind is a {k}AppNav concept that allows any resource kind to be further qualified. It is specified by annotation 'kappnav.subkind'.|
 | mappings[].name    | Specifies name value for a kind-to-configmap mapping. Can be either a resource name or '\*', which means any name.|
