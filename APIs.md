@@ -4,7 +4,6 @@
 1. applications
 1. components 
 1. action substitutions 
-1. resources
 
 ## Applications 
 
@@ -366,36 +365,4 @@ Status design documented [https://github.com/kappnav/design/blob/master/status-d
    1. for delete - calculate object's status and store it inside resource. 
 
    When speciied resource is application, this action must be recursive, i.e. walk application's component list and calculate its status.  Application can contain application, so must ensure API can handle that case, too, and safe guard against endless loop in case of incorrectly configured application that contains a cycle (e.g. app A contains app B contains app A). 
-   
-   
-## Resources API
-
-Get kubernetes resource objects for a specified resource. 
-
-https://host:port/prism/resources/resource-kind?[namespace={specified-namespace}][{?|&}locale={locale-value}]
-
-**Query Parameters**
-
-- resource-kind is required
-- namespace is optional.  If omitted, resources across all namespaces are returned. 
-
- 
-**Return Value**
-
-Returns JSON structure of all resource objects for a given resource kind and their action maps (for application ) in this structure: 
-
-```
-{ 
-    <resource-kind>s:  
-        [ 
-             {  <resource-kind>: {},  action-map: {} } , ...
-        ]
-             
-} 
-```
-
-Where:
-1. 'resource-kind's is an array of objects, i.e. Applications, Deployments, Pods, ...
-2. Each object in the <resource-kind> array is comprised of a resource and action-map.
-3. An action-map is a config map containing the action definitions belonging to the associated application resource. 
-
+     
