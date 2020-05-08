@@ -66,59 +66,14 @@ NLS will not be supported initially.  When it is time to support NLS,  the follo
 1. warning
 1. error
 
-## Multi-container PODs 
+## Components used across different PODs  
 
-Some app navigator PODs have multiple containers - e.g. UI pod has both UI server and API server containers.  Logging level is for the entire POD.  This means when the user sets log level, for example 'debug',  for the 'ui' POD, that the same log level is set on both the UI server and the API server.  
+The APIs component is used in multiple POD types - Controller, UI, etc.  When API logging is enabled, all API containers across all POD types write trace records. 
 
 ## Container Initialization
 
-Any container that does tracing must read the current logging value for its POD type and initialize it's logger accordingly.
+Any container that does tracing must read the current logging value for its POD type and initialize it's logger accordingly. The only exception is the UI container.  The UI container's log level setting is monitored by the APIs container in the same POD; when it detects a change to the UI component logging level, it makes a localhost call to the UI container to set the log level.
 
 ## Replicas
 
 Log levels will be set identically across all replicas of a deployment.  
-
-## Implementation Details
-
-### Controllers
-
-Controllers must watch the kappnav CR and set their logger's log level when their trace setting is changed.  E.g. 
-
-E.g. if the kappnav CR is updated to have this value: 
-
-```
-logging:
-   controller: debug
-```
-
-Then the kappnav controller would set log level to 'debug' on it's logger. In contrast, other controller's, like the WASController or the kappnav operator, would take no action.
-
-A controller is responsible to set the specified log level on the other containers in it's POD. E.g. the kappnav controller is responsible to set the specified log level both on it's own logger, as well as on the logger of the API server in its same POD. This is done by invoking the API server's logger REST API on the API.
-
-
-### Servers 
-
-Servers do not watch the kappnav CR.  Instead, they expose a logger API that can be called to set their logger level. E.g. 
-
-```
-host:port/context/logger?level=value
-```
-
-The kappnav controller is responsible to watch the kappnav CR for changes to the 
-ui' logging field and set the log level on the UI server. If the UI server has multiple replicas, the controller must iterate over each of the UI server PODs and set the log level on each. 
-
-E.g. if the kappnav CR is updated to:   
-
-```
-logging:
-    controller: debug
-    ui: entry 
-```
-
-The kappnav controller would:
-
-1. set it's own log level to 'debug' 
-1. call its own API server's logger REST API to set the same value
-1. call the UI server's logger REST API to set the UI's log level to 'entry'. If the UI server has multiple replicas, the controller must iterate over each of the UI server PODs and set the log level on each.  
-
-A server is responsible to set the specified log level on the other containers in it's POD. E.g. the UI is responsible to set the specified log level both on it's own logger, as well as on the logger of the API server in its same POD. This is done by invoking the API server's logger REST API.
