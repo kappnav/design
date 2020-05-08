@@ -50,7 +50,12 @@
 1. [Inventory Command Action](https://github.com/kappnav/design/blob/master/inventory.md)
 1. [Logging](https://github.com/kappnav/design/blob/master/logging.md) Added support for Golang components.
 
-### {k}AppNav Future Design (not assigned to release yet)
+### {k}AppNav 0.9.0 Design
 
 1. [Logging](https://github.com/kappnav/design/blob/master/logging.md) Added support for Node.js components.
+
+### {k}AppNav 0.10.0 Design
+
+### {k}AppNav Future Design (not assigned to release yet)
+
 1. [NLS Support for Custom Actions](https://github.com/kappnav/design/blob/master/user-actions-nls.md)
