@@ -1,9 +1,10 @@
 # Logging Level
 
-Logging for App Navigator internal components is controlled by the "logging" field in the kappnav CR.  Logging level affects the entire POD.  There is a logging setting for each app navigator POD type. 
+Logging for App Navigator internal components is controlled by the "logging" field in the kappnav CR.  Logging level affects the individual components.  There is a logging setting for each app navigator component type. 
 
 ```
 logging: 
+   apis: level
    controller: level 
    ui: level
    was-controller: level
