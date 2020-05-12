@@ -14,10 +14,15 @@ statusMappings:
     properties: 
       apiVersion:
         type: string 
-      owner: 
-        type: string
-      ownerUID:
-        type: string 
+      owner:
+        properties:
+          kind:
+            type: string
+          apiVersion:
+            type: string
+          uid:
+            type: string
+        type: object 
       kind: 
         type: string   
       mapname: 
@@ -30,10 +35,15 @@ detailsMappings:
     properties: 
       apiVersion:
         type: string 
-      owner: 
-        type: string
-      ownerUID:
-        type: string 
+      owner:
+        properties:
+          kind:
+            type: string
+          apiVersion:
+            type: string
+          uid:
+            type: string
+        type: object 
       kind: 
         type: string
       name: 
@@ -42,14 +52,14 @@ detailsMappings:
         type: string 
 ```
 ## Config Map Set Determination
-{k}AppNav determines the set of status or detail section config maps for a resource through a process of mapping, lookup, and merge if applies to produce the complete set. The mapping conforms to a particular hierarchy, ordered by precedence.
+{k}AppNav determines the set of status or detail section config maps for a resource through the same process of mapping, lookup, and merge if applies to produce the complete set described in the KAM design. The mapping conforms to a particular hierarchy, ordered by precedence.
 
 ### Configmap Hierarchy and Precedence
 
 #### Status Mappings
 Only support the kind specific case as the status mapping config map has no named and subkind elements.
 
-### Detail Sections
+#### Detail Sections
 One or more detail section configmaps may exist to which the same resource maps. Multiple mapping rules may exist to which a resource maps; mapping rules are searched for in this order, using the match values from the from resource, searching for a matching rule from the most specific to least specific:
 
     kind.name - instance specific
@@ -57,10 +67,10 @@ One or more detail section configmaps may exist to which the same resource maps.
 
 The KAM precedence rule applies to both status mapping and detail sections cases.
 
-
-### Specification
-* No concept of merge (status)
-* No concept of merge now, but logically it could be extended to support merge (detail sections)
+### Merge Considerations
+* Status mapping: it has no the elements for "name" and "subkind" so merge does not applies to it. 
+* Detail sections: could merge, but do it as when there is a need for it.
+* Resources with the same precedence value are processed together in arbitrary order applies
 
 ## Related design document links:
 * [Kind-Action Mapping](https://github.com/kappnav/design/blob/master/actions-config-maps.md)
