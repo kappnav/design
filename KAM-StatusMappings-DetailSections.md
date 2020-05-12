@@ -60,7 +60,7 @@ detailsMappings:
 Only support the kind specific case as the status mapping config map has no named and subkind elements.
 
 #### Detail Sections
-One or more detail section configmaps may exist to which the same resource maps. Multiple mapping rules may exist to which a resource maps; mapping rules are searched for in this order, using the match values from the from resource, searching for a matching rule from the most specific to least specific:
+One or more detail section configmaps may exist to which the same resource maps. Multiple mapping rules may exist to which a resource maps; mapping rules are searched for in this order, using the match values from the resource, searching for a matching rule from the most specific to least specific:
 
     kind.name - instance specific
     kind - kind specific
@@ -68,7 +68,7 @@ One or more detail section configmaps may exist to which the same resource maps.
 The KAM precedence rule applies to both status mapping and detail sections cases.
 
 ### Merge Considerations
-* Status mapping: it has no the elements for "name" and "subkind" so merge does not applies to it. 
+* Status mapping: it has no "name" and "subkind" elements so merge does not applies to it. 
 * Detail sections: could merge, but do it as when there is a need for it.
 * Resources with the same precedence value are processed together in arbitrary order applies
 
