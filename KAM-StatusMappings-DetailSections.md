@@ -3,7 +3,12 @@
 The application and component status and UI detail sections are configured with ConfigMaps, that allows an extension of the Kind Action Mapping (KAM) functionalities.  The KAM schemes of mapping resouce kind to status config maps or detail section config maps are mostly the same as the one for the KAM mapping scheme to map resource kind to action configmaps described in [Kind-Action Mapping](https://github.com/kappnav/design/blob/master/actions-config-maps.md) and with some exceptions, which are described in this document. With the new extension, a status config map or detail section config map can exist outside kappnav namespace.
 
 ## New Additions to the KAM Custom Resource Definition
-Addtional mapping rules that map a resouce to a status config map or a set of detail section configmap are provided to the existing KAM custom resouce defintion as below:
+Addtional mapping rules that map a resouce to a status config map or a set of detail section configmap are provided to the existing KAM custom resouce defintion as below. 
+
+Note that 
+* there is no "subkind" and "name" property defined for "statusMappings"
+* there is no "name" property defined for "detailsMappings"
+
 ```
 mappings:
   ...
