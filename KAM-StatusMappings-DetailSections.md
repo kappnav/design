@@ -70,7 +70,7 @@ The KAM precedence rule applies to both status mapping and detail sections cases
 ### Merge Considerations
 * Status mapping: it has no "name" and "subkind" elements so merge does not apply to it. 
 * Detail sections: could merge, but only implement it as needed.
-* Resources with the same precedence value are processed together in arbitrary order applies
+* Resources with the same precedence value are processed together so arbitrary order applies
 
 ## Examples of statusMappings and detailsMappings
 ```
