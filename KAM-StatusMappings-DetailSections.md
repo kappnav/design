@@ -65,12 +65,16 @@ detailsMappings:
 Only support the kind specific case as the status mapping config map has no named and subkind elements.
 
 #### Detail Sections
-One or more detail section configmaps may exist to which the same resource maps. Multiple mapping rules may exist to which a resource maps; mapping rules are searched for in this order, using the match values from the resource, searching for a matching rule from the most specific to least specific:
+One or more detail section configmaps may exist to which the same resource kind maps. Multiple mapping rules may exist to which a resource maps. Same mapping and search rules for KAMs applies to this simpler case in which "subkind" element does not exist.
 
     kind.name - instance specific
     kind - kind specific
 
 The KAM precedence rule applies to both status mapping and detail sections cases.
+
+### Namespaces
+* Status Mappings: All onfigmaps are searched for in the same namespace as the KindActionMapping resource.
+* Detail Section Mappings: Instance specific configmaps are searched for in the resource's namespace. All other configmaps are searched for in the same namespace as the KindActionMapping resource.
 
 ### Merge Considerations
 * Status mapping: it has no "name" and "subkind" elements so merge does not apply to it. 
