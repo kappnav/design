@@ -97,11 +97,11 @@ Notable fields in the ConfigMap:
    - fields - specifies an array of fields for which user is to supply values.  Each field specifies following: 
       - name - specifies name of this field.
       - label - specifies display label for this field. 
-      - type - field data type.  Supported types are string and integer.
+      - type - field data type.  Supported types are string, select, and multiselect.
       - size - specifies field size as small (sm), medium (med), or large (lg).  This is a hint to the UI layout to choose set the relative display size of the field. 
       - description - specifies description of field. Used for flyover help in UI. 
       - default - specifies default value if any.  This is an optional specification. If omitted, default for string type is empty string and default for list type is first entry from values array. 
-      - values - supported for list type only and must be a json array of scalar values. This is an optional specification.
+      - values - supported for select and multiselect types only and must be a json array of scalar values. This is an optional specification.
       - optional - specifies whether value is optional (true) or required (false) 
       - validator - specifies a snippet to validate the field.  
 
