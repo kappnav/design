@@ -68,8 +68,8 @@ One or more detail section configmaps may exist to which the same resource maps.
 The KAM precedence rule applies to both status mapping and detail sections cases.
 
 ### Merge Considerations
-* Status mapping: it has no "name" and "subkind" elements so merge does not applies to it. 
-* Detail sections: could merge, but do it as when there is a need for it.
+* Status mapping: it has no "name" and "subkind" elements so merge does not apply to it. 
+* Detail sections: could merge, but only implement it as needed.
 * Resources with the same precedence value are processed together in arbitrary order applies
 
 ## Examples of statusMappings and detailsMappings
