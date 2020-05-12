@@ -36,6 +36,8 @@ Actions are defined in a Config Map.  The Config Maps consumed by Application Na
 1. [Create action config map resource.](https://github.com/kappnav/design/blob/master/actions-config-maps.md)
 1. [Create kind action mapping resource.](https://github.com/kappnav/design/blob/master/kind-action-mapping.md)
 
+See also [Implementing Custom Actions](https://github.com/kappnav/apis/tree/master/tools/actdev#action-developer-tool-actdev)
+
 ## Status Extension Type 
 
 The status extension type provides a way to customize how resource status is mapped to Application Navigator's uniform high level status indicators of:  normal, warning, problem, and unknown. This applies equally to Custom Resources. 
