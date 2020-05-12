@@ -3,6 +3,7 @@
 The application and component status and UI detail sections are configured with ConfigMaps. The KAM schemes of mapping resouce kind to status config maps or detail section config maps are mostly the same as the one for the KAM mapping scheme to map resource kind to action configmaps described in [Kind-Action Mapping](https://github.com/kappnav/design/blob/master/actions-config-maps.md) and with some differences, which are described in this document. With the new mapping scheme, a status config map or detail section config map can exist outside kappnav namespace.
 
 ## New Additions to the KAM Custom Resource Definition
+Addtional mapping rules that map a resouce to a status config map or a set of detail section configmap are provided to the existing KAM custom resouce defintion as below:
 ```
 mappings:
   ...
@@ -21,6 +22,7 @@ statusMappings:
         type: string   
       mapname: 
         type: string       
+
 detailsMappings:
   type: array
   items: 
@@ -39,28 +41,26 @@ detailsMappings:
       mapname: 
         type: string 
 ```
-  
-### Specification
-* No subkind or named element
-* No concept of merge
+## Config Map Set Determination
+{k}AppNav determines the set of status or detail section config maps for a resource through a process of mapping, lookup, and merge if applies to produce the complete set. The mapping conforms to a particular hierarchy, ordered by precedence.
 
+### Configmap Hierarchy and Precedence
 
-## UI Details Sections
+#### Status Mappings
+Only support the kind specific case as the status mapping config map has no named and subkind elements.
 
-### New Addition to the KAM Custom Resource Definition
-```
+### Detail Sections
+One or more detail section configmaps may exist to which the same resource maps. Multiple mapping rules may exist to which a resource maps; mapping rules are searched for in this order, using the match values from the from resource, searching for a matching rule from the most specific to least specific:
 
+    kind.name - instance specific
+    kind - kind specific
 
-        
-detailsMappings:
- - apiVersion: ‘*’
-   kind: ‘*’
-   mapname: kappnav.details.${kind}
-```
+The KAM precedence rule applies to both status mapping and detail sections cases.
+
 
 ### Specification
-* No subkind but have named element
-* No concept of merge now, but logically it could be extended to support merge
+* No concept of merge (status)
+* No concept of merge now, but logically it could be extended to support merge (detail sections)
 
 ## Related design document links:
 * [Kind-Action Mapping](https://github.com/kappnav/design/blob/master/actions-config-maps.md)
