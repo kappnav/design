@@ -72,6 +72,21 @@ The KAM precedence rule applies to both status mapping and detail sections cases
 * Detail sections: could merge, but do it as when there is a need for it.
 * Resources with the same precedence value are processed together in arbitrary order applies
 
+## Examples of statusMappings and detailsMappings
+```
+mappings:
+ - apiVersion: ‘*’
+  kind: ‘*’
+  mapname: kappnav.actions.${kind}
+statusMappings:
+ - apiVersion: ‘*’
+  kind: ‘*’
+  mapname: kappnav.status.${kind}
+detailsMappings:
+ - apiVersion: ‘*’
+  kind: ‘*’
+  mapname: kappnav.details.${kind}
+```
 ## Related design document links:
 * [Kind-Action Mapping](https://github.com/kappnav/design/blob/master/actions-config-maps.md)
 * [Application and Component Status](https://github.com/kappnav/design/blob/master/status-determination.md)
