@@ -57,7 +57,7 @@ detailsMappings:
         type: string 
 ```
 ## Config Map Set Determination
-{k}AppNav uses the same mapping rules decribed in the KAM design doc to determines the set of status or detail section config maps for a resource through the same process of mapping, lookup, and merge if applies to produce the complete set. The mapping conforms to a particular hierarchy, ordered by precedence.
+{k}AppNav uses the same mapping rules decribed in the KAM design to determines the set of status or detail section configmaps for a resource through the same process of mapping, lookup, and merge if applies to produce the complete set. The mapping conforms to a particular hierarchy, ordered by precedence.
 
 ### Configmap Hierarchy and Precedence
 
