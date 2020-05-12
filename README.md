@@ -55,7 +55,7 @@
 1. [Logging](https://github.com/kappnav/design/blob/master/logging.md) Added support for Node.js components.
 
 ### {k}AppNav 0.10.0 Design
-1.[KAM Extention to Status Mapping and Detail Sections] {https://github.com/kappnav/design/blob/master/KAM-StatusMappings-DetailSections.md{ 
+1. [KAM Extention to Status Mapping and Detail Sections]{https://github.com/kappnav/design/blob/master/KAM-StatusMappings-DetailSections.md} 
 
 ### {k}AppNav Future Design (not assigned to release yet)
 
