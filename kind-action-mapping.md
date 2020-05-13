@@ -96,6 +96,7 @@ Where the spec fields are:
 | mappings[].name    | Specifies name value for a kind-to-configmap mapping. Can be either a resource name or '\*', which means any name.|
 | mappings[].mapname | Specifies the action configmap name to which the resource is mapped.  The mapname is the resource name of a configmap.  The symbols ${namespace}, ${kind}, ${subkind}, and ${name} can specified in the mapname value to be substituted at time of use with the matching resource's namespace, kind, subkind, or name value, respectively. |
 
+**NOTE** This support has been extended to support also [status and detail section mappings](https://github.com/kappnav/design/edit/master/KAM-StatusMappings-DetailSections.md)
 
 ## Action Set Determination 
 
