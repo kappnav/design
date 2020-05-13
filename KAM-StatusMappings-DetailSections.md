@@ -1,6 +1,6 @@
 # Extend Kind Action Mapping to Status Mappings and Detail Section Mappings
 
-Application and component status](https://github.com/kappnav/design/blob/master/status-determination.md) and [UI detail sections](https://github.com/kappnav/design/blob/master/ui-detail-sections.md) allow extension of kAppNav functionality. They defined in config maps and can be defined for individual kinds. Originally, these config map names were of fixed name and constrained to exist within the kAppNav namespace. 
+[Application and component status](https://github.com/kappnav/design/blob/master/status-determination.md) and [UI detail sections](https://github.com/kappnav/design/blob/master/ui-detail-sections.md) allow extension of kAppNav functionality. They defined in config maps and can be defined for individual kinds. Originally, these config map names were of fixed name and constrained to exist within the kAppNav namespace. 
 
 To overcome this limitation, the [KAM]((https://github.com/kappnav/design/blob/master/actions-config-maps.md)) scheme of mapping a resource kind to an action config map will be extended to to support also status config maps or detail section config maps.
 
