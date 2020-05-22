@@ -86,6 +86,6 @@ detailsMappings:
 ```
 
 ## Related design document links:
-* [Kind-Action Mapping](https://github.com/kappnav/design/blob/master/actions-config-maps.md)
+* [Kind-Action Mapping](https://github.com/kappnav/design/blob/master/kind-action-mapping.md)
 * [Application and Component Status](https://github.com/kappnav/design/blob/master/status-determination.md)
 * [UI Detail Sections](https://github.com/kappnav/design/blob/master/ui-detail-sections.md)
