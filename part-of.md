@@ -53,7 +53,9 @@ metadata:
 spec: 
    auto-create-kinds: 
       - group: apps
-        kind: Deployment
+        version: v1
+        resource: deployments
       - group: apps
-        kind: StatefulSet 
+        version: v1
+        resource: statefulsets 
 ```
