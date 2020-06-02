@@ -32,8 +32,9 @@ An application may be created with these combinations:
 |+ label | label value | other settings | outcome |  
 |--------|-------------|----------------|---------|
 | none | n/a | n/a | no application CR created | 
-| auto-create | true | auto-create.name=app1 | application CR "app1" created | 
-| part-of | app2 | n/a | application CR "app2" created | 
-| <ul style="list-style-type:none;"> <li>auto-create</li> <li>part-of</li> <eul> |  <ul style="list-style-type:none;"> <li>true</li> <li>app2</li> <eul> | auto-create.name=app1 | application CR "app1" created | 
+| auto-create | true | auto-create.name=app1 | application CR "app1" is created | 
+| part-of | app2 | n/a | application CR "app2" is created | 
+| <ul style="list-style-type:none;"> <li>auto-create</li> <li>part-of</li> <eul> |  <ul style="list-style-type:none;"> <li>true</li> <li>app2</li> <eul> | <ul style="list-style-type:none;"> <li>auto-create.name=n/a</li> <li>app2</li> <eul> | application CR's "app1" and "app2" are created | 
 
 
+ <ul style="list-style-type:none;"> <li>auto-create</li> <li>part-of</li> <eul>
