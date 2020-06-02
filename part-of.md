@@ -36,3 +36,24 @@ An application may be created with these combinations:
 | part-of | app2 | n/a | application CR "app2" is created | 
 | auto-create <br> part-of | true <br> app2 | auto-create.name=app1 <br> n/a | application CR's "app1" and "app2" are created |
 | auto-create <br> part-of | true <br> app1 | auto-create.name=app1 <br> n/a | application CR "app1" is created |
+
+# Auto-deletion
+
+Same as the auto-create support:  when last top-level resource in the same namespace specifying the same part-of value is deleted, the auto-created application CR is deleted. 
+
+# Future Top Level Kinds 
+
+The following configuration in the kappnav CR controls which top level kinds support auto-create and part-of labels with default shown: 
+
+```
+apiVersion: kappnav.operator.kappnav.io/v1
+kind: Kappnav
+metadata: 
+   name: kappnav
+spec: 
+   auto-create-kinds: 
+      - group: apps
+        kind: Deployment
+      - group: apps
+        kind: StatefulSet 
+```
