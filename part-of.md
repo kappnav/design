@@ -35,4 +35,4 @@ An application may be created with these combinations:
 | auto-create | true | auto-create.name=app1 | application CR "app1" is created | 
 | part-of | app2 | n/a | application CR "app2" is created | 
 | auto-create <br> part-of | true <br> app2 | auto-create.name=app1 <br> n/a | application CR's "app1" and "app2" are created |
-| auto-create <br> part-of | true <br> app1 | auto-create.name=app1 <br> n/a | application CR "app1" ise created |
+| auto-create <br> part-of | true <br> app1 | auto-create.name=app1 <br> n/a | application CR "app1" is created |
