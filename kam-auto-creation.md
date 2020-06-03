@@ -19,6 +19,8 @@ labels: 
 data:
   kam-defs: | 
       [
+        "apiVersion": "actions.kappnav.io/v1",
+        "kind": "KindActionMapping",
         "metadata": {
           "name": "<kam-name>",
         },
