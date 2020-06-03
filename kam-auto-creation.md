@@ -13,14 +13,15 @@ kind: ConfigMap
 metadata: 
   name: kappnav.actions.{kind}[-subkind][.name]
 labels: 
->>> action/status/section config maps now have this:     kappnav.io/map-type: action | status | sections 
->>> don't really need this because you have map-type (above):     kappnav.kam.auto-create: true | false 
+  kappnav.io/map-type: action | status | sections 
   annotations: 
      kappnav.actions.on.conflict: "merge" | "replace" 
 data:
   kam-defs: | 
       [
->>> should probably include kam metadata section, too, minus namespace 
+        "metadata": {
+          "name": "<kam-name>",
+        },
         "spec": {
           "precedence": <precedence>,
           "mappings": [
@@ -37,41 +38,14 @@ data:
                 "mapname": "<mapname>"
             }
           ],          
-          "sectionMappings": [
-            {
-                "apiVersion": "<apiversion>",
-                "owner": {
-                    "apiVersion": "v1",
-                    "kind": "ConfigMap",
-                    "uid": "<owner-uid>"
-                }, 
-                "kind": "<kind>",
-                "subkind": "<subkind>",
-                "name": "<name>",
-                "mapname": "<mapname>"
-            }
-          ],
-          "statusMappings": [
-            {
-                "apiVersion": "<apiversion>",
-                "owner": {
-                    "apiVersion": "v1",
-                    "kind": "ConfigMap",
-                    "uid": "<owner-uid>"
-                }, 
-                "kind": "<kind>",
-                "subkind": "<subkind>",
-                "name": "<name>",
-                "mapname": "<mapname>"
-            }
-          ]
         }
       ], 
       
 ```
-Questions:
-1. Does the KAM reside the same namespace as the associated configmap or the kam namespace needs to be included here?
-CPV: same
+The KAM is installed in the same namespace as the one that the associated configmap resides.
+
+The owner of the configmap also owns the kam embeded.
+
 1. With onwer info, if we making the confimap itself the owner of the KAM, should the KAM definition need to include the owner info?
 CPV: no. The configmap can be the owner of the kam - that would go in the ownerRef section of the kam.  But the owner def inside the kam mapping itself is not for that; if it exists, it is user provided and is used to qualify the mapping of a resource to a map name, as specified in the kam spec. 
 
