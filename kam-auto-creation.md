@@ -30,8 +30,8 @@ data:
             {
                 "apiVersion": "<apiversion>",
                 "owner": {
-                    "apiVersion": "v1",
-                    "kind": "ConfigMap",
+                    "apiVersion": "<owner-apiVersion>",
+                    "kind": "<owner-kind>",
                     "uid": "<owner-uid>"
                 }, 
                 "kind": "<kind>",
