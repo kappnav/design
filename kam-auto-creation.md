@@ -13,7 +13,7 @@ kind: ConfigMap
 metadata: 
   name: kappnav.actions.{kind}[-subkind][.name]
 labels: 
-  kappnav.io/map-type: action | status | sections 
+  kappnav.io/map-type: actions | status | sections 
   annotations: 
      kappnav.actions.on.conflict: "merge" | "replace" 
 data:
