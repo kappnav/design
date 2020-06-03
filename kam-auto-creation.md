@@ -82,3 +82,6 @@ Once an app nav controller starts up, it must sync config maps with kams for the
 1. when config map created, create kam
 1. when config map updated, update kam
 1. when config map deleted, delete kam
+
+Questions:
+1. the kam creation is done by the kappnav operator during the installation and the kam creation/update/deletion is performed by the kappna controller?
