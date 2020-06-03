@@ -16,6 +16,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata: 
   name: kappnav.actions.{kind}[-subkind][.name]
+  labels: 
+    kappnav.kam.auto-create: true | false 
   annotations: 
      kappnav.actions.on.conflict: "merge" | "replace" 
 data:
