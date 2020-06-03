@@ -46,6 +46,7 @@ The KAM is installed in the same namespace as the one that the associated config
 
 The owner of the configmap also owns the kam embeded.
 
+Questions:
 1. With onwer info, if we making the confimap itself the owner of the KAM, should the KAM definition need to include the owner info?
 CPV: no. The configmap can be the owner of the kam - that would go in the ownerRef section of the kam.  But the owner def inside the kam mapping itself is not for that; if it exists, it is user provided and is used to qualify the mapping of a resource to a map name, as specified in the kam spec. 
 
