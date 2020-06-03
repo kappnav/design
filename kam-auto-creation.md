@@ -22,13 +22,13 @@ data:
   kam-defs: | 
       [
         "spec": {
-          "precedence": <precdence>,
+          "precedence": <precedence>,
           "mappings": [
             {
                 "apiVersion": "<apiversion>",
                 "owner": {
-                    "apiVersion": "<owner-apiversion",
-                    "kind": "<owner-kind",
+                    "apiVersion": "v1",
+                    "kind": "ConfigMap",
                     "uid": "<owner-uid>"
                 }, 
                 "kind": "<kind>",
@@ -41,8 +41,8 @@ data:
             {
                 "apiVersion": "<apiversion>",
                 "owner": {
-                    "apiVersion": "<owner-apiversion",
-                    "kind": "<owner-kind",
+                    "apiVersion": "v1",
+                    "kind": "ConfigMap",
                     "uid": "<owner-uid>"
                 }, 
                 "kind": "<kind>",
@@ -55,8 +55,8 @@ data:
             {
                 "apiVersion": "<apiversion>",
                 "owner": {
-                    "apiVersion": "<owner-apiversion",
-                    "kind": "<owner-kind",
+                    "apiVersion": "v1",
+                    "kind": "ConfigMap",
                     "uid": "<owner-uid>"
                 }, 
                 "kind": "<kind>",
