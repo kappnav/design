@@ -11,7 +11,7 @@ When an action/status/detail config map is created that contains the following l
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: kappnav.actions.{kind}[-subkind][.name]
+  name: kappnav.actions|status-mapping|sections.{kind}[-subkind][.name]
 labels: 
   kappnav.io/map-type: actions | status | sections 
   annotations: 
