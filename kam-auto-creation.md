@@ -19,15 +19,16 @@ metadata:
 data:
   kam-defs: | 
       [
-        "apiVersion": "actions.kappnav.io/v1",
-        "kind": "KindActionMapping",
-        "metadata": {
-          "name": "<kam-name>",
-        },
-        "spec": {
-          "precedence": <precedence>,
-          "mappings": [
-            {
+        {
+          "apiVersion": "actions.kappnav.io/v1",
+          "kind": "KindActionMapping",
+          "metadata": {
+            "name": "<kam-name>",
+          },
+          "spec": {
+            "precedence": <precedence>,
+            "mappings": [
+              {
                 "apiVersion": "<apiversion>",
                 "owner": {
                     "apiVersion": "<owner-apiVersion>",
@@ -38,10 +39,10 @@ data:
                 "subkind": "<subkind>",
                 "name": "<name>",
                 "mapname": "<mapname>"
-            }
-          ],
-          "statusMappings": [
-            {
+              }
+            ],
+            "statusMappings": [
+              {
                 "apiVersion": "<apiversion>",
                 "owner": {
                     "apiVersion": "<owner-apiVersion>",
@@ -52,10 +53,10 @@ data:
                 "subkind": "<subkind>",
                 "name": "<name>",
                 "mapname": "<mapname>"
-            }
-          ],  
-          "sectionMappings": [
-            {
+              }
+            ],  
+            "sectionMappings": [
+              {
                 "apiVersion": "<apiversion>",
                 "owner": {
                     "apiVersion": "<owner-apiVersion>",
@@ -66,8 +67,9 @@ data:
                 "subkind": "<subkind>",
                 "name": "<name>",
                 "mapname": "<mapname>"
-            }
-          ]
+              }
+            ]
+          }
         }
       ], 
       
