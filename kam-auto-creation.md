@@ -39,7 +39,35 @@ data:
                 "name": "<name>",
                 "mapname": "<mapname>"
             }
-          ],          
+          ],
+          "statusMappings": [
+            {
+                "apiVersion": "<apiversion>",
+                "owner": {
+                    "apiVersion": "<owner-apiVersion>",
+                    "kind": "<owner-kind>",
+                    "uid": "<owner-uid>"
+                }, 
+                "kind": "<kind>",
+                "subkind": "<subkind>",
+                "name": "<name>",
+                "mapname": "<mapname>"
+            }
+          ],  
+          "sectionMappings": [
+            {
+                "apiVersion": "<apiversion>",
+                "owner": {
+                    "apiVersion": "<owner-apiVersion>",
+                    "kind": "<owner-kind>",
+                    "uid": "<owner-uid>"
+                }, 
+                "kind": "<kind>",
+                "subkind": "<subkind>",
+                "name": "<name>",
+                "mapname": "<mapname>"
+            }
+          ]
         }
       ], 
       
