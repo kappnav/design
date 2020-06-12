@@ -18,60 +18,40 @@ metadata:
       kappnav.actions.on.conflict: "merge" | "replace" 
 data:
   kam-defs: | 
-      [
-        {
-          "apiVersion": "actions.kappnav.io/v1",
-          "kind": "KindActionMapping",
-          "metadata": {
-            "name": "<kam-name>",
-          },
-          "spec": {
-            "precedence": <precedence>,
-            "mappings": [
-              {
-                "apiVersion": "<apiversion>",
-                "owner": {
-                    "apiVersion": "<owner-apiVersion>",
-                    "kind": "<owner-kind>",
-                    "uid": "<owner-uid>"
-                }, 
-                "kind": "<kind>",
-                "subkind": "<subkind>",
-                "name": "<name>",
-                "mapname": "<mapname>"
-              }
-            ],
-            "statusMappings": [
-              {
-                "apiVersion": "<apiversion>",
-                "owner": {
-                    "apiVersion": "<owner-apiVersion>",
-                    "kind": "<owner-kind>",
-                    "uid": "<owner-uid>"
-                }, 
-                "kind": "<kind>",
-                "subkind": "<subkind>",
-                "name": "<name>",
-                "mapname": "<mapname>"
-              }
-            ],  
-            "sectionMappings": [
-              {
-                "apiVersion": "<apiversion>",
-                "owner": {
-                    "apiVersion": "<owner-apiVersion>",
-                    "kind": "<owner-kind>",
-                    "uid": "<owner-uid>"
-                }, 
-                "kind": "<kind>",
-                "subkind": "<subkind>",
-                "name": "<name>",
-                "mapname": "<mapname>"
-              }
-            ]
+    {
+      "apiVersion": "actions.kappnav.io/v1",
+      "kind": "KindActionMapping",
+      "metadata": {
+        "name": "emkam",
+      },
+      "spec": {
+        "precedence": 3,
+        "mappings": [
+          {
+            "apiVersion": "apps/v1",,
+            "kind": "Deployment",
+            "name": "test",
+            "mapname": "kappnav.actions.testmap"
           }
-        }
-      ], 
+        ],
+        "statusMappings": [
+          {
+            "apiVersion": "apps/v1",,
+            "kind": "Deployment",
+            "name": "test",
+            "mapname": "kappnav.status-mapping.testmap"
+          }
+        ],
+        "sectionMappings": [
+          {
+            "apiVersion": "apps/v1",,
+            "kind": "Deployment",
+            "name": "test",
+            "mapname": "kappnav.sections.testmap"
+          }
+        ]
+      }
+    } 
       
 ```
 The KAM is installed in the same namespace as the one that the associated configmap resides.
