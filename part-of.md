@@ -16,7 +16,7 @@ labels:
 
 annotations:
     kappnav.app.auto-create.name: {value of part-of label}
-    kappnav.app.auto-create.kinds: "apps/Deployment", "apps/StatefulSet" 
+    kappnav.app.auto-create.kinds: "Deployment", StatefulSet" 
     kappnav.app.auto-create.version: 1.0.0
     kappnav.app.auto-create.label: “apps.kubernetes.io/part-of"
     kappnav.app.auto-create.labels-values: {value of part-of label}
@@ -43,7 +43,7 @@ Same as the auto-create support:  when last top-level resource in the same names
 
 # Future Top Level Kinds 
 
-The following configuration in the kappnav CR controls which top level kinds support auto-create and part-of labels with default shown: 
+The following configuration in the kappnav CR controls which top level resource kinds support auto-create and part-of labels with default shown: 
 
 ```
 apiVersion: kappnav.operator.kappnav.io/v1
@@ -51,11 +51,9 @@ kind: Kappnav
 metadata: 
    name: kappnav
 spec: 
-   auto-create-kinds: 
+   autoCreateKinds: 
       - group: apps
-        version: v1
-        resource: deployments
+        kind: Deployment
       - group: apps
-        version: v1
-        resource: statefulsets 
+        kind: StatefulSet
 ```
