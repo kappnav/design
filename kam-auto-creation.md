@@ -12,6 +12,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata: 
   name: kappnav.actions|status-mapping|sections.{kind}[-subkind][.name]
+  namespace: test
   labels: 
     kappnav.io/map-type: actions | status | sections 
     annotations: 
