@@ -52,7 +52,38 @@ data:
         ]
       }
     } 
-      
+  
+Would produce:
+  
+apiVersion: actions.kappnav.io/v1
+kind: KindActionMapping
+metadata:
+  creationTimestamp: 2020-06-23T22:44:21Z
+  generation: 3
+  labels:
+    kappnav.kam.auto-created: "true"
+  name: emkam
+  namespace: test
+  resourceVersion: "89718478"
+  selfLink: /apis/actions.kappnav.io/v1/namespaces/test/kindactionmappings/emkam
+  uid: 6bd8bf7d-16c9-475a-9a3b-7be37355df07
+spec:
+  mappings:
+  - apiVersion: apps/v1
+    kind: Deployment
+    mapname: kappnav.actions.testmap
+    name: test
+  precedence: 3
+  sectionMappings:
+  - apiVersion: apps/v1
+    kind: Deployment
+    mapname: kappnav.sections.testmap
+    name: test
+  statusMappings:
+  - apiVersion: apps/v1
+    kind: Deployment
+    mapname: kappnav.status-mapping.testmap
+    name: test
 ```
 The KAM is installed in the same namespace as the one that the associated configmap resides.
 
