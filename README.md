@@ -57,6 +57,9 @@
 ### {k}AppNav 0.10.0 Design
 1. [KAM Extention to Status Mappings and Detail Sections](https://github.com/kappnav/design/blob/master/KAM-StatusMappings-DetailSections.md)
 
+### {k}AppNav 0.11.0 Design
+1. [Kind Action Mapping (KAM) Auto Creation](https://github.com/kappnav/design/blob/master/kam-auto-creation.md)
+
 ### {k}AppNav Future Design (not assigned to release yet)
 
 1. [NLS Support for Custom Actions](https://github.com/kappnav/design/blob/master/user-actions-nls.md)
